@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Math & Code Game</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="game-container">
+    <h1>🧮 Matemática Aplicada a la Programación</h1>
+    <p class="instruction">¿La siguiente expresión es verdadera o falsa?</p>
+    <div class="expression" id="expression">5 * 2 = 10</div>
+    <div class="buttons">
+      <button onclick="checkAnswer(true)">✅ Verdadera</button>
+      <button onclick="checkAnswer(false)">❌ Falsa</button>
+    </div>
+    <div id="result" class="result"></div>
+    <button id="nextBtn" onclick="nextQuestion()">Siguiente</button>
+  </div>
+
+  <script>
+    const questions = [
+      { expression: "5 * 2 = 10", correct: true },
+      { expression: "3 + 4 = 10", correct: false },
+      { expression: "8 / 2 = 4", correct: true },
+      { expression: "2 * 3 = 9", correct: false },
+      { expression: "7 / 2 = 1", correct: true },
+      { expression: "10 < 5", correct: false },
+      { expression: "4 * (2 + 1) = 12", correct: true }
+    ];
+
+    let currentIndex = 0;
+
+    function showQuestion() {
+      document.getElementById('expression').textContent = questions[currentIndex].expression;
+      document.getElementById('result').textContent = '';
+    }
+
+    function checkAnswer(userAnswer) {
+      const correct = questions[currentIndex].correct;
+      const resultText = userAnswer === correct ? '✅ ¡Correcto!' : '❌ Incorrecto';
+      document.getElementById('result').textContent = resultText;
+    }
+
+    function nextQuestion() {
+      currentIndex = (currentIndex + 1) % questions.length;
+      showQuestion();
+    }
+    showQuestion();
+  </script>
+</body>
+</html>

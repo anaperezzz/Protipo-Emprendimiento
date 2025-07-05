@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>¡Juego de Comparación de Pupusas!</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+
+    body {
+      font-family: 'Fredoka One', cursive;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      min-height: 100vh;
+      overflow-x: hidden;
+      background: linear-gradient(135deg, #87CEEB, #1E90FF);
+    }
+
+    #rex-panel {
+      width: 260px;
+      background-color: #fbe3b1;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border-right: 5px solid #f7c363;
+      position: fixed;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    #rex-burbuja {
+      background: white;
+      padding: 15px;
+      border-radius: 20px;
+      border: 3px solid #333;
+      margin-bottom: 20px;
+      font-size: 0.95rem;
+      color: #333;
+      text-align: center;
+      position: relative;
+      max-width: 220px;
+      order: 1;
+    }
+
+    #rex-burbuja::after {
+      content: "";
+      position: absolute;
+      bottom: -20px;
+      left: 40px;
+      width: 0;
+      height: 0;
+      border-left: 15px solid transparent;
+      border-right: 15px solid transparent;
+      border-top: 20px solid white;
+    }
+
+    #rex-img {
+      width: 180px;
+      transition: all 0.3s ease;
+      animation: rebote 1.5s infinite alternate ease-in-out;
+      order: 2;
+    }
+
+    @keyframes rebote {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-5px); }
+    }
+
+    #contenido {
+      flex: 1;
+      margin-left: 260px;
+      padding: 30px;
+      min-height: 100vh;
+      overflow-y: auto;
+    }
+
+    .game-container {
+      background-color: white;
+      border-radius: 20px;
+      padding: 25px;
+      max-width: 600px;
+      width: 100%;
+      margin: 0 auto;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      border: 5px solid #FFE66D;
+      text-align: center;
+    }
+
+    h1 {
+      color: #FF6B6B;
+      text-shadow: 3px 3px 0 #FFE66D;
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+
+    .instructions {
+      background-color: #FFF9C4;
+      padding: 15px;
+      border-radius: 15px;
+      margin-bottom: 20px;
+      border: 3px dashed #FF6B6B;
+      font-size: 1.1rem;
+    }
+
+    input {
+      padding: 10px;
+      font-size: 1.2rem;
+      border: 3px solid #4CAF50;
+      border-radius: 10px;
+      width: 60px;
+      text-align: center;
+      margin: 10px;
+      font-family: 'Fredoka One', cursive;
+      background-color: #FFF9C4;
+    }
+
+    button {
+      background-color: #FF6B6B;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      font-size: 1.2rem;
+      border-radius: 50px;
+      cursor: pointer;
+      margin-top: 10px;
+      font-family: 'Fredoka One', cursive;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 4px 0 #E91E63;
+      transition: all 0.2s;
+    }
+
+    button:hover {
+      background-color: #FF5252;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 0 #E91E63;
+    }
+
+    .feedback {
+      font-size: 1.3rem;
+      color: #E91E63;
+      background-color: #FFF9C4;
+      padding: 15px;
+      border-radius: 15px;
+      border: 3px solid #FFD166;
+      margin-top: 15px;
+      min-height: 60px;
+    }
+
+    img.resultado {
+      margin-top: 20px;
+      max-width: 200px;
+      display: none;
+      transition: all 0.3s;
+    }
+
+    .floating {
+      position: fixed;
+      pointer-events: none;
+      z-index: -1;
+      animation: float 6s infinite ease-in-out;
+    }
+
+    .pupusa-float {
+      font-size: 2rem;
+      animation: float 8s infinite ease-in-out;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0) translateX(0); }
+      25% { transform: translateY(-20px) translateX(10px); }
+      50% { transform: translateY(0) translateX(20px); }
+      75% { transform: translateY(20px) translateX(10px); }
+      100% { transform: translateY(0) translateX(0); }
+    }
+
+    @media (max-width: 768px) {
+      body { flex-direction: column; }
+      #rex-panel {
+        width: 100%;
+        position: static;
+        height: auto;
+        padding: 15px;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+      #rex-burbuja {
+        order: 2;
+        margin-bottom: 0;
+        margin-left: 15px;
+      }
+      #rex-burbuja::after {
+        left: -20px;
+        top: 50%;
+        border-top: 15px solid transparent;
+        border-bottom: 15px solid transparent;
+        border-right: 20px solid white;
+        border-left: none;
+        bottom: auto;
+      }
+      #rex-img {
+        order: 1;
+        width: 120px;
+      }
+      #contenido {
+        margin-left: 0;
+        padding: 20px;
+      }
+      .game-container {
+        padding: 15px;
+      }
+      h1 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Decoraciones flotantes -->
+  <div class="floating" style="top: 10%; left: 10%; animation-delay: 0s;">🥟</div>
+  <div class="floating" style="top: 30%; left: 85%; animation-delay: -2s;">🥤</div>
+  <div class="floating" style="top: 70%; left: 15%; animation-delay: -4s;">🍹</div>
+  <div class="floating pupusa-float" style="top: 80%; left: 80%; animation-delay: -1s;">🥟</div>
+  <div class="floating pupusa-float" style="top: 20%; left: 20%; animation-delay: -3s;">🥟</div>
+
+  <!-- PANEL DE REX -->
+  <div id="rex-panel">
+    <div id="rex-burbuja">¡Hola soy REX! Vamos a jugar con pupusas y símbolos.</div>
+    <img id="rex-img" src="Copilot_20250625_204412-removebg-preview.png" alt="REX">
+  </div>
+
+  <!-- CONTENIDO DEL JUEGO -->
+  <div id="contenido">
+    <div class="game-container">
+      <h1>🍝 Juego de Pupusas y Simbolitos</h1>
+      <div class="instructions">
+        <p>Si el cliente pide <strong>más de 4 pupusas</strong> (> 4), se le da un fresco 🍹</p>
+        <p>Si pide 4 o menos (<strong><= 4</strong>), solo pupusas 🥟</p>
+        <p>¡Usa <code>&lt;</code>, <code>&gt;</code> o <code>=</code> para comparar!</p>
+      </div>
+
+      <button onclick="nuevoCliente()">🡩‍🍳 LLEGA UN CLIENTE</button>
+      <p id="cliente">Esperando al cliente...</p>
+
+      <div id="pedidoContainer" style="display:none;">
+        <p>¿Qué símbolo va entre <span id="cantidadTexto"></span> y 4?</p>
+        <input type="text" id="simbolo" maxlength="1" placeholder="<">
+        <br>
+        <button onclick="verificarSimbolo()">✅ Verificar</button>
+      </div>
+
+      <div class="feedback" id="respuesta">&nbsp;</div>
+      <img id="imagen" class="resultado" src="">
+    </div>
+  </div>
+
+  <!-- AUDIOS -->
+  <audio id="audioPresentacion" src="Cuando un número es .mp3"></audio>
+  <audio id="audioCorrecto" src="_Muy bien Lo hiciste (1).mp3"></audio>
+  <audio id="audioIncorrecto" src="Uy no es ese No es c.mp3"></audio>
+  <audio id="audioCliente" src="_Llegó un cliente Pi (1).mp3"></audio>
+
+  <script>
+    let cantidadCliente = 0;
+    let primerClick = true;
+
+    function reproducirAudio(idAudio) {
+      const audio = document.getElementById(idAudio);
+      if (audio) {
+        audio.currentTime = 0;
+        audio.play().catch(e => {
+          console.error("Error al reproducir audio:", e);
+        });
+      }
+    }
+
+    function cambiarRex(estado) {
+      const rexImg = document.getElementById("rex-img");
+      if (estado === "pensando") {
+        rexImg.style.transform = "rotate(5deg)";
+      } else if (estado === "feliz") {
+        rexImg.style.transform = "scale(1.1)";
+        setTimeout(() => rexImg.style.transform = "", 1000);
+      } else if (estado === "triste") {
+        rexImg.style.transform = "rotate(-5deg) scale(0.9)";
+        setTimeout(() => rexImg.style.transform = "", 1000);
+      } else {
+        rexImg.style.transform = "";
+      }
+    }
+
+    setInterval(() => {
+      const rexImg = document.getElementById("rex-img");
+      const originalSrc = rexImg.src;
+      rexImg.src = "";
+      setTimeout(() => rexImg.src = originalSrc, 150);
+    }, 7000);
+
+    function nuevoCliente() {
+      cantidadCliente = Math.floor(Math.random() * 6) + 1;
+      const texto = `Ha llegado un cliente y pidió ${cantidadCliente} pupusas. ¿Qué símbolo va entre ${cantidadCliente} y 4?`;
+      document.getElementById("cliente").textContent = `🡩‍🍳 ${texto}`;
+      document.getElementById("cantidadTexto").textContent = cantidadCliente;
+      document.getElementById("pedidoContainer").style.display = "block";
+      document.getElementById("respuesta").textContent = "";
+      document.getElementById("imagen").style.display = "none";
+      document.getElementById("simbolo").value = "";
+
+      document.getElementById("rex-burbuja").textContent = texto;
+      cambiarRex("pensando");
+
+      if (primerClick) {
+        reproducirAudio("audioPresentacion");
+        primerClick = false;
+      } else {
+        reproducirAudio("audioCliente");
+      }
+    }
+
+    function verificarSimbolo() {
+      const simbolo = document.getElementById("simbolo").value.trim();
+      const respuesta = document.getElementById("respuesta");
+      const imagen = document.getElementById("imagen");
+
+      let correcto = "";
+      if (cantidadCliente > 4) correcto = ">";
+      else if (cantidadCliente < 4) correcto = "<";
+      else correcto = "=";
+
+      if (simbolo === correcto) {
+        const mensaje = `¡Muy bien! ${cantidadCliente} ${simbolo} 4 es correcto. ` + 
+                       (simbolo === ">" ? "¡Se lleva fresco! 🍹" : "¡Solo pupusas! 🥟");
+        respuesta.innerHTML = `✔ ${mensaje}`;
+        document.getElementById("rex-burbuja").textContent = mensaje;
+        cambiarRex("feliz");
+        reproducirAudio("audioCorrecto");
+        imagen.src = simbolo === ">" ? "fresco.png" : "pupusas.png";
+      } else {
+        const mensaje = `Ups... ${cantidadCliente} ${simbolo} 4 no es correcto. Inténtalo de nuevo.`;
+        respuesta.innerHTML = `❌ ${mensaje}`;
+        document.getElementById("rex-burbuja").textContent = mensaje;
+        cambiarRex("triste");
+        reproducirAudio("audioIncorrecto");
+        imagen.src = "titer.png";
+      }
+
+      imagen.style.display = "block";
+      imagen.style.transform = "scale(1.1)";
+      setTimeout(() => imagen.style.transform = "scale(1)", 500);
+      setTimeout(() => cambiarRex("normal"), 3000);
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("simbolo").addEventListener("input", () => {
+        cambiarRex("pensando");
+      });
+    });
+  </script>
+</body>
+</html>

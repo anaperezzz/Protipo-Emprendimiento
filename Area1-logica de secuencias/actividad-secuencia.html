@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Actividad: Ordena la Secuencia</title>
+  <style>
+    :root {
+      --azul-cielo: #87CEEB;
+      --azul-brillante: #1E90FF;
+      --amarillo-palido: #FFF9C4;
+      --azul-oscuro: #2E4053;
+      --rosa-fuerte: #E91E63;
+      --blanco: #FFFFFF;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--azul-cielo);
+      margin: 0;
+      padding: 2rem;
+      color: var(--azul-oscuro);
+    }
+
+    .contenedor {
+      max-width: 950px;
+      margin: 0 auto;
+      background-color: var(--blanco);
+      border-radius: 20px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      padding: 2rem 2.5rem;
+    }
+
+    h1 { text-align: center; margin-top: 0; }
+    h2 { margin-bottom: 0.5rem; }
+
+    .indicaciones {
+      background-color: var(--amarillo-palido);
+      border-left: 8px solid var(--rosa-fuerte);
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+      font-weight: 500;
+    }
+
+    .pasos {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      justify-content: center;
+    }
+
+    .paso {
+      background-color: var(--azul-brillante);
+      color: var(--blanco);
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+      cursor: grab;
+      user-select: none;
+      transition: transform 0.2s;
+    }
+    .paso:hover { transform: scale(1.05); }
+
+    .zona-respuesta {
+      background-color: var(--amarillo-palido);
+      border: 2px dashed var(--rosa-fuerte);
+      padding: 1rem;
+      min-height: 120px;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .respuesta-item {
+      background: var(--rosa-fuerte);
+      color: var(--blanco);
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+
+    .botones {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 1rem;
+    }
+
+    button {
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+      color: var(--blanco);
+    }
+
+    .btn-comprobar { background: var(--azul-oscuro); }
+    .btn-comprobar:hover { filter: brightness(1.1); }
+
+    .btn-reintentar { background: var(--rosa-fuerte); }
+    .btn-reintentar:hover { filter: brightness(1.1); }
+
+    .btn-siguiente { background: var(--azul-brillante); }
+    .btn-siguiente:hover { filter: brightness(1.1); }
+
+    .mensaje {
+      text-align: center;
+      font-size: 1.25rem;
+      font-weight: bold;
+      margin-top: 1rem;
+      min-height: 1.5em;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="contenedor">
+    <h1>🔧 Ordena la Secuencia</h1>
+    <div class="indicaciones">
+      Arrastra los pasos desde los bloques <strong>azules</strong> y colócalos en la zona <strong>amarilla</strong> en el orden correcto. 
+      Cuando termines, presiona <em>Comprobar</em>. Usa <em>Volver a intentar</em> para reiniciar o <em>Siguiente</em> para una nueva secuencia. ¡Son 5 en total!
+    </div>
+
+    <h2 id="titulo-secuencia"></h2>
+
+    <div class="pasos" id="area-pasos"></div>
+
+    <h3>Tu orden:</h3>
+    <div class="zona-respuesta" id="respuesta" aria-label="Zona de respuesta" tabindex="0"></div>
+
+    <div class="botones">
+      <button class="btn-comprobar" id="btn-comprobar">Comprobar</button>
+      <button class="btn-reintentar" id="btn-reintentar">Volver a intentar</button>
+      <button class="btn-siguiente" id="btn-siguiente">Siguiente ➡️</button>
+    </div>
+
+    <div class="mensaje" id="mensaje"></div>
+  </div>
+
+  <script>
+    // Secuencias (5 en total)
+    const secuencias = [
+      {
+        titulo: "Preparar un sándwich (3 pasos)",
+        pasos: [
+          "Poner pan en la mesa",
+          "Untar mermelada",
+          "Poner las rebanadas juntas",
+        ],
+      },
+      {
+        titulo: "Cepillarse los dientes (4 pasos)",
+        pasos: [
+          "Mojar el cepillo",
+          "Poner pasta dental",
+          "Cepillar dientes",
+          "Enjuagar la boca",
+        ],
+      },
+      {
+        titulo: "Plantar una semilla (5 pasos)",
+        pasos: [
+          "Llenar maceta con tierra",
+          "Hacer un agujero pequeño",
+          "Poner la semilla",
+          "Cubrir con tierra",
+          "Regar la planta",
+        ],
+      },
+      {
+        titulo: "Hacer limonada (4 pasos)",
+        pasos: [
+          "Exprimir limones",
+          "Agregar agua",
+          "Añadir azúcar",
+          "Mezclar bien",
+        ],
+      },
+      {
+        titulo: "Vestirse (4 pasos)",
+        pasos: [
+          "Ponerse calcetines",
+          "Ponerse pantalones",
+          "Ponerse camiseta",
+          "Ponerse zapatos",
+        ],
+      },
+    ];
+
+    let indiceActual = 0;
+
+    const titulo = document.getElementById("titulo-secuencia");
+    const areaPasos = document.getElementById("area-pasos");
+    const respuesta = document.getElementById("respuesta");
+    const mensaje = document.getElementById("mensaje");
+    const btnComprobar = document.getElementById("btn-comprobar");
+    const btnReintentar = document.getElementById("btn-reintentar");
+    const btnSiguiente = document.getElementById("btn-siguiente");
+
+    function shuffle(array) {
+      return array
+        .map(value => ({ value, sort: Math.random() }))
+        .sort((a, b) => a.sort - b.sort)
+        .map(({ value }) => value);
+    }
+
+    function cargarSecuencia() {
+      // Reset UI
+      respuesta.innerHTML = "";
+      mensaje.textContent = "";
+
+      // Datos de la secuencia actual
+      const sec = secuencias[indiceActual];
+      titulo.textContent = `Secuencia ${indiceActual + 1}/5: ${sec.titulo}`;
+
+      // Mostrar pasos random
+      areaPasos.innerHTML = "";
+      const pasosAleatorios = shuffle([...sec.pasos]);
+      pasosAleatorios.forEach(texto => {
+        const div = document.createElement("div");
+        div.className = "paso";
+        div.textContent = texto;
+        div.setAttribute("draggable", "true");
+        div.addEventListener("dragstart", e => {
+          e.dataTransfer.setData("text/plain", texto);
+        });
+        areaPasos.appendChild(div);
+      });
+    }
+
+    // Zona de respuesta drag & drop
+    respuesta.addEventListener("dragover", e => e.preventDefault());
+    respuesta.addEventListener("drop", e => {
+      e.preventDefault();
+      const texto = e.dataTransfer.getData("text/plain");
+      if (!texto) return;
+      // Evitar duplicados
+      const yaExiste = Array.from(respuesta.children).some(el => el.textContent === texto);
+      if (yaExiste) return;
+      const div = document.createElement("div");
+      div.className = "respuesta-item";
+      div.textContent = texto;
+      respuesta.appendChild(div);
+    });
+
+    btnComprobar.addEventListener("click", () => {
+      const sec = secuencias[indiceActual];
+      const respuestasUser = Array.from(respuesta.children).map(el => el.textContent);
+      if (respuestasUser.length !== sec.pasos.length) {
+        mensaje.style.color = "var(--rosa-fuerte)";
+        mensaje.textContent = "Aún faltan pasos. ¡Revisa e intenta de nuevo!";
+        return;
+      }
+      const correcto = respuestasUser.every((txt, idx) => txt === sec.pasos[idx]);
+      if (correcto) {
+        mensaje.style.color = "green";
+        mensaje.textContent = "✅ ¡Correcto! Bien hecho.";
+      } else {
+        mensaje.style.color = "var(--rosa-fuerte)";
+        mensaje.textContent = "❌ Orden incorrecto. Intenta nuevamente.";
+      }
+    });
+
+    btnReintentar.addEventListener("click", () => {
+      cargarSecuencia();
+    });
+
+    btnSiguiente.addEventListener("click", () => {
+      indiceActual = (indiceActual + 1) % secuencias.length;
+      cargarSecuencia();
+    });
+
+    // Inicializar
+    cargarSecuencia();
+  </script>
+</body>
+</html>

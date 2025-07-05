@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Juego de Memoria</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="rex-panel">
+    <div class="bubble">
+      <p>✨ ¡Bienvenido al juego de memoria!</p>
+      <p>🧩 Encuentra el emoji y su imagen con nombre.</p>
+      <p>🎯 ¡Aprende jugando!</p>
+    </div>
+  </div>
+
+  <main>
+    <h1>Juego de Memoria</h1>
+    <div class="tablero" id="tablero"></div>
+  </main>
+
+  <script>
+    const pares = [
+      { tipo: 'emoji', contenido: '💻<br><span>Computadora</span>', valor: 'computadora' },
+      { tipo: 'imagen', contenido: 'img/computadora.png', texto: 'Computadora', valor: 'computadora' },
+      { tipo: 'emoji', contenido: '🤖<br><span>Robot</span>', valor: 'robot' },
+      { tipo: 'imagen', contenido: 'img/robot.png', texto: 'Robot', valor: 'robot' },
+      { tipo: 'emoji', contenido: '🌐<br><span>Internet</span>', valor: 'internet' },
+      { tipo: 'imagen', contenido: 'img/internet.png', texto: 'Internet', valor: 'internet' },
+      { tipo: 'emoji', contenido: '🧠<br><span>Lógica</span>', valor: 'logica' },
+      { tipo: 'imagen', contenido: 'img/logica.png', texto: 'Lógica', valor: 'logica' },
+      { tipo: 'emoji', contenido: '🚀<br><span>Habilidades</span>', valor: 'habilidades' },
+      { tipo: 'imagen', contenido: 'img/habilidades.png', texto: 'Habilidades', valor: 'habilidades' },
+      { tipo: 'emoji', contenido: '🔠<br><span>Lenguajes</span>', valor: 'lenguajes' },
+      { tipo: 'imagen', contenido: 'img/scratch.png', texto: 'Lenguajes', valor: 'lenguajes' },
+      { tipo: 'emoji', contenido: '📜<br><span>Historia</span>', valor: 'historia' },
+      { tipo: 'imagen', contenido: 'img/eniac.png', texto: 'Historia', valor: 'historia' },
+      { tipo: 'emoji', contenido: '🇸🇻<br><span>El Salvador</span>', valor: 'elsalvador' },
+      { tipo: 'imagen', contenido: 'img/elsalvador.png', texto: 'El Salvador', valor: 'elsalvador' }
+    ];
+
+    let tablero = document.getElementById("tablero");
+    let mezcladas = [...pares].sort(() => Math.random() - 0.5);
+
+    let primera = null;
+    let segunda = null;
+    let bloqueado = false;
+
+    mezcladas.forEach((cartaData) => {
+      const carta = document.createElement("div");
+      carta.classList.add("tarjeta");
+      carta.dataset.valor = cartaData.valor;
+      carta.innerHTML = "❓";
+
+      carta.addEventListener("click", function () {
+        if (bloqueado || carta.classList.contains("correcta") || carta === primera) return;
+
+        carta.classList.add("revelada");
+
+        if (cartaData.tipo === "emoji") {
+          carta.innerHTML = cartaData.contenido;
+        } else {
+          carta.innerHTML = `<img src="${cartaData.contenido}" alt="${cartaData.valor}"><span>${cartaData.texto}</span>`;
+        }
+
+        if (!primera) {
+          primera = carta;
+        } else {
+          segunda = carta;
+          bloqueado = true;
+
+          if (primera.dataset.valor === segunda.dataset.valor) {
+            primera.classList.add("correcta");
+            segunda.classList.add("correcta");
+            resetear();
+          } else {
+            setTimeout(() => {
+              primera.classList.remove("revelada");
+              segunda.classList.remove("revelada");
+              primera.innerHTML = "❓";
+              segunda.innerHTML = "❓";
+              resetear();
+            }, 1000);
+          }
+        }
+      });
+
+      tablero.appendChild(carta);
+    });
+
+    function resetear() {
+      primera = null;
+      segunda = null;
+      bloqueado = false;
+    }
+  </script>
+</body>
+</html>
