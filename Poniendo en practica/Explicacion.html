@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Aprende los símbolos con Rex!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background: linear-gradient(135deg, #87CEEB 0%, #1E90FF 100%);
+            color: #2E4053;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .page-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            position: relative;
+        }
+
+        .decoration {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            animation: float 10s infinite ease-in-out;
+        }
+
+        .star {
+            position: absolute;
+            font-size: 1.8rem;
+            animation: float 8s infinite ease-in-out;
+            color: #FFE66D;
+        }
+
+        .bubble:nth-child(1) {
+            width: 100px;
+            height: 100px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .bubble:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            top: 50%;
+            left: 80%;
+            animation-delay: -2s;
+        }
+
+        .bubble:nth-child(3) {
+            width: 70px;
+            height: 70px;
+            top: 80%;
+            left: 20%;
+            animation-delay: -4s;
+        }
+
+        .star:nth-child(4) {
+            top: 20%;
+            left: 85%;
+            animation-delay: -1s;
+        }
+
+        .star:nth-child(5) {
+            top: 70%;
+            left: 15%;
+            animation-delay: -3s;
+        }
+
+        .star:nth-child(6) {
+            top: 40%;
+            left: 40%;
+            animation-delay: -5s;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) translateX(0);
+            }
+            25% {
+                transform: translateY(-20px) translateX(10px);
+            }
+            50% {
+                transform: translateY(0) translateX(20px);
+            }
+            75% {
+                transform: translateY(20px) translateX(10px);
+            }
+            100% {
+                transform: translateY(0) translateX(0);
+            }
+        }
+
+        .content-box {
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-align: center;
+            text-shadow: 2px 2px 0 rgba(255, 255, 255, 0.5);
+            line-height: 1.2;
+            color: #2E4053;
+        }
+
+        .intro {
+            font-size: 1.8rem;
+            text-align: center;
+            margin-bottom: 40px;
+            line-height: 1.5;
+        }
+
+        .symbols-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin: 30px 0;
+        }
+
+        .symbol-card {
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 20px;
+            padding: 30px;
+            width: 180px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            animation: appear 1s ease-out;
+            animation-fill-mode: both;
+            position: relative;
+            overflow: hidden;
+            border: 3px solid #FF6B6B;
+            text-align: center;
+        }
+
+        .symbol-card:nth-child(1) { animation-delay: 0.2s; }
+        .symbol-card:nth-child(2) { animation-delay: 0.4s; }
+        .symbol-card:nth-child(3) { animation-delay: 0.6s; }
+
+        @keyframes appear {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .symbol {
+            font-size: 6rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.1);
+            color: #1E90FF;
+        }
+
+        .symbol-name {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .examples {
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 3px solid #FFE66D;
+        }
+
+        .example {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin: 25px 0;
+            padding: 20px;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        .example-icon {
+            font-size: 3rem;
+            flex-shrink: 0;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #FF6B6B;
+            border-radius: 50%;
+            color: white;
+        }
+
+        .example-text {
+            font-size: 1.6rem;
+            line-height: 1.5;
+        }
+
+        .emoji {
+            font-size: 2.5rem;
+            margin: 0 5px;
+            display: inline-block;
+            animation: pulse 1.5s infinite;
+            color: #FF5252;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .pupusas {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .pupusa {
+            font-size: 2.5rem;
+            animation: pop-in 0.5s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .pupusa:nth-child(1) { animation-delay: 0.2s; }
+        .pupusa:nth-child(2) { animation-delay: 0.3s; }
+        .pupusa:nth-child(3) { animation-delay: 0.4s; }
+        .pupusa:nth-child(4) { animation-delay: 0.5s; }
+        .pupusa:nth-child(5) { animation-delay: 0.6s; }
+        .pupusa:nth-child(6) { animation-delay: 0.7s; }
+
+        @keyframes pop-in {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.5);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background: #FFE66D;
+            color: #2E4053;
+            border: none;
+            padding: 15px 35px;
+            font-size: 1.8rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Fredoka', sans-serif;
+            transition: transform 0.3s, background 0.3s;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 3px solid #FF5252;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            background: #FFF176;
+        }
+
+        .audio-btn {
+            background: #FF6B6B;
+            color: white;
+            padding: 15px 25px;
+        }
+
+        .audio-btn:hover {
+            background: #FF5252;
+        }
+
+        .play-btn {
+            background: #FFE66D;
+            color: #2E4053;
+        }
+
+        .rex-footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .content-box {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .intro {
+                font-size: 1.5rem;
+            }
+            
+            .symbols-container {
+                gap: 20px;
+            }
+            
+            .symbol-card {
+                width: 140px;
+                padding: 20px;
+            }
+            
+            .symbol {
+                font-size: 4rem;
+            }
+            
+            .symbol-name {
+                font-size: 1.5rem;
+            }
+            
+            .example {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .example-icon {
+                margin-bottom: 15px;
+            }
+            
+            .buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Decoración flotante (fija en el fondo) -->
+    <div class="decoration">
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="star">⭐</div>
+        <div class="star">🌟</div>
+        <div class="star">✨</div>
+    </div>
+    
+    <div class="page-container">
+        <div class="content-box">
+            <h1>Poniendo en la vida real</h1>
+            
+            <p class="intro">
+                En programación usamos símbolos especiales para comparar cosas. ¡Mira cómo funcionan!
+            </p>
+            
+            <div class="symbols-container">
+                <div class="symbol-card">
+                    <div class="symbol">></div>
+                    <div class="symbol-name">Mayor que</div>
+                </div>
+                <div class="symbol-card">
+                    <div class="symbol"><</div>
+                    <div class="symbol-name">Menor que</div>
+                </div>
+                <div class="symbol-card">
+                    <div class="symbol">=</div>
+                    <div class="symbol-name">Igual a</div>
+                </div>
+            </div>
+            
+            <div class="examples">
+                <p style="text-align: center; margin-bottom: 20px; font-size: 1.8rem;">
+                    ¡Así podemos decirle a la compu qué hacer! Mira estos ejemplos:
+                </p>
+                
+                <div class="example">
+                    <div class="example-icon">👦</div>
+                    <div class="example-text">
+                        "Si Juan tiene <span class="emoji">></span> 5 pupusas, le damos un fresco."
+                        <div class="pupusas">
+                            <span class="pupusa">🥟</span>
+                            <span class="pupusa">🥟</span>
+                            <span class="pupusa">🥟</span>
+                            <span class="pupusa">🥟</span>
+                            <span class="pupusa">🥟</span>
+                            <span class="pupusa">🥟</span>
+                            <span class="pupusa">🥤</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="example">
+                    <div class="example-icon">👧</div>
+                    <div class="example-text">
+                        "Si Ana tiene <span class="emoji"><</span> 3 pupusas, no alcanza para compartir."
+                        <div class="pupusas">
+                            <span class="pupusa">🥟</span>
+                            <span class="pupusa">🥟</span>
+                            <span class="pupusa">😢</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="example">
+                    <div class="example-icon">🤩</div>
+                    <div class="example-text">
+                        "Si tiene justo 4 pupusas <span class="emoji">=</span> 4, ¡es su número favorito!"
+                        <div class="pupusas">
+                            <span class="pupusa">🥟</span>
+                            <span class="pupusa">🥟</span>
+                            <span class="pupusa">🥟</span>
+                            <span class="pupusa">🥟</span>
+                            <span class="pupusa">🎉</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="buttons">
+                <button class="btn audio-btn" id="audioBtn">
+                    <i class="fas fa-volume-up"></i> Escuchar explicación
+                </button>
+                <button class="btn play-btn" id="playBtn" onclick="window.location.href='pupuseria.html'">
+  ¡Juguemos! <i class="fas fa-gamepad"></i>
+</button>
+
+            </div>
+            
+            <div class="rex-footer">
+                <p>¡Sigue aprendiendo con Rex! 🦖💻</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Elemento de audio para la explicación -->
+    <audio id="explanationAudio">
+        <source src="Poniendo en la vida  (1).mp3" type="audio/mp3">
+        Tu navegador no soporta el elemento de audio.
+    </audio>
+
+    <script>
+        // Botón de audio
+        const audioBtn = document.getElementById('audioBtn');
+        const explanationAudio = document.getElementById('explanationAudio');
+        
+        audioBtn.addEventListener('click', function() {
+            explanationAudio.play();
+        });
+        
+        
+        
+        // Animación para los emojis de pupusas
+        document.querySelectorAll('.pupusa').forEach((pupusa, index) => {
+            pupusa.style.animationDelay = `${index * 0.1}s`;
+        });
+    </script>
+</body>
+</html>

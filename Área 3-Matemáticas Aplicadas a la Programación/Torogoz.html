@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Aventura del Torogoz!</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+        
+        body {
+            font-family: 'Fredoka One', cursive;
+            background: linear-gradient(135deg, #87CEEB, #1E90FF);
+            text-align: center;
+            padding: 20px;
+            color: #2E4053;
+            min-height: 100vh;
+            margin: 0;
+        }
+        
+        h1 {
+            color: #FF6B6B;
+            text-shadow: 3px 3px 0 #FFE66D;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .game-container {
+            background-color: white;
+            border-radius: 20px;
+            padding: 25px;
+            max-width: 650px;
+            margin: 0 auto;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            border: 5px solid #FFE66D;
+        }
+        
+        .instructions {
+            background-color: #FFF9C4;
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            border: 3px dashed #FF6B6B;
+            font-size: 1.1rem;
+        }
+        
+        .grid-container {
+            display: inline-block;
+            margin: 20px 0;
+            position: relative;
+            background-color: #E3F2FD;
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(11, 45px);
+            grid-template-rows: repeat(11, 45px);
+            background-color: white;
+            border: 4px solid #4CAF50;
+            border-radius: 10px;
+            position: relative;
+            background-image: linear-gradient(to right, #D5F5E3 1px, transparent 1px),
+                              linear-gradient(to bottom, #D5F5E3 1px, transparent 1px);
+            background-size: 45px 45px;
+        }
+        
+        .grid-cell {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+            position: relative;
+            font-weight: bold;
+        }
+        
+        .axis-label {
+            font-weight: bold;
+            color: #E91E63;
+            background-color: #FFEB3B;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 2px;
+        }
+        
+        .x-axis-label {
+            position: absolute;
+            bottom: -35px;
+            width: 100%;
+            text-align: center;
+            font-weight: bold;
+            color: #E91E63;
+            font-size: 1.2rem;
+        }
+        
+        .y-axis-label {
+            position: absolute;
+            left: -40px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            color: #E91E63;
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            font-size: 1.2rem;
+        }
+        
+        .torogoz {
+            font-size: 40px;
+            position: absolute;
+            transition: all 0.3s ease;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 10;
+            filter: drop-shadow(3px 3px 2px rgba(0,0,0,0.3));
+        }
+        
+        .torogoz.found {
+            animation: celebrate 0.8s ease infinite;
+        }
+        
+        @keyframes celebrate {
+            0% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+            25% { transform: translate(-50%, -50%) scale(1.3) rotate(15deg); }
+            50% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+            75% { transform: translate(-50%, -50%) scale(1.3) rotate(-15deg); }
+            100% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+        }
+        
+        .intersection-point {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background-color: #FF5722;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 5;
+            box-shadow: 0 0 5px #FF5722;
+        }
+        
+        .controls {
+            margin: 25px 0;
+            background-color: #E3F2FD;
+            padding: 15px;
+            border-radius: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .input-group {
+            display: flex;
+            align-items: center;
+            margin: 0 10px;
+        }
+        
+        label {
+            font-size: 1.1rem;
+            color: #E91E63;
+            margin-right: 8px;
+        }
+        
+        input {
+            padding: 10px;
+            margin: 0 5px;
+            width: 60px;
+            text-align: center;
+            border: 3px solid #4CAF50;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-family: 'Fredoka One', cursive;
+            color: #2E4053;
+            background-color: #FFF9C4;
+        }
+        
+        button {
+            background-color: #FF6B6B;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+            font-family: 'Fredoka One', cursive;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 0 #E91E63;
+        }
+        
+        button:hover {
+            background-color: #FF5252;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 #E91E63;
+        }
+        
+        button:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #E91E63;
+        }
+        
+        .feedback {
+            min-height: 60px;
+            margin: 20px 0;
+            font-size: 1.3rem;
+            color: #E91E63;
+            background-color: #FFF9C4;
+            padding: 15px;
+            border-radius: 15px;
+            border: 3px solid #FFD166;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .last-guess {
+            font-style: italic;
+            color: #1E88E5;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+        
+        .hint {
+            color: #FF8F00;
+            font-weight: bold;
+            font-size: 1.2rem;
+            background-color: #FFF3E0;
+            padding: 10px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-top: 10px;
+            border: 2px dotted #FFB74D;
+        }
+        
+        .attempts-counter {
+            color: #6A1B9A;
+            font-size: 1.1rem;
+            margin-top: 15px;
+        }
+        
+        .celebration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 100;
+            display: none;
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            opacity: 0;
+        }
+        
+        @media (max-width: 600px) {
+            .grid {
+                grid-template-columns: repeat(11, 35px);
+                grid-template-rows: repeat(11, 35px);
+                background-size: 35px 35px;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>¡Aventura del Torogoz! 🐦</h1>
+        
+        <div class="instructions">
+            <p>¡Ayuda al Torogoz, el ave nacional de El Salvador, a encontrar su nido!</p>
+            <p>Usa las coordenadas en el mapa (de -5 a 5) para descubrir dónde está escondido.</p>
+            <p>Eje X → (horizontal) &nbsp;&nbsp;•&nbsp;&nbsp; Eje Y ↑ (vertical)</p>
+        </div>
+        
+        <div class="grid-container">
+            <div class="y-axis-label">Eje Y</div>
+            <div class="grid" id="grid"></div>
+            <div class="x-axis-label">Eje X</div>
+            <div class="torogoz" id="torogoz">🐦</div>
+            <div class="intersection-point" id="intersection"></div>
+        </div>
+        
+        <div class="controls">
+            <div class="input-group">
+                <label for="x-input">X:</label>
+                <input type="number" id="x-input" min="-5" max="5" placeholder="0">
+            </div>
+            
+            <div class="input-group">
+                <label for="y-input">Y:</label>
+                <input type="number" id="y-input" min="-5" max="5" placeholder="0">
+            </div>
+            
+            <button id="guess-button">¡Buscar!</button>
+        </div>
+        
+        <div class="attempts-counter" id="attempts">Intentos: 0</div>
+        <div class="feedback" id="feedback">¡Ingresa las coordenadas para comenzar!</div>
+        <div class="last-guess" id="last-guess"></div>
+        <div class="hint" id="hint"></div>
+    </div>
+
+    <div class="celebration" id="celebration"></div>
+
+    <script>
+        // Variables globales
+        let torogozX, torogozY;
+        let attempts = 0;
+        const MAX_ATTEMPTS = 5;
+        let score = 0;
+
+        // Elementos del DOM
+        const elements = {
+            grid: document.getElementById('grid'),
+            torogoz: document.getElementById('torogoz'),
+            intersection: document.getElementById('intersection'),
+            xInput: document.getElementById('x-input'),
+            yInput: document.getElementById('y-input'),
+            guessButton: document.getElementById('guess-button'),
+            feedback: document.getElementById('feedback'),
+            lastGuess: document.getElementById('last-guess'),
+            hint: document.getElementById('hint'),
+            attemptsDisplay: document.getElementById('attempts'),
+            celebration: document.getElementById('celebration')
+        };
+
+        // Sonidos (usando AudioContext para mejor compatibilidad)
+        function playSound(type) {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+                
+                if (type === 'success') {
+                    oscillator.type = 'triangle';
+                    oscillator.frequency.setValueAtTime(880, audioCtx.currentTime);
+                    oscillator.frequency.exponentialRampToValueAtTime(1760, audioCtx.currentTime + 0.3);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                } else {
+                    oscillator.type = 'sine';
+                    oscillator.frequency.setValueAtTime(220, audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+                }
+                
+                oscillator.start();
+                oscillator.stop(audioCtx.currentTime + 0.5);
+            } catch (e) {
+                console.log("Error de audio:", e);
+            }
+        }
+
+        // Crear confeti
+        function createConfetti() {
+            elements.celebration.innerHTML = '';
+            elements.celebration.style.display = 'block';
+            
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.top = -10 + 'px';
+                confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                confetti.style.width = Math.random() * 10 + 5 + 'px';
+                confetti.style.height = Math.random() * 10 + 5 + 'px';
+                
+                elements.celebration.appendChild(confetti);
+                
+                // Animación
+                setTimeout(() => {
+                    confetti.style.opacity = '1';
+                    confetti.style.top = '100vh';
+                    confetti.style.transition = `top ${Math.random() * 2 + 1}s linear, opacity ${Math.random() * 1 + 0.5}s linear`;
+                }, i * 20);
+            }
+            
+            setTimeout(() => {
+                elements.celebration.style.display = 'none';
+            }, 3000);
+        }
+
+        // Inicialización del juego
+        function initGame() {
+            createGrid();
+            placeTorogoz();
+            setupEventListeners();
+        }
+
+        // Crear el grid 10x10
+        function createGrid() {
+            elements.grid.innerHTML = '';
+            
+            // Eje X (columnas)
+            for (let x = 0; x < 11; x++) {
+                const cell = document.createElement('div');
+                cell.className = 'grid-cell';
+                if (x > 0) {
+                    cell.textContent = x - 6; // -5 a 5
+                    cell.classList.add('axis-label');
+                }
+                elements.grid.appendChild(cell);
+            }
+            
+            // Eje Y (filas)
+            for (let y = 0; y < 10; y++) {
+                const labelCell = document.createElement('div');
+                labelCell.className = 'grid-cell axis-label';
+                labelCell.textContent = 5 - y; // 5 a -5
+                elements.grid.appendChild(labelCell);
+                
+                for (let x = 0; x < 10; x++) {
+                    elements.grid.appendChild(document.createElement('div'));
+                }
+            }
+        }
+
+        // Colocar al torogoz en posición aleatoria
+        function placeTorogoz() {
+            torogozX = Math.floor(Math.random() * 11) - 5;
+            torogozY = Math.floor(Math.random() * 11) - 5;
+            updateTorogozPosition();
+        }
+
+        // Actualizar posición visual
+        function updateTorogozPosition() {
+            const xPos = (torogozX + 5) * 45 + 22.5;
+            const yPos = (5 - torogozY) * 45 + 22.5;
+            
+            elements.torogoz.style.left = `${xPos}px`;
+            elements.torogoz.style.top = `${yPos}px`;
+            elements.intersection.style.left = `${xPos}px`;
+            elements.intersection.style.top = `${yPos}px`;
+        }
+
+        // Verificar el intento del jugador
+        function checkGuess() {
+            const guessX = parseInt(elements.xInput.value);
+            const guessY = parseInt(elements.yInput.value);
+            
+            if (isNaN(guessX)) {
+                elements.feedback.textContent = "¡Falta la coordenada X!";
+                elements.xInput.focus();
+                return;
+            }
+            
+            if (isNaN(guessY)) {
+                elements.feedback.textContent = "¡Falta la coordenada Y!";
+                elements.yInput.focus();
+                return;
+            }
+            
+            if (guessX < -5 || guessX > 5 || guessY < -5 || guessY > 5) {
+                elements.feedback.textContent = "¡Las coordenadas deben estar entre -5 y 5!";
+                return;
+            }
+            
+            attempts++;
+            elements.attemptsDisplay.textContent = `Intentos: ${attempts}`;
+            elements.lastGuess.textContent = `Tu intento: (${guessX}, ${guessY})`;
+            
+            if (guessX === torogozX && guessY === torogozY) {
+                handleCorrectGuess();
+            } else {
+                handleIncorrectGuess(guessX, guessY);
+            }
+        }
+
+        function handleCorrectGuess() {
+            playSound('success');
+            createConfetti();
+            
+            score++;
+            elements.feedback.innerHTML = `¡LO ENCONTRASTE! 🎉<br>Puntuación: ${score}`;
+            elements.hint.textContent = "";
+            elements.torogoz.classList.add('found');
+            
+            setTimeout(() => {
+                attempts = 0;
+                elements.attemptsDisplay.textContent = `Intentos: 0`;
+                placeTorogoz();
+                elements.feedback.textContent = "¡El Torogoz se movió! Encuéntralo de nuevo";
+                elements.torogoz.classList.remove('found');
+                elements.lastGuess.textContent = "";
+                elements.xInput.value = "";
+                elements.yInput.value = "";
+                elements.xInput.focus();
+            }, 2500);
+        }
+
+        function handleIncorrectGuess(guessX, guessY) {
+            playSound('error');
+            
+            if (attempts >= MAX_ATTEMPTS) {
+                elements.feedback.innerHTML = `¡Oh no! El Torogoz estaba en <strong>(${torogozX}, ${torogozY})</strong>`;
+                elements.hint.textContent = "¡No te rindas! Prueba otra vez";
+                
+                setTimeout(() => {
+                    attempts = 0;
+                    elements.attemptsDisplay.textContent = `Intentos: 0`;
+                    placeTorogoz();
+                    elements.feedback.textContent = "¡Nueva oportunidad! Encuentra al Torogoz";
+                    elements.lastGuess.textContent = "";
+                    elements.xInput.value = "";
+                    elements.yInput.value = "";
+                    elements.xInput.focus();
+                }, 3000);
+            } else {
+                elements.feedback.textContent = "¡Sigue buscando!";
+                giveHint(guessX, guessY);
+            }
+        }
+
+        // Dar pistas
+        function giveHint(guessX, guessY) {
+            let xDir = "";
+            let yDir = "";
+            
+            if (guessX < torogozX) {
+                xDir = "➡️ Más a la derecha";
+            } else if (guessX > torogozX) {
+                xDir = "⬅️ Más a la izquierda";
+            } else {
+                xDir = "🎯 ¡X correcta!";
+            }
+            
+            if (guessY < torogozY) {
+                yDir = "⬆️ Más arriba";
+            } else if (guessY > torogozY) {
+                yDir = "⬇️ Más abajo";
+            } else {
+                yDir = "🎯 ¡Y correcta!";
+            }
+            
+            elements.hint.innerHTML = `${xDir}<br>${yDir}`;
+        }
+
+        // Event listeners
+        function setupEventListeners() {
+            elements.guessButton.addEventListener('click', checkGuess);
+            
+            elements.xInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    elements.yInput.focus();
+                }
+            });
+            
+            elements.yInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    checkGuess();
+                }
+            });
+        }
+
+        // Iniciar el juego al cargar
+        window.addEventListener('DOMContentLoaded', initGame);
+    </script>
+</body>
+</html>
