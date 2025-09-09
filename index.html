@@ -3,68 +3,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Class Code | Plataforma Educativa</title>
+  <title>Click y Crea | Plataforma Educativa</title>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-
+  * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     font-family: 'Fredoka', sans-serif;
     background: linear-gradient(135deg, #87CEEB 0%, #1E90FF 100%);
-<<<<<<< HEAD
-    color: #2E4053; /* Gris azulado oscuro */
-=======
-    color: #2E4053; /* Gris azulado */
->>>>>>> origin/main
+    color: #2E4053;
     min-height: 100vh;
     overflow-x: hidden;
   }
-
-  .page-container {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 30px 20px;
-    position: relative;
-  }
-
-  .decoration {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    pointer-events: none;
-    z-index: -1;
-  }
-
-  .bubble, .star {
-    position: absolute;
-    border-radius: 50%;
-    animation: float 10s infinite ease-in-out;
-  }
-
-  .bubble {
-    background: rgba(255, 255, 255, 0.4);
-  }
-
-  .star {
-    font-size: 1.8rem;
-    color: #FFE66D; /* Amarillo suave */
-  }
-
-  .bubble:nth-child(1) { width: 100px; height: 100px; top: 10%; left: 10%; }
-  .bubble:nth-child(2) { width: 150px; height: 150px; top: 50%; left: 80%; animation-delay: -2s; }
-  .bubble:nth-child(3) { width: 70px; height: 70px; top: 80%; left: 20%; animation-delay: -4s; }
-  .star:nth-child(4) { top: 20%; left: 85%; animation-delay: -1s; }
-  .star:nth-child(5) { top: 70%; left: 15%; animation-delay: -3s; }
-  .star:nth-child(6) { top: 40%; left: 40%; animation-delay: -5s; }
-
+  .page-container { max-width: 1000px; margin: 0 auto; padding: 30px 20px; position: relative; }
+  .decoration { position: fixed; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none; z-index: -1; }
+  .bubble, .star { position: absolute; border-radius: 50%; animation: float 10s infinite ease-in-out; }
+  .bubble { background: rgba(255, 255, 255, 0.4); }
+  .star { font-size: 1.8rem; color: #FFE66D; }
+  .bubble:nth-child(1){width:100px;height:100px;top:10%;left:10%}
+  .bubble:nth-child(2){width:150px;height:150px;top:50%;left:80%;animation-delay:-2s}
+  .bubble:nth-child(3){width:70px;height:70px;top:80%;left:20%;animation-delay:-4s}
+  .star:nth-child(4){top:20%;left:85%;animation-delay:-1s}
+  .star:nth-child(5){top:70%;left:15%;animation-delay:-3s}
+  .star:nth-child(6){top:40%;left:40%;animation-delay:-5s}
   @keyframes float {
     0% { transform: translateY(0) translateX(0); }
     25% { transform: translateY(-20px) translateX(10px); }
@@ -72,128 +34,46 @@
     75% { transform: translateY(20px) translateX(10px); }
     100% { transform: translateY(0) translateX(0); }
   }
-
-  .section {
-    background: #FFF9C4; /* Amarillo pastel claro */
-    backdrop-filter: blur(10px);
-    border-radius: 25px;
-    padding: 40px;
-    box-shadow: 0 15px 35px rgba(233, 30, 99, 0.2); /* Sombra rosa oscuro */
-    margin-bottom: 30px;
-    text-align: center;
-    animation: fadeIn 1s ease;
+  .section{
+    background:#FFF9C4; backdrop-filter:blur(10px); border-radius:25px; padding:40px;
+    box-shadow:0 15px 35px rgba(233,30,99,0.2); margin-bottom:30px; text-align:center; animation:fadeIn 1s ease;
   }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
+  @keyframes fadeIn{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+  .section h2{font-size:2.5rem;margin-bottom:20px;color:#1E90FF}
+  .section p{font-size:1.5rem;margin-bottom:20px}
+  .btn{
+    background:#FFE66D;color:#2E4053;border:none;padding:15px 35px;font-size:1.5rem;font-weight:bold;border-radius:50px;
+    cursor:pointer;font-family:'Fredoka',sans-serif;transition:transform .3s,background .3s,box-shadow .3s;
+    box-shadow:0 8px 15px rgba(233,30,99,.3);display:inline-block;text-decoration:none;margin-top:15px;
   }
-
-  .section h2 {
-    font-size: 2.5rem;
-    margin-bottom: 20px;
-    color: #1E90FF; /* Azul intenso */
+  .btn:hover{ transform:scale(1.05); background:#FFF176; }
+  .btn-audio{ background:#4CAF50; color:white; margin:10px 0; padding:10px 20px; font-size:1.2rem; }
+  .btn-audio:hover{ background:#45a049; }
+  img.rex{ width:180px; margin-bottom:20px; animation:bounce 2s infinite alternate; }
+  @keyframes bounce{ from{transform:translateY(0)} to{transform:translateY(-20px)} }
+  form input, form textarea{
+    width:100%; padding:12px 15px; margin:10px 0; border:3px solid #FF6B6B; border-radius:15px; font-size:1.1rem;
+    background:#FFF9C4; font-family:'Fredoka',sans-serif; color:#2E4053;
   }
-
-  .section p {
-    font-size: 1.5rem;
-    margin-bottom: 20px;
+  form button{
+    background:#FF6B6B; color:white; border:none; padding:12px 25px; border-radius:25px; cursor:pointer; font-size:1.2rem;
+    transition:transform .3s, background .3s;
   }
-
-  .btn {
-    background: #FFE66D; /* Amarillo suave */
-    color: #2E4053;      /* Gris azulado oscuro */
-    border: none;
-    padding: 15px 35px;
-    font-size: 1.5rem;
-    font-weight: bold;
-    border-radius: 50px;
-    cursor: pointer;
-    font-family: 'Fredoka', sans-serif;
-    transition: transform 0.3s, background 0.3s, box-shadow 0.3s;
-    box-shadow: 0 8px 15px rgba(233, 30, 99, 0.3); /* Rosa oscuro */
-    display: inline-block;
-    text-decoration: none;
-    margin-top: 15px;
-  }
-  .btn:hover {
-    transform: scale(1.05);
-    background: #FFF176; /* Tonalidad más clara */
-  }
-  
-  .btn-audio {
-    background: #4CAF50; /* Verde */
-    color: white;
-    margin: 10px 0;
-    padding: 10px 20px;
-    font-size: 1.2rem;
-  }
-  
-  .btn-audio:hover {
-    background: #45a049; /* Verde oscuro */
-  }
-  
-  img.rex {
-    width: 180px;
-    margin-bottom: 20px;
-    animation: bounce 2s infinite alternate;
-  }
-
-  @keyframes bounce {
-    from { transform: translateY(0); }
-    to { transform: translateY(-20px); }
-  }
-  form input,
-  form textarea {
-    width: 100%;
-    padding: 12px 15px;
-    margin: 10px 0;
-    border: 3px solid #FF6B6B; /* Rojo coral */
-    border-radius: 15px;
-    font-size: 1.1rem;
-    background: #FFF9C4; /* Amarillo pastel claro */
-    font-family: 'Fredoka', sans-serif;
-    color: #2E4053;
-  }
-
-  form button {
-    background: #FF6B6B; /* Rojo coral */
-    color: white;
-    border: none;
-    padding: 12px 25px;
-    border-radius: 25px;
-    cursor: pointer;
-    font-size: 1.2rem;
-    transition: transform 0.3s, background 0.3s;
-  }
-
-  form button:hover {
-    background: #FF5252; /* Rojo coral oscuro */
-    transform: translateY(-2px);
-  }
-
-  footer {
-    background: #1E90FF; /* Azul intenso */
-    color: white;
-    text-align: center;
-    padding: 20px;
-    font-size: 1rem;
-  }
-</style>
+  form button:hover{ background:#FF5252; transform:translateY(-2px); }
+  footer{ background:#1E90FF; color:white; text-align:center; padding:20px; font-size:1rem; }
+  </style>
 </head>
 
 <body>
   <audio id="clickSound" src="click.wav" preload="auto"></audio>
-  <!-- Audio para la explicación -->
   <audio id="explicacionAudio" src="_Hola amigos Soy Rex.mp3" preload="auto"></audio>
-  
-  <!-- Decoración flotante -->
+
   <div class="decoration">
     <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
     <div class="star">⭐</div><div class="star">🌟</div><div class="star">✨</div>
   </div>
-  <div class="page-container">
 
+  <div class="page-container">
     <!-- Mascota Rex portada -->
     <div class="section">
       <img src="Copilot_20250625_204412-removebg-preview.png" alt="Rex la mascota" class="rex">
@@ -203,35 +83,40 @@
       </button>
       <p>Aprende jugando con Rex y descubre el mundo de la programación y tecnología.</p>
     </div>
-    <!-- Secciones de áreas -->
+
+    <!-- Sección 1: Juego de ordenar secuencias -->
     <div class="section">
-      <h2>🔧 Contenido 1</h2>
-      <p>Fundamentos de Lógica y Pensamiento Computacional</p>
-      <p>Aprende lógica y pensamiento computacional con juegos y retos interactivos.</p>
+      <h2>🧩 Pon los pasos en orden</h2>
+      <p>Ayuda a Rex a ordenar historias y misiones paso a paso.</p>
+      <p>¡Arrastra y suelta para completar la aventura!</p>
       <a href="Area1-logica de secuencias/actividad-secuencia.html" class="btn">Ir a Área 1</a>
     </div>
 
+    <!-- Sección 2: Orden de operadores -->
     <div class="section">
-      <h2>🔢 Contenido 2</h2>
-      <p>Matemáticas aplicadas a la Programación</p>
-      <p>Descubre cómo las matemáticas se aplican a la programación en contextos reales y educativos.</p>
+      <h2>🔢 ¿Qué va primero? (superpoder de operaciones)</h2>
+      <p>Descubre el orden correcto para sumar, restar, multiplicar y dividir.</p>
+      <p>¡Resuelve retos y conviértete en héroe de los números!</p>
       <a href="Área 3-Matemáticas Aplicadas a la Programación/prototipo.html" class="btn">Ir a Área 2</a>
     </div>
 
+    <!-- Sección 3: Juego de memoria -->
     <div class="section">
-      <h2>💻 Contenido 3</h2>
-      <p>Cultura Tecnológica y Teoría adaptada a niños</p>
-      <p>Conoce la cultura tecnológica y aprende teoría adaptada para niños de forma divertida.</p>
+      <h2>🧠 Memoria Tech: encuentra las parejas</h2>
+      <p>Usa tu memoria para descubrir pares de emojis e imágenes tecnológicas.</p>
+      <p>¿Cuántas parejas puedes encontrar seguidas?</p>
       <a href="Teoría/prototipo.html" class="btn">Ir a Área 3</a>
     </div>
 
+    <!-- Sección 4: Uso de < > = en situaciones reales -->
     <div class="section">
-      <h2>🛠️ Contenido 4</h2>
-      <p>Programación para resolver problemas reales</p>
-      <p>Usa la programación para resolver problemas cotidianos con ejemplos reales y prácticos.</p>
+      <h2>⚖️ Mayor, menor o igual en la vida real</h2>
+      <p>Compara cantidades para tomar decisiones como un programador.</p>
+      <p>Mayor (>) • Menor (<) • Igual (=): ¡elige bien y gana puntos!</p>
       <a href="Poniendo en practica/Presentacion.html" class="btn">Ir a Área 4</a>
     </div>
-    <!-- Sección Padres y Maestros -->
+
+    <!-- Padres y Maestros -->
     <div class="section">
       <h2>👨‍👩‍👧‍👦 Padres y Maestros</h2>
       <p>Materiales de apoyo y guías para acompañar el aprendizaje.</p>
@@ -245,11 +130,10 @@
       <img src="ImagenEquipo.jpg" alt="Foto del equipo" style="width: 300px; border-radius: 20px; margin: 20px 0;">
       <p>Somos jóvenes comprometidos con la educación en tecnología en El Salvador, 
         líderes que buscamos soluciones innovadoras para la sociedad a través de la programación y la tecnología.</p>
-
     </div>
 
     <!-- Contacto -->
-        <div class="section">
+    <div class="section">
       <h2>📞 Contáctanos</h2>
       <p>¿Tienes preguntas o sugerencias? ¡Escríbenos!</p>
       <form id="formularioContacto" method="POST">
@@ -261,9 +145,11 @@
       <div id="mensajeConfirmacion"></div>
     </div>
   </div>
+
   <footer>
     <p>&copy; 2025 Click y Crea | Todos los derechos reservados.</p>
   </footer>
+
   <script>
     const clickSound = document.getElementById('clickSound');
     document.querySelectorAll('a, button, .btn').forEach(el => {
@@ -272,11 +158,9 @@
         clickSound.play();
       });
     });
-    
-    // Controlador para el botón de explicación
+
     const btnExplicacion = document.getElementById('btnExplicacion');
     const explicacionAudio = document.getElementById('explicacionAudio');
-    
     btnExplicacion.addEventListener('click', function() {
       if(explicacionAudio.paused) {
         explicacionAudio.play();
@@ -286,21 +170,16 @@
         btnExplicacion.innerHTML = '<i class="fas fa-volume-up"></i> Escuchar Explicación';
       }
     });
-    
-    // Reiniciar el botón cuando termine el audio
     explicacionAudio.addEventListener('ended', function() {
       btnExplicacion.innerHTML = '<i class="fas fa-volume-up"></i> Escuchar Explicación';
     });
   </script>
+
   <script>
     document.getElementById('formularioContacto').addEventListener('submit', function(e) {
       e.preventDefault();
       const formData = new FormData(this);
-
-      fetch('contactoindex.php', {
-        method: 'POST',
-        body: formData
-      })
+      fetch('contactoindex.php', { method: 'POST', body: formData })
       .then(response => response.text())
       .then(data => {
         document.getElementById('mensajeConfirmacion').innerHTML = '💌 ' + data;
