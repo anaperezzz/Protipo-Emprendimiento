@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Aprende a Ordenar con Rex!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background: linear-gradient(135deg, #87CEEB 0%, #1E90FF 100%);
+            color: #2E4053;
+            min-height: 100vh;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        body.night-mode {
+            background: linear-gradient(135deg, #4B0082 0%, #8A2BE2 100%);
+            color: #E6E6FA;
+        }
+
+        .page-container {
+            max-width: 100%;
+            min-height: 100vh;
+            padding: 20px 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content-box {
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 25px 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.18);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            transition: background 0.3s, box-shadow 0.3s;
+        }
+
+        body.night-mode .content-box {
+            background: rgba(75, 0, 130, 0.3);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Header */
+        .header-section {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .rex-container {
+            margin: 0 auto 15px;
+        }
+
+        .rex {
+            width: 150px;
+            height: auto;
+            animation: bounce 2s infinite alternate;
+            filter: drop-shadow(3px 3px 5px rgba(0, 0, 0, 0.2));
+        }
+
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-10px); }
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 0 rgba(255, 255, 255, 0.5);
+            line-height: 1.1;
+            color: #2E4053;
+            transition: color 0.3s, text-shadow 0.3s;
+        }
+
+        body.night-mode h1 {
+            color: #DDA0DD;
+            text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        .intro {
+            font-size: 1.2rem;
+            text-align: center;
+            margin-bottom: 25px;
+            line-height: 1.4;
+            transition: color 0.3s;
+        }
+
+        body.night-mode .intro {
+            color: #E6E6FA;
+        }
+
+        /* Controles superiores */
+        .top-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            background: #FF6B6B;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 0 #FF5252, 0 6px 10px rgba(0, 0, 0, 0.15);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 #FF5252, 0 3px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        body.night-mode .btn {
+            background: #8A2BE2;
+            box-shadow: 0 4px 0 #4B0082, 0 6px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .audio-btn {
+            background: #FFD166;
+            color: #2E4053;
+            box-shadow: 0 4px 0 #FFB800, 0 6px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        body.night-mode .audio-btn {
+            background: #9370DB;
+            color: white;
+        }
+
+        /* Contenido principal - Scroll vertical natural */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        /* Sección de pasos - En columna para móvil */
+        .steps-section {
+            width: 100%;
+        }
+
+        .steps-title {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #2E4053;
+            transition: color 0.3s;
+        }
+
+        body.night-mode .steps-title {
+            color: #FFFFFF;
+        }
+
+        .steps-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .step-card {
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 6px 0 #FF6B6B, 0 10px 20px rgba(0, 0, 0, 0.15);
+            animation: appear 1s ease-out;
+            animation-fill-mode: both;
+            border: 3px solid #FF6B6B;
+            transition: all 0.3s ease;
+        }
+
+        .step-card:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #FF6B6B, 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        body.night-mode .step-card {
+            background: rgba(221, 160, 221, 0.6);
+            border-color: #9370DB;
+            box-shadow: 0 6px 0 #4B0082, 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .step-card:nth-child(1) { animation-delay: 0.2s; }
+        .step-card:nth-child(2) { animation-delay: 0.4s; }
+        .step-card:nth-child(3) { animation-delay: 0.6s; }
+
+        @keyframes appear {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .step-number {
+            font-size: 2rem;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .step-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #1E90FF;
+            transition: color 0.3s;
+        }
+
+        body.night-mode .step-title {
+            color: #9370DB;
+        }
+
+        .step-example {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .example-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 12px;
+            transition: background 0.3s;
+        }
+
+        body.night-mode .example-item {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .example-icon {
+            font-size: 1.6rem;
+            flex-shrink: 0;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #FF6B6B;
+            border-radius: 50%;
+            color: white;
+            transition: background 0.3s;
+        }
+
+        body.night-mode .example-icon {
+            background: #8A2BE2;
+        }
+
+        .example-text {
+            font-size: 1rem;
+            line-height: 1.3;
+            text-align: left;
+            transition: color 0.3s;
+            flex: 1;
+        }
+
+        body.night-mode .example-text {
+            color: #F8F8FF;
+        }
+
+        /* Botones de acción */
+        .action-section {
+            margin-top: 20px;
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .action-btn {
+            background: linear-gradient(145deg, #FFD166, #FFB800);
+            color: #2E4053;
+            border: none;
+            padding: 18px 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 0 #FF9E00, 0 8px 15px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            border: 3px solid #FF6B6B;
+            text-align: center;
+            text-decoration: none;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+
+        .action-btn:active {
+            transform: translateY(4px) scale(0.98);
+            box-shadow: 0 2px 0 #FF9E00, 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        body.night-mode .action-btn {
+            background: linear-gradient(145deg, #8A2BE2, #4B0082);
+            color: #FFFFFF;
+            border-color: #9370DB;
+            box-shadow: 0 6px 0 #4B0082, 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .play-btn {
+            background: linear-gradient(145deg, #FF6B6B, #FF5252);
+            color: white;
+        }
+
+        body.night-mode .play-btn {
+            background: linear-gradient(145deg, #9370DB, #8A2BE2);
+        }
+
+        /* Footer */
+        .rex-footer {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: color 0.3s;
+        }
+
+        body.night-mode .rex-footer {
+            color: #E6E6FA;
+        }
+
+        /* Media Queries para tablets y desktop */
+        @media (min-width: 768px) {
+            .page-container {
+                padding: 30px 20px;
+                max-width: 800px;
+                margin: 0 auto;
+            }
+
+            .content-box {
+                padding: 30px;
+            }
+
+            .rex {
+                width: 180px;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .intro {
+                font-size: 1.4rem;
+            }
+
+            .steps-container {
+                gap: 25px;
+            }
+
+            .step-card {
+                padding: 25px;
+            }
+
+            .action-buttons {
+                flex-direction: row;
+            }
+
+            .action-btn {
+                flex: 1;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .page-container {
+                max-width: 1000px;
+                padding: 40px 30px;
+            }
+
+            .content-box {
+                padding: 40px;
+            }
+
+            .steps-container {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 25px;
+            }
+
+            .step-card {
+                display: flex;
+                flex-direction: column;
+                height: auto;
+            }
+
+            .step-example {
+                flex: 1;
+            }
+        }
+
+        /* Decoraciones de fondo */
+        .decoration {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            animation: float 10s infinite ease-in-out;
+            transition: background 0.3s;
+        }
+
+        body.night-mode .bubble {
+            background: rgba(138, 43, 226, 0.4);
+        }
+
+        .star {
+            position: absolute;
+            font-size: 1.5rem;
+            animation: float 8s infinite ease-in-out;
+            color: #FFE66D;
+            transition: color 0.3s;
+        }
+
+        body.night-mode .star {
+            color: #DDA0DD;
+        }
+
+        .bubble:nth-child(1) { width: 80px; height: 80px; top: 10%; left: 10%; animation-delay: 0s; }
+        .bubble:nth-child(2) { width: 120px; height: 120px; top: 70%; left: 80%; animation-delay: -2s; }
+        .bubble:nth-child(3) { width: 60px; height: 60px; top: 40%; left: 85%; animation-delay: -4s; }
+        .star:nth-child(4) { top: 20%; left: 90%; animation-delay: -1s; }
+        .star:nth-child(5) { top: 80%; left: 15%; animation-delay: -3s; }
+
+        @keyframes float {
+            0% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(-20px) translateX(10px); }
+            100% { transform: translateY(0) translateX(0); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Decoración de fondo -->
+    <div class="decoration">
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="star">⭐</div>
+        <div class="star">🌟</div>
+    </div>
+
+    <div class="page-container">
+        <div class="content-box">
+            <!-- Controles superiores -->
+            <div class="top-controls">
+                <button id="audioBtn" class="btn audio-btn">
+                    <i class="fas fa-volume-up"></i> Escuchar
+                </button>
+                <button id="nightModeBtn" class="btn">
+                    <i class="fas fa-moon"></i> Noche
+                </button>
+            </div>
+
+            <!-- Header -->
+            <div class="header-section">
+                <div class="rex-container">
+                    <img src="Copilot_20250625_204412-removebg-preview.png" alt="Rex el dinosaurio" class="rex">
+                </div>
+                
+                <h1>¡Ordena la Secuencia con Rex!</h1>
+                
+                <p class="intro">
+                    Aprende a ordenar pasos como un experto con Rex
+                </p>
+            </div>
+
+            <!-- Contenido principal -->
+            <div class="main-content">
+                <!-- Pasos de secuencia -->
+                <div class="steps-section">
+                    <div class="steps-title">¡Aprende con estos ejemplos divertidos!</div>
+                    
+                    <div class="steps-container">
+                        <!-- Paso 1 -->
+                        <div class="step-card">
+                            <div class="step-header">
+                                <div class="step-number">1️⃣</div>
+                                <div class="step-title">Primero</div>
+                            </div>
+                            <div class="step-example">
+                                <div class="example-item">
+                                    <div class="example-icon">🥪</div>
+                                    <div class="example-text">Poner el pan</div>
+                                </div>
+                                <div class="example-item">
+                                    <div class="example-icon">🌱</div>
+                                    <div class="example-text">Llenar maceta</div>
+                                </div>
+                                <div class="example-item">
+                                    <div class="example-icon">🚗</div>
+                                    <div class="example-text">Mojar el auto</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Paso 2 -->
+                        <div class="step-card">
+                            <div class="step-header">
+                                <div class="step-number">2️⃣</div>
+                                <div class="step-title">Siguiente</div>
+                            </div>
+                            <div class="step-example">
+                                <div class="example-item">
+                                    <div class="example-icon">🥪</div>
+                                    <div class="example-text">Agregar mermelada</div>
+                                </div>
+                                <div class="example-item">
+                                    <div class="example-icon">🌱</div>
+                                    <div class="example-text">Hacer agujero</div>
+                                </div>
+                                <div class="example-item">
+                                    <div class="example-icon">🚗</div>
+                                    <div class="example-text">Enjabonar</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Paso 3 -->
+                        <div class="step-card">
+                            <div class="step-header">
+                                <div class="step-number">3️⃣</div>
+                                <div class="step-title">Final</div>
+                            </div>
+                            <div class="step-example">
+                                <div class="example-item">
+                                    <div class="example-icon">🥪</div>
+                                    <div class="example-text">Juntar rebanadas</div>
+                                </div>
+                                <div class="example-item">
+                                    <div class="example-icon">🌱</div>
+                                    <div class="example-text">Regar la planta</div>
+                                </div>
+                                <div class="example-item">
+                                    <div class="example-icon">🚗</div>
+                                    <div class="example-text">Secar el auto</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botones de acción -->
+                <div class="action-section">
+                    <div class="action-buttons">
+                        <button class="action-btn audio-btn" id="fullAudioBtn">
+                            <i class="fas fa-volume-up"></i> Explicación Completa
+                        </button>
+                        <a class="action-btn play-btn" href="actividad-secuencia.html">
+                            <i class="fas fa-gamepad"></i> ¡Juguemos!
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="rex-footer">
+                <p>¡Sigue aprendiendo con Rex! 🦖💻</p>
+            </div>
+        </div>
+    </div>
+
+    <audio id="explanationAudio">
+        <source src="explanation-ordena-secuencia.mp3" type="audio/mp3">
+        Tu navegador no soporta el elemento de audio.
+    </audio>
+
+    <script>
+        const audioBtn = document.getElementById('audioBtn');
+        const fullAudioBtn = document.getElementById('fullAudioBtn');
+        const nightModeBtn = document.getElementById('nightModeBtn');
+        const explanationAudio = document.getElementById('explanationAudio');
+
+        // Función para reproducir sonido de clic
+        function playClick() {
+            const clickSound = new Audio();
+            clickSound.src = 'click.wav';
+            clickSound.play().catch(() => {});
+        }
+
+        // Botones de audio
+        audioBtn.addEventListener('click', function() {
+            playClick();
+            explanationAudio.currentTime = 0;
+            explanationAudio.play().catch(() => {});
+        });
+
+        fullAudioBtn.addEventListener('click', function() {
+            playClick();
+            explanationAudio.currentTime = 0;
+            explanationAudio.play().catch(() => {});
+        });
+
+        // Botón modo noche
+        nightModeBtn.addEventListener('click', function() {
+            playClick();
+            document.body.classList.toggle('night-mode');
+            nightModeBtn.innerHTML = document.body.classList.contains('night-mode') ? 
+                '<i class="fas fa-sun"></i> Día' : '<i class="fas fa-moon"></i> Noche';
+        });
+
+        // Efectos en botones de acción
+        document.querySelectorAll('.action-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                if (!this.href) {
+                    playClick();
+                    this.style.animation = 'none';
+                    this.style.transform = 'translateY(4px) scale(0.98)';
+                    
+                    setTimeout(() => {
+                        this.style.animation = 'pulse 2s infinite';
+                        this.style.transform = '';
+                    }, 300);
+                }
+            });
+        });
+
+        // Efectos en tarjetas de pasos
+        document.querySelectorAll('.step-card').forEach(card => {
+            card.addEventListener('click', function() {
+                playClick();
+                this.style.transform = 'translateY(4px)';
+                this.style.boxShadow = '0 2px 0 #FF6B6B, 0 6px 12px rgba(0, 0, 0, 0.1)';
+                
+                setTimeout(() => {
+                    this.style.transform = '';
+                    this.style.boxShadow = '';
+                }, 150);
+            });
+        });
+    </script>
+</body>
+</html>

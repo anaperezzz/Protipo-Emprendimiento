@@ -2,99 +2,742 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Juego de Memoria</title>
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>¡Memoria Tech con Rex!</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: 'Fredoka', sans-serif;
+      background: linear-gradient(135deg, #87CEEB 0%, #1E90FF 100%);
+      color: #2E4053;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+      transition: background 0.3s, color 0.3s;
+    }
+    
+    body.night-mode {
+      background: linear-gradient(135deg, #4B0082 0%, #8A2BE2 100%);
+      color: #E6E6FA;
+    }
+    
+    .page-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 15px;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .decoration { 
+      position: fixed; 
+      width: 100%; 
+      height: 100%; 
+      top: 0; 
+      left: 0; 
+      pointer-events: none; 
+      z-index: -1; 
+    }
+    
+    .bubble { 
+      position: absolute; 
+      border-radius: 50%; 
+      background: rgba(255, 255, 255, 0.4); 
+      animation: float 10s infinite ease-in-out; 
+      transition: background 0.3s; 
+    }
+    
+    body.night-mode .bubble { 
+      background: rgba(138, 43, 226, 0.4); 
+    }
+    
+    .star { 
+      position: absolute; 
+      font-size: 1.5rem; 
+      animation: float 8s infinite ease-in-out; 
+      color: #FFE66D; 
+      transition: color 0.3s; 
+    }
+    
+    body.night-mode .star { 
+      color: #DDA0DD; 
+    }
+    
+    .bubble:nth-child(1) { width: 80px; height: 80px; top: 10%; left: 10%; animation-delay: 0s; }
+    .bubble:nth-child(2) { width: 120px; height: 120px; top: 70%; left: 80%; animation-delay: -2s; }
+    .bubble:nth-child(3) { width: 60px; height: 60px; top: 40%; left: 85%; animation-delay: -4s; }
+    .star:nth-child(4) { top: 20%; left: 90%; animation-delay: -1s; }
+    .star:nth-child(5) { top: 80%; left: 15%; animation-delay: -3s; }
+    
+    @keyframes float {
+      0% { transform: translateY(0) translateX(0); }
+      50% { transform: translateY(-15px) translateX(8px); }
+      100% { transform: translateY(0) translateX(0); }
+    }
+    
+    .content-box {
+      background: rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(10px);
+      border-radius: 25px;
+      padding: 15px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.18);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      transition: background 0.3s, box-shadow 0.3s;
+      overflow: hidden;
+    }
+    
+    body.night-mode .content-box {
+      background: rgba(75, 0, 130, 0.3);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    }
+    
+    /* Header más compacto */
+    .header-section {
+      text-align: center;
+      margin-bottom: 10px;
+      flex-shrink: 0;
+    }
+    
+    .rex-container { 
+      position: relative; 
+      margin: 0 auto 5px; 
+    }
+    
+    .rex { 
+      width: 70px; 
+      height: auto; 
+      animation: bounce 2s infinite alternate; 
+      filter: drop-shadow(3px 3px 5px rgba(0, 0, 0, 0.2)); 
+    }
+    
+    @keyframes bounce {
+      from { transform: translateY(0); }
+      to { transform: translateY(-8px); }
+    }
+    
+    h1 { 
+      font-size: 1.4rem; 
+      margin-bottom: 5px; 
+      color: #2E4053; 
+      text-shadow: 2px 2px 0 rgba(255, 255, 255, 0.5); 
+      line-height: 1.1; 
+      transition: color 0.3s, text-shadow 0.3s; 
+    }
+    
+    body.night-mode h1 { 
+      color: #DDA0DD; 
+      text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5); 
+    }
+    
+    .message-box {
+      background: rgba(255, 255, 255, 0.75);
+      border-radius: 12px;
+      padding: 8px;
+      margin: 5px auto;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      position: relative;
+      transition: transform .2s, background 0.3s, box-shadow 0.3s;
+      max-width: 90%;
+    }
+    
+    body.night-mode .message-box {
+      background: rgba(221, 160, 221, 0.5);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+    
+    .message-text { 
+      font-size: 0.9rem; 
+      line-height: 1.2; 
+      color: #18435B; 
+      transition: color 0.3s; 
+    }
+    
+    body.night-mode .message-text { 
+      color: #F8F8FF; 
+    }
+    
+    /* Controles superiores más compactos */
+    .top-controls {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    
+    .btn { 
+      background: #FF6B6B; 
+      color: white; 
+      border: none; 
+      padding: 6px 12px; 
+      font-size: 0.8rem; 
+      font-weight: 700; 
+      border-radius: 20px; 
+      cursor: pointer; 
+      transition: all 0.3s ease; 
+      box-shadow: 0 3px 0 #FF5252, 0 4px 8px rgba(0, 0, 0, 0.15); 
+      display: inline-flex; 
+      align-items: center; 
+      gap: 6px; 
+      text-decoration: none;
+    }
+    
+    .btn:active {
+      transform: translateY(2px);
+      box-shadow: 0 1px 0 #FF5252, 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    body.night-mode .btn {
+      background: #8A2BE2;
+      box-shadow: 0 3px 0 #4B0082, 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    .audio-btn { 
+      background: #FFD166; 
+      color: #2E4053; 
+      box-shadow: 0 3px 0 #FFB800, 0 4px 8px rgba(0, 0, 0, 0.15); 
+    }
+    
+    body.night-mode .audio-btn { 
+      background: #9370DB; 
+      color: white;
+    }
+    
+    /* Botón de regreso a la página principal */
+    .home-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 3px 0 #388E3C, 0 4px 8px rgba(0, 0, 0, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      z-index: 100;
+      text-decoration: none;
+    }
+    
+    .home-btn:active {
+      transform: translateY(2px);
+      box-shadow: 0 1px 0 #388E3C, 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    body.night-mode .home-btn {
+      background: #9370DB;
+      box-shadow: 0 3px 0 #4B0082, 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* Área de juego más compacta */
+    .game-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+    
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 10px;
+      flex-shrink: 0;
+    }
+    
+    .stat {
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 12px;
+      padding: 8px 12px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: background 0.3s;
+    }
+    
+    body.night-mode .stat {
+      background: rgba(221, 160, 221, 0.5);
+    }
+    
+    .stat-value {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #FF6B6B;
+      transition: color 0.3s;
+    }
+    
+    body.night-mode .stat-value {
+      color: #9370DB;
+    }
+    
+    .stat-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #2E4053;
+      transition: color 0.3s;
+    }
+    
+    body.night-mode .stat-label {
+      color: #F8F8FF;
+    }
+    
+    /* Tablero mejor distribuido */
+    .tablero-container {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 0;
+      padding: 5px;
+      overflow: hidden;
+    }
+    
+    .tablero {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      max-width: 100%;
+      max-height: 100%;
+      justify-items: center;
+      align-items: center;
+    }
+    
+    .tarjeta {
+      width: 75px;
+      height: 75px;
+      background: linear-gradient(145deg, #FF6B6B, #FF5252);
+      border: 2px solid #FFD166;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+      position: relative;
+      user-select: none;
+      text-align: center;
+      box-shadow: 0 4px 0 #E53E3E, 0 6px 10px rgba(0, 0, 0, 0.15);
+      color: white;
+    }
+    
+    .tarjeta:active {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 #E53E3E, 0 3px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    body.night-mode .tarjeta {
+      background: linear-gradient(145deg, #8A2BE2, #4B0082);
+      border-color: #9370DB;
+      box-shadow: 0 4px 0 #4B0082, 0 6px 10px rgba(0, 0, 0, 0.2);
+    }
+    
+    body.night-mode .tarjeta:active {
+      box-shadow: 0 1px 0 #4B0082, 0 3px 5px rgba(0, 0, 0, 0.15);
+    }
+    
+    .tarjeta span {
+      font-size: 0.6rem;
+      margin-top: 3px;
+      display: block;
+      color: white;
+      font-weight: 600;
+      line-height: 1;
+    }
+    
+    .tarjeta img {
+      width: 30px;
+      height: auto;
+      margin-bottom: 3px;
+    }
+    
+    .tarjeta.revelada {
+      background: linear-gradient(145deg, #FFD166, #FFB800);
+      color: #2E4053;
+      box-shadow: 0 3px 0 #FF9E00, 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+    
+    .tarjeta.revelada span {
+      color: #2E4053;
+    }
+    
+    body.night-mode .tarjeta.revelada {
+      background: linear-gradient(145deg, #9370DB, #8A2BE2);
+      color: #F8F8FF;
+      box-shadow: 0 3px 0 #4B0082, 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    body.night-mode .tarjeta.revelada span {
+      color: #F8F8FF;
+    }
+    
+    .tarjeta.correcta {
+      background: linear-gradient(145deg, #4CAF50, #388E3C);
+      box-shadow: 0 3px 0 #2E7D32, 0 4px 8px rgba(0, 0, 0, 0.15);
+      animation: celebrate 0.5s ease;
+      border-color: #81C784;
+      pointer-events: none;
+    }
+    
+    @keyframes celebrate {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+    
+    /* Footer más compacto */
+    .footer-section {
+      text-align: center;
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 2px solid rgba(255, 255, 255, 0.3);
+      flex-shrink: 0;
+    }
+    
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 5px;
+      flex-wrap: wrap;
+    }
+    
+    .footer-link {
+      color: #2E4053;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s;
+      font-size: 0.75rem;
+    }
+    
+    body.night-mode .footer-link {
+      color: #E6E6FA;
+    }
+    
+    .footer-link:hover {
+      color: #FF6B6B;
+    }
+    
+    /* Responsive mejorado */
+    @media (max-width: 768px) {
+      .page-container { padding: 10px; }
+      .content-box { padding: 12px; }
+      .rex { width: 60px; }
+      h1 { font-size: 1.2rem; }
+      .message-text { font-size: 0.85rem; }
+      .tablero { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+      .tarjeta { width: 70px; height: 70px; font-size: 1.1rem; }
+      .tarjeta img { width: 28px; }
+      .tarjeta span { font-size: 0.55rem; }
+      .home-btn {
+        bottom: 15px;
+        right: 15px;
+        width: 45px;
+        height: 45px;
+        font-size: 1.1rem;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .page-container { padding: 8px; }
+      .content-box { padding: 10px; }
+      h1 { font-size: 1.1rem; }
+      .message-text { font-size: 0.8rem; }
+      .btn { padding: 5px 10px; font-size: 0.75rem; }
+      .tablero { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+      .tarjeta { width: 65px; height: 65px; font-size: 1rem; }
+      .tarjeta img { width: 25px; }
+      .tarjeta span { font-size: 0.5rem; }
+      .stats { flex-direction: column; gap: 6px; }
+      .stat { padding: 6px 10px; }
+      .home-btn {
+        bottom: 10px;
+        right: 10px;
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+      }
+    }
+    
+    @media (max-height: 700px) {
+      .header-section { margin-bottom: 5px; }
+      .rex { width: 55px; }
+      h1 { font-size: 1.1rem; margin-bottom: 3px; }
+      .message-box { margin: 3px auto; padding: 6px; }
+      .message-text { font-size: 0.8rem; }
+      .stats { margin-bottom: 5px; }
+      .tarjeta { width: 60px; height: 60px; font-size: 1rem; }
+      .tarjeta img { width: 22px; }
+      .tarjeta span { font-size: 0.5rem; }
+      .home-btn {
+        bottom: 10px;
+        right: 10px;
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+      }
+    }
+  </style>
 </head>
 <body>
-  <div class="rex-panel">
-    <div class="bubble">
-      <p>✨ ¡Bienvenido al juego de memoria!</p>
-      <p>🧩 Encuentra el emoji y su imagen con nombre.</p>
-      <p>🎯 ¡Aprende jugando!</p>
+  <!-- Sonidos para interacciones -->
+  <audio id="clickSound" src="click.wav" preload="auto"></audio>
+  <audio id="flipSound" src="flip.wav" preload="auto"></audio>
+  <audio id="matchSound" src="correct.wav" preload="auto"></audio>
+  <audio id="winSound" src="win.wav" preload="auto"></audio>
+  <audio id="rexAudio" src="_Hola amigos Soy Rex.mp3" preload="auto"></audio>
+
+  <div class="decoration">
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="star">⭐</div>
+    <div class="star">🌟</div>
+  </div>
+
+  <div class="page-container">
+    <div class="content-box">
+      <!-- Controles superiores -->
+      <div class="top-controls">
+        <button id="speakBtn" class="btn audio-btn">
+          <i class="fas fa-volume-up"></i> Escúchame
+        </button>
+        <button id="nightModeBtn" class="btn">
+          <i class="fas fa-moon"></i> Modo Noche
+        </button>
+        <button id="resetBtn" class="btn">
+          <i class="fas fa-redo"></i> Reiniciar
+        </button>
+      </div>
+
+      <!-- Header -->
+      <div class="header-section">
+        <div class="rex-container">
+          <img src="Copilot_20250625_204412-removebg-preview.png" alt="Rex el dinosaurio" class="rex">
+        </div>
+
+        <h1>¡Memoria Tech con Rex! 🦖</h1>
+
+        <div class="message-box">
+          <div class="message-text">
+            Encuentra las parejas de emojis e imágenes tecnológicas. ¡Aprende conceptos de programación!
+          </div>
+        </div>
+      </div>
+
+      <!-- Estadísticas -->
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-value" id="movements">0</div>
+          <div class="stat-label">Movimientos</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value" id="matches">0</div>
+          <div class="stat-label">Parejas</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value" id="timer">00:00</div>
+          <div class="stat-label">Tiempo</div>
+        </div>
+      </div>
+
+      <!-- Tablero de juego -->
+      <div class="tablero-container">
+        <div class="tablero" id="tablero"></div>
+      </div>
+
+      <!-- Footer -->
+      <div class="footer-section">
+        <div class="footer-links">
+          <a href="#" class="footer-link">Inicio</a>
+          <a href="#" class="footer-link">Más Juegos</a>
+        </div>
+        <p style="margin-top: 5px; font-size: 0.7rem; opacity: 0.8;">
+          &copy; 2025 Click y Crea | Todos los derechos reservados
+        </p>
+      </div>
     </div>
   </div>
 
-  <main>
-    <h1>Juego de Memoria</h1>
-    <div class="tablero" id="tablero"></div>
-  </main>
+  <!-- Botón de regreso a la página principal -->
+  <a href="C:\Users\rober\Desktop\Prototipo 1\Prototipo 1\presentacion2.html" class="home-btn">
+    <i class="fas fa-home"></i>
+  </a>
 
   <script>
+    // Pares de cartas (emoji + imagen)
     const pares = [
       { tipo: 'emoji', contenido: '💻<br><span>Computadora</span>', valor: 'computadora' },
-      { tipo: 'imagen', contenido: 'img/computadora.png', texto: 'Computadora', valor: 'computadora' },
+      { tipo: 'imagen', contenido: '💻', texto: 'Computadora', valor: 'computadora' },
       { tipo: 'emoji', contenido: '🤖<br><span>Robot</span>', valor: 'robot' },
-      { tipo: 'imagen', contenido: 'img/robot.png', texto: 'Robot', valor: 'robot' },
+      { tipo: 'imagen', contenido: '🤖', texto: 'Robot', valor: 'robot' },
       { tipo: 'emoji', contenido: '🌐<br><span>Internet</span>', valor: 'internet' },
-      { tipo: 'imagen', contenido: 'img/internet.png', texto: 'Internet', valor: 'internet' },
+      { tipo: 'imagen', contenido: '🌐', texto: 'Internet', valor: 'internet' },
       { tipo: 'emoji', contenido: '🧠<br><span>Lógica</span>', valor: 'logica' },
-      { tipo: 'imagen', contenido: 'img/logica.png', texto: 'Lógica', valor: 'logica' },
+      { tipo: 'imagen', contenido: '🧠', texto: 'Lógica', valor: 'logica' },
       { tipo: 'emoji', contenido: '🚀<br><span>Habilidades</span>', valor: 'habilidades' },
-      { tipo: 'imagen', contenido: 'img/habilidades.png', texto: 'Habilidades', valor: 'habilidades' },
+      { tipo: 'imagen', contenido: '🚀', texto: 'Habilidades', valor: 'habilidades' },
       { tipo: 'emoji', contenido: '🔠<br><span>Lenguajes</span>', valor: 'lenguajes' },
-      { tipo: 'imagen', contenido: 'img/scratch.png', texto: 'Lenguajes', valor: 'lenguajes' },
-      { tipo: 'emoji', contenido: '📜<br><span>Historia</span>', valor: 'historia' },
-      { tipo: 'imagen', contenido: 'img/eniac.png', texto: 'Historia', valor: 'historia' },
-      { tipo: 'emoji', contenido: '🇸🇻<br><span>El Salvador</span>', valor: 'elsalvador' },
-      { tipo: 'imagen', contenido: 'img/elsalvador.png', texto: 'El Salvador', valor: 'elsalvador' }
+      { tipo: 'imagen', contenido: '🔠', texto: 'Lenguajes', valor: 'lenguajes' }
     ];
 
+    // Variables del juego
     let tablero = document.getElementById("tablero");
-    let mezcladas = [...pares].sort(() => Math.random() - 0.5);
-
     let primera = null;
     let segunda = null;
     let bloqueado = false;
+    let movimientos = 0;
+    let parejasEncontradas = 0;
+    let tiempoInicio = null;
+    let temporizador = null;
 
-    mezcladas.forEach((cartaData) => {
-      const carta = document.createElement("div");
-      carta.classList.add("tarjeta");
-      carta.dataset.valor = cartaData.valor;
-      carta.innerHTML = "❓";
+    // Elementos DOM
+    const movementsElement = document.getElementById("movements");
+    const matchesElement = document.getElementById("matches");
+    const timerElement = document.getElementById("timer");
+    const clickSound = document.getElementById('clickSound');
+    const flipSound = document.getElementById('flipSound');
+    const matchSound = document.getElementById('matchSound');
+    const winSound = document.getElementById('winSound');
+    const rexAudio = document.getElementById('rexAudio');
+    const speakBtn = document.getElementById('speakBtn');
+    const nightModeBtn = document.getElementById('nightModeBtn');
+    const resetBtn = document.getElementById('resetBtn');
 
-      carta.addEventListener("click", function () {
-        if (bloqueado || carta.classList.contains("correcta") || carta === primera) return;
+    // Funciones de sonido
+    function playSound(sound) {
+      sound.currentTime = 0;
+      sound.play().catch(() => {});
+    }
 
-        carta.classList.add("revelada");
-
-        if (cartaData.tipo === "emoji") {
-          carta.innerHTML = cartaData.contenido;
-        } else {
-          carta.innerHTML = `<img src="${cartaData.contenido}" alt="${cartaData.valor}"><span>${cartaData.texto}</span>`;
-        }
-
-        if (!primera) {
-          primera = carta;
-        } else {
-          segunda = carta;
-          bloqueado = true;
-
-          if (primera.dataset.valor === segunda.dataset.valor) {
-            primera.classList.add("correcta");
-            segunda.classList.add("correcta");
-            resetear();
+    // Inicializar juego
+    function inicializarJuego() {
+      tablero.innerHTML = "";
+      movimientos = 0;
+      parejasEncontradas = 0;
+      movementsElement.textContent = movimientos;
+      matchesElement.textContent = parejasEncontradas;
+      
+      // Reiniciar temporizador
+      if (temporizador) {
+        clearInterval(temporizador);
+      }
+      tiempoInicio = new Date();
+      temporizador = setInterval(actualizarTemporizador, 1000);
+      timerElement.textContent = "00:00";
+      
+      // Mezclar y crear cartas
+      let mezcladas = [...pares].sort(() => Math.random() - 0.5);
+      
+      mezcladas.forEach((cartaData) => {
+        const carta = document.createElement("div");
+        carta.classList.add("tarjeta");
+        carta.dataset.valor = cartaData.valor;
+        carta.innerHTML = "❓";
+        
+        carta.addEventListener("click", function () {
+          if (bloqueado || carta.classList.contains("correcta") || carta === primera) return;
+          
+          playSound(flipSound);
+          carta.classList.add("revelada");
+          
+          if (cartaData.tipo === "emoji") {
+            carta.innerHTML = cartaData.contenido;
           } else {
-            setTimeout(() => {
-              primera.classList.remove("revelada");
-              segunda.classList.remove("revelada");
-              primera.innerHTML = "❓";
-              segunda.innerHTML = "❓";
-              resetear();
-            }, 1000);
+            carta.innerHTML = `<div class="imagen">${cartaData.contenido}</div><span>${cartaData.texto}</span>`;
           }
-        }
+          
+          if (!primera) {
+            primera = carta;
+          } else {
+            segunda = carta;
+            bloqueado = true;
+            movimientos++;
+            movementsElement.textContent = movimientos;
+            
+            if (primera.dataset.valor === segunda.dataset.valor) {
+              primera.classList.add("correcta");
+              segunda.classList.add("correcta");
+              parejasEncontradas++;
+              matchesElement.textContent = parejasEncontradas;
+              playSound(matchSound);
+              
+              // Verificar si se completó el juego
+              if (parejasEncontradas === pares.length / 2) {
+                setTimeout(() => {
+                  playSound(winSound);
+                  alert(`¡Felicidades! Completaste el juego en ${movimientos} movimientos y ${timerElement.textContent} minutos.`);
+                }, 500);
+                clearInterval(temporizador);
+              }
+              
+              resetear();
+            } else {
+              setTimeout(() => {
+                primera.classList.remove("revelada");
+                segunda.classList.remove("revelada");
+                primera.innerHTML = "❓";
+                segunda.innerHTML = "❓";
+                resetear();
+              }, 1000);
+            }
+          }
+        });
+        
+        tablero.appendChild(carta);
       });
-
-      tablero.appendChild(carta);
-    });
-
+    }
+    
     function resetear() {
       primera = null;
       segunda = null;
       bloqueado = false;
     }
+    
+    function actualizarTemporizador() {
+      const ahora = new Date();
+      const diferencia = new Date(ahora - tiempoInicio);
+      const minutos = String(diferencia.getMinutes()).padStart(2, '0');
+      const segundos = String(diferencia.getSeconds()).padStart(2, '0');
+      timerElement.textContent = `${minutos}:${segundos}`;
+    }
+
+    // Botón para hablar Rex
+    speakBtn.addEventListener('click', () => {
+      playSound(clickSound);
+      rexAudio.currentTime = 0;
+      rexAudio.play().catch(() => {});
+    });
+
+    // Botón para modo noche
+    nightModeBtn.addEventListener('click', () => {
+      playSound(clickSound);
+      document.body.classList.toggle('night-mode');
+      nightModeBtn.innerHTML = document.body.classList.contains('night-mode') ? 
+        '<i class="fas fa-sun"></i> Modo Día' : '<i class="fas fa-moon"></i> Modo Noche';
+    });
+
+    // Botón para reiniciar
+    resetBtn.addEventListener('click', () => {
+      playSound(clickSound);
+      inicializarJuego();
+    });
+
+    // Inicializar juego
+    inicializarJuego();
   </script>
 </body>
 </html>
