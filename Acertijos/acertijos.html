@@ -161,7 +161,70 @@
       box-shadow:0 4px 0 #388E3C;
       transition:.3s;cursor:pointer;
     }
+    /* 🦖 Instrucciones del juego */
+.instructions-box {
+  background: #FF5252;
+  border-radius: 20px;
+  padding: 18px 20px;
+  margin: 10px auto 20px;
+  max-width: 600px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  animation: appear 1s ease forwards;
+  transform: translateY(10px);
+  opacity: 0;
+}
+@keyframes appear {
+  to { transform: translateY(0); opacity: 1; }
+}
 
+.instructions-title {
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: #FF6B6B;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+}
+
+.instructions-text {
+  font-size: 1rem;
+  color: #ffffff;
+  line-height: 1.5;
+}
+
+body.night-mode .instructions-box {
+  background: rgba(175, 105, 224, 0.4);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+body.night-mode .instructions-title {
+  color: #DDA0DD;
+}
+
+body.night-mode .instructions-text {
+  color: #E6E6FA;
+}
+.rex-bubble {
+  background: #FFD166;
+  color: #2E4053;
+  font-weight: 700;
+  padding: 10px 20px;
+  border-radius: 25px;
+  display: inline-block;
+  animation: bounceBubble 2s infinite alternate;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+@keyframes bounceBubble {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-8px); }
+}
+body.night-mode .rex-bubble {
+  background: #9370DB;
+  color: #fff;
+}
     /* Pantalla final */
     .end-screen{
       display:none;text-align:center;
@@ -214,7 +277,15 @@
         </div>
         <h1>¡Adivina con Rex! 🦖</h1>
       </div>
-
+      <!-- 🦖 Instrucciones del juego -->
+<div class="instructions-box">
+  <p class="instructions-text">
+    Te invito a jugar y aprender con mis acertijos 🤓💡<br>
+    Lee cada pregunta con atención y elige la respuesta correcta.<br>
+    🎯 Si aciertas, sumarás puntos... ¡y Rex te aplaudirá! 👏<br>
+    💭 Si te equivocas, no pasa nada, puedes seguir aprendiendo.<br>
+  </p>
+</div>
       <!-- Juego -->
       <div class="game-area" id="gameArea">
         <div class="question" id="questionText"></div>
