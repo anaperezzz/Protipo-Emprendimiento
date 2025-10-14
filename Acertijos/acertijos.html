@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>¡Adivina con Rex!</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{
+      font-family:'Fredoka',sans-serif;
+      background:linear-gradient(135deg,#87CEEB 0%,#1E90FF 100%);
+      color:#2E4053;
+      height:100vh;width:100vw;
+      overflow-x:hidden;
+      transition:background 0.3s,color 0.3s;
+    }
+    body.night-mode{
+      background:linear-gradient(135deg,#4B0082 0%,#8A2BE2 100%);
+      color:#E6E6FA;
+    }
+
+    .page-container{
+      max-width:1000px;
+      margin:0 auto;
+      padding:20px;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+    }
+
+    /* Fondo decorativo */
+    .decoration{
+      position:fixed;top:0;left:0;width:100%;height:100%;
+      pointer-events:none;z-index:-1;
+    }
+    .bubble,.star{position:absolute;animation:float 10s infinite ease-in-out;border-radius:50%;}
+    .bubble{background:rgba(255,255,255,0.4);}
+    body.night-mode .bubble{background:rgba(138,43,226,0.4);}
+    .star{font-size:1.5rem;color:#FFE66D;}
+    body.night-mode .star{color:#DDA0DD;}
+    .bubble:nth-child(1){width:80px;height:80px;top:10%;left:10%;}
+    .bubble:nth-child(2){width:120px;height:120px;top:70%;left:80%;}
+    .bubble:nth-child(3){width:60px;height:60px;top:40%;left:85%;}
+    .star:nth-child(4){top:20%;left:90%;}
+    .star:nth-child(5){top:80%;left:15%;}
+    @keyframes float{
+      0%{transform:translateY(0) translateX(0);}
+      50%{transform:translateY(-15px) translateX(8px);}
+      100%{transform:translateY(0) translateX(0);}
+    }
+
+    /* Botón de regreso */
+    .home-btn{
+      position:absolute;top:25px;left:25px;
+      background:#4CAF50;color:white;border:none;
+      width:50px;height:50px;border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      cursor:pointer;font-size:1.1rem;
+      box-shadow:0 4px 0 #388E3C,0 6px 10px rgba(0,0,0,.15);
+      transition:.3s;
+    }
+    .home-btn:hover{transform:scale(1.05);}
+    .home-btn:active{transform:translateY(3px);}
+    body.night-mode .home-btn{background:#43A047;}
+
+    /* Contenido principal */
+    .content-box{
+      background:rgba(255,255,255,0.3);
+      backdrop-filter:blur(10px);
+      border-radius:25px;
+      padding:20px;
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      box-shadow:0 15px 35px rgba(0,0,0,0.18);
+      transition:background .3s,box-shadow .3s;
+    }
+    body.night-mode .content-box{
+      background:rgba(75,0,130,0.3);
+      box-shadow:0 15px 35px rgba(0,0,0,0.4);
+    }
+
+    /* Controles superiores */
+    .top-controls{
+      display:flex;justify-content:space-between;
+      flex-wrap:wrap;gap:10px;margin-bottom:15px;
+    }
+    .btn{
+      background:#FF6B6B;color:white;
+      border:none;padding:8px 15px;
+      border-radius:25px;font-weight:700;
+      box-shadow:0 4px 0 #FF5252,0 6px 10px rgba(0,0,0,.15);
+      cursor:pointer;transition:all .3s;
+      display:inline-flex;align-items:center;gap:8px;
+    }
+    .btn:active{transform:translateY(3px);}
+    body.night-mode .btn{
+      background:#8A2BE2;
+      box-shadow:0 4px 0 #4B0082,0 6px 10px rgba(0,0,0,.25);
+    }
+    .audio-btn{background:#FFD166;color:#2E4053;box-shadow:0 4px 0 #FFB800;}
+    body.night-mode .audio-btn{background:#9370DB;color:#fff;}
+
+    /* Encabezado */
+    .header-section{text-align:center;margin-bottom:15px;}
+    .rex-container{margin:0 auto 10px;position:relative;}
+    .rex{width:100px;animation:bounce 2s infinite alternate;}
+    @keyframes bounce{from{transform:translateY(0);}to{transform:translateY(-10px);}}
+
+    h1{font-size:1.8rem;margin-bottom:8px;color:#2E4053;text-shadow:2px 2px 0 rgba(255,255,255,0.5);}
+    body.night-mode h1{color:#DDA0DD;text-shadow:2px 2px 0 rgba(0,0,0,0.5);}
+
+    /* Área de juego */
+    .game-area{
+      text-align:center;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:15px;
+    }
+
+    .question{
+      background:rgba(255,255,255,0.75);
+      border-radius:20px;
+      padding:20px;
+      font-size:1.2rem;
+      box-shadow:0 10px 25px rgba(0,0,0,0.1);
+      max-width:90%;
+      transition:background .3s;
+    }
+    body.night-mode .question{background:rgba(221,160,221,0.5);}
+    .options{display:flex;flex-direction:column;gap:12px;margin-top:10px;}
+    .answer-btn{
+      background:linear-gradient(145deg,#FFD166,#FFB800);
+      color:#2E4053;
+      border:none;
+      padding:12px 20px;
+      border-radius:15px;
+      font-size:1rem;
+      font-weight:700;
+      cursor:pointer;
+      transition:all .3s;
+      box-shadow:0 6px 0 #FF9E00,0 8px 15px rgba(0,0,0,0.15);
+      min-width:220px;
+    }
+    .answer-btn:hover{transform:scale(1.05);}
+    body.night-mode .answer-btn{
+      background:linear-gradient(145deg,#9370DB,#8A2BE2);
+      color:white;
+      box-shadow:0 6px 0 #4B0082,0 8px 15px rgba(0,0,0,0.2);
+    }
+
+    .result{font-weight:700;font-size:1.2rem;min-height:2rem;}
+    .next-btn{
+      background:#4CAF50;color:white;
+      border:none;padding:12px 25px;
+      border-radius:20px;font-weight:700;
+      box-shadow:0 4px 0 #388E3C;
+      transition:.3s;cursor:pointer;
+    }
+
+    /* Pantalla final */
+    .end-screen{
+      display:none;text-align:center;
+      background:rgba(255,255,255,0.8);
+      border-radius:25px;padding:30px;margin-top:20px;
+      box-shadow:0 10px 25px rgba(0,0,0,0.15);
+    }
+    body.night-mode .end-screen{background:rgba(75,0,130,0.3);color:#fff;}
+
+    /* Footer */
+    .footer-section{text-align:center;margin-top:15px;padding-top:10px;border-top:2px solid rgba(255,255,255,0.3);}
+    .footer-link{color:#2E4053;text-decoration:none;font-weight:600;font-size:.9rem;}
+    body.night-mode .footer-link{color:#E6E6FA;}
+    .footer-link:hover{color:#FF6B6B;}
+  </style>
+</head>
+<body>
+  <!-- Sonidos -->
+  <audio id="clickSound" src="click.wav" preload="auto"></audio>
+  <audio id="correctSound" src="correct.wav" preload="auto"></audio>
+  <audio id="wrongSound" src="wrong.wav" preload="auto"></audio>
+  <audio id="rexAudio" src="_Hola amigos Soy Rex.mp3" preload="auto"></audio>
+
+  <!-- Fondo decorativo -->
+  <div class="decoration">
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="star">⭐</div>
+    <div class="star">🌟</div>
+  </div>
+
+  <!-- Botón de inicio -->
+  <a href="presentacion2.html" class="home-btn" title="Volver al inicio">
+    <i class="fas fa-home"></i>
+  </a>
+
+  <div class="page-container">
+    <div class="content-box">
+      <!-- Controles -->
+      <div class="top-controls">
+        <button id="speakBtn" class="btn audio-btn"><i class="fas fa-volume-up"></i> </button>
+        <button id="nightModeBtn" class="btn"><i class="fas fa-moon"></i> Modo Noche</button>
+      </div>
+
+      <!-- Header -->
+      <div class="header-section">
+        <div class="rex-container">
+          <img src="Rex.png" alt="Rex el dinosaurio" class="rex">
+        </div>
+        <h1>¡Adivina con Rex! 🦖</h1>
+      </div>
+
+      <!-- Juego -->
+      <div class="game-area" id="gameArea">
+        <div class="question" id="questionText"></div>
+        <div class="options" id="answersContainer"></div>
+        <div class="result" id="resultText"></div>
+        <button class="next-btn" id="nextBtn" onclick="nextQuestion()" disabled>Siguiente</button>
+      </div>
+
+      <div class="end-screen" id="endScreen">
+        <p>🎉 ¡Excelente trabajo! Has terminado todas las preguntas.</p>
+        <p id="scoreText"></p>
+        <button class="next-btn" onclick="location.reload()">Intentar de nuevo</button>
+      </div>
+
+      <!-- Footer -->
+      <div class="footer-section">
+      </div>
+    </div>
+  </div>
+
+  <!-- Script -->
+  <script src="acertijo.js"></script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-  <title>Ahorcado - Aprende con Rex</title>
+  <title>Ahorcado-Aprende con Rex</title>
   
   <!-- Fuentes e íconos -->
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
@@ -55,6 +55,9 @@
     body.night-mode .star {
       color: #DDA0DD;
     }
+    body.night-mode #word {
+  color: #E6E6FA;
+}
 
     .bubble:nth-child(1) { width: 80px; height: 80px; top: 10%; left: 10%; animation-delay: 0s; }
     .bubble:nth-child(2) { width: 120px; height: 120px; top: 70%; left: 80%; animation-delay: -2s; }
@@ -171,8 +174,8 @@
 
     .key {
       display: inline-block;
-      background-color: #f7b612;
-      color: #192e4b;
+      background-color: #FF6B6B;
+      color: #eef5ff;
       font-weight: bold;
       border-radius: 6px;
       margin: 5px;
@@ -316,6 +319,23 @@
   from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+.indicaciones {
+  background: rgba(255, 255, 255, 0.75);
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin: 15px 0;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  font-size: 1rem;
+  line-height: 1.4;
+  text-align: center;
+  color: #18435B;
+}
+
+body.night-mode .indicaciones {
+  background: rgba(221, 160, 221, 0.5);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  color: #F8F8FF;
+}
   </style>
 </head>
 
@@ -347,8 +367,11 @@
       <div class="rex-container">
        <img src="Rex.png" alt="Rex el dinosaurio" class="rex">
      </div>
-
-
+     <!-- Instrucciones del juego -->
+<div class="indicaciones">
+  Adivina la palabra oculta seleccionando letras del abecedario.  
+  <br>¡Ten cuidado! Cada error acerca más al muñeco al final del juego.
+</div>
       <h1>Pista: <span id="descripcion"></span></h1>
 
       <canvas id="hangmanCanvas" width="200" height="200"></canvas>
