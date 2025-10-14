@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+  <title>Saberes Previos – Mundo Lógico con Rex</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1:#87CEEB; --bg2:#1E90FF;
+      --card:#FFFFFF; --accent:#FF6B6B; --accent-2:#FFE66D; --accent-3:#42A5F5;
+      --ink:#2E4053; --border:#FFD166;
+      --code-bg:#FFF9C4; --dot:#C5E9FF; --dot-active:#1E90FF;
+    }
+    body.dark{
+      --bg1:#4B0082; --bg2:#8A2BE2;
+      --card:rgba(147,112,219,.2);
+      --accent:#8A2BE2; --accent-2:#B388FF; --accent-3:#80D8FF;
+      --ink:#F5ECFF; --border:#B388FF;
+      --code-bg:#24124a; --dot:#7e6bb7; --dot-active:#80D8FF;
+    }
+
+    *{box-sizing:border-box}
+    
+  html,body{
+  height:auto;
+  margin:0;
+}
+body{
+  font-family:'Poppins',sans-serif;
+  background:linear-gradient(135deg,var(--bg1),var(--bg2));
+  color:var(--ink);
+  overflow-y:auto;          /* ahora se puede hacer scroll vertical */
+  overflow-x:hidden;        /* evita que se mueva a los lados */
+  scroll-behavior:smooth;
+}
+
+    header{
+        text-align: center;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:12px 18px;background:var(--accent-2);
+      box-shadow:0 4px 12px rgba(0,0,0,.1);
+    }
+    .brand{display:flex;align-items:center;gap:10px}
+    .brand img{width:48px;height:48px;object-fit:contain}
+    .brand h1{
+      margin:0;font-family:'Fredoka One',cursive;font-size:1.6rem;color:#FF6B6B;
+      text-shadow:1px 1px 0 #fff;
+    }
+    .theme-toggle{
+      user-select:none;cursor:pointer;border:none;border-radius:16px;
+      padding:8px 12px;font-weight:700;background:var(--accent);color:#fff;
+      box-shadow:0 3px 0 rgba(0,0,0,.15);
+    }
+    /* Encabezado animado centrado */
+header {
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  background: var(--accent-2);
+  animation: headerFloat 4s ease-in-out infinite alternate;
+}
+@keyframes headerFloat {
+  from { transform: translateY(0); }
+  to { transform: translateY(6px); }
+}
+header .brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.rexi-anim {
+  width: 50px;
+  animation: rexBounce 2s ease-in-out infinite;
+}
+@keyframes rexBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+.title-box h1 {
+  font-family: 'Fredoka One', cursive;
+  font-size: 2rem;
+  color: var(--accent);
+  text-shadow: 2px 2px 0 #fff;
+  margin: 0;
+}
+.subtitle {
+  font-weight: 600;
+  color: #2E4053;
+  margin: 0;
+  font-size: 1rem;
+}
+.theme-toggle {
+  margin-top: 10px;
+  border: none;
+  background: var(--accent);
+  color: white;
+  border-radius: 18px;
+  padding: 8px 14px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 3px 0 rgba(0,0,0,.15);
+}
+
+    /* Contenedor horizontal */
+    .shell{
+      max-width:1100px;height:calc(100% - 120px);
+      margin:16px auto; padding:0 12px 12px;
+      display:flex;flex-direction:column;gap:12px;
+      background:rgba(255,255,255,.25);
+      backdrop-filter:blur(10px);
+      border-radius:22px;box-shadow:0 12px 28px rgba(0,0,0,.2);
+      overflow:hidden;
+    }
+    body.dark .shell{background:rgba(75,0,130,.25)}
+
+    .intro{
+      margin:12px auto 0;max-width:980px;
+      background:rgba(255,255,255,.9);
+      border:4px solid var(--border);
+      border-radius:18px;padding:10px 14px;line-height:1.4;
+      box-shadow:0 4px 12px rgba(0,0,0,.12);
+      font-size:.95rem;
+    }
+    body.dark .intro{background:rgba(147,112,219,.2)}
+
+    /* Carrusel */
+    .ribbon{
+      position:relative;flex:1;display:flex;align-items:center;gap:12px;
+      padding:6px 0 0 0;
+    }
+    .nav-btn{
+      flex:0 0 auto;width:46px;height:46px;border:none;border-radius:50%;
+      background:var(--accent);color:#fff;font-size:1.2rem;font-weight:700;
+      box-shadow:0 4px 0 rgba(0,0,0,.15);cursor:pointer;
+    }
+    .nav-btn:active{transform:translateY(1px)}
+    .track-wrap{flex:1;overflow:hidden}
+    .track{
+      display:flex;gap:16px;transition:transform .45s ease;
+      will-change:transform;
+    }
+
+    .card{
+      flex:0 0 90%; /* visible de a una; en desktop grande se ve casi completa */
+      max-width:900px;
+      background:var(--card);
+      border:5px solid var(--border);
+      border-radius:22px;padding:18px;
+      box-shadow:0 10px 22px rgba(0,0,0,.15);
+    }
+    @media (min-width:900px){ .card{flex-basis:860px} }
+
+    .card h3{
+      margin:0 0 8px 0;font-size:1.4rem;color:var(--accent-3);display:flex;align-items:center;gap:8px
+    }
+    .tag{
+      display:inline-block;background:var(--accent-2);color:#3a2f00;
+      border-radius:14px;padding:4px 10px;font-weight:700;margin-bottom:8px
+    }
+    p{margin:8px 0}
+    ul{margin:8px 0 0 0;padding:0 0 0 18px}
+    li{margin:6px 0}
+    code, pre code{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+      background:var(--code-bg);color:#333;border-radius:12px;
+    }
+    pre{
+      margin:10px 0;padding:10px 12px;border-radius:12px;overflow:auto;
+      box-shadow:inset 0 0 0 2px rgba(0,0,0,.06);
+    }
+    body.dark pre code{color:#E6E6FA}
+
+    /* Paginación */
+    .dots{display:flex;justify-content:center;gap:8px;padding:6px 0 2px}
+    .dot{
+      width:10px;height:10px;border-radius:50%;background:var(--dot);
+      box-shadow:0 1px 0 rgba(0,0,0,.15);
+    }
+    .dot.active{background:var(--dot-active)}
+
+    footer{
+      text-align:center;color:#fff;font-weight:600;padding:6px 0 10px
+    }
+
+    /* Scrollbar creativo del carrusel interior */
+    .track-wrap{scrollbar-width:thin;scrollbar-color:var(--accent) transparent}
+    .track-wrap::-webkit-scrollbar{height:12px}
+    .track-wrap::-webkit-scrollbar-track{
+      background:linear-gradient(90deg, rgba(255,255,255,.35), rgba(255,255,255,.2));
+      border-radius:999px
+    }
+    .track-wrap::-webkit-scrollbar-thumb{
+      background:linear-gradient(180deg, #FF8A80, #FF6B6B 55%, #FF5252);
+      border-radius:999px;border:3px solid rgba(255,255,255,.35)
+    }
+    body.dark .track-wrap::-webkit-scrollbar-thumb{
+      background:linear-gradient(180deg, #B3E5FC, #80D8FF 55%, #4FC3F7);
+      border:3px solid rgba(147,112,219,.35)
+    }
+    /* ===========================
+   🎨 Scrollbar creativo con estilo infantil
+   =========================== */
+
+/* WebKit (Chrome, Edge, Opera, Safari) */
+body::-webkit-scrollbar {
+  width: 14px;
+}
+body::-webkit-scrollbar-track {
+  background:
+    radial-gradient(circle at 25% 20%, rgba(255,255,255,.55) 0 6px, transparent 7px),
+    radial-gradient(circle at 70% 60%, rgba(255,255,255,.45) 0 5px, transparent 6px),
+    linear-gradient(180deg, rgba(255,255,255,.25), rgba(255,255,255,.15));
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,.25);
+}
+body.dark::-webkit-scrollbar-track {
+  background:
+    radial-gradient(circle at 25% 25%, rgba(147,112,219,.55) 0 6px, transparent 7px),
+    radial-gradient(circle at 70% 60%, rgba(138,43,226,.45) 0 5px, transparent 6px),
+    linear-gradient(180deg, rgba(147,112,219,.25), rgba(138,43,226,.15));
+  box-shadow: inset 0 0 0 2px rgba(147,112,219,.35);
+}
+
+/* Pulgar degradado */
+body::-webkit-scrollbar-thumb {
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,.75) 0 3px, transparent 4px),
+    radial-gradient(circle at 70% 70%, rgba(255,255,255,.55) 0 3px, transparent 4px),
+    linear-gradient(180deg, #FF8A80, #FF6B6B 55%, #FF5252);
+  border-radius: 999px;
+  border: 3px solid rgba(255,255,255,.35);
+  box-shadow: inset 0 -2px 6px rgba(0,0,0,.15), 0 1px 2px rgba(0,0,0,.15);
+}
+body::-webkit-scrollbar-thumb:hover {
+  filter: brightness(1.05);
+  box-shadow: inset 0 -2px 8px rgba(0,0,0,.18), 0 2px 4px rgba(0,0,0,.18);
+}
+
+/* Versión modo noche */
+body.dark::-webkit-scrollbar-thumb {
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,.85) 0 3px, transparent 4px),
+    radial-gradient(circle at 70% 70%, rgba(255,255,255,.55) 0 3px, transparent 4px),
+    linear-gradient(180deg, #B3E5FC, #80D8FF 55%, #4FC3F7);
+  border: 3px solid rgba(147,112,219,.35);
+}
+
+/* Botones de scroll */
+body::-webkit-scrollbar-button {
+  height: 12px;
+  background: linear-gradient(180deg, rgba(255,255,255,.35), rgba(255,255,255,.15));
+  border-radius: 10px;
+}
+body.dark::-webkit-scrollbar-button {
+  background: linear-gradient(180deg, rgba(147,112,219,.35), rgba(138,43,226,.15));
+}
+  </style>
+</head>
+<body>
+  <!-- Sonido -->
+  <audio id="clickSound" src="click.wav" preload="auto"></audio>
+
+<header>
+  <div class="brand">
+    <img src="Rex.png" alt="Rexi" class="rexi-anim">
+    <div class="title-box">
+      <h1>🌈 Mundo Lógico con Rexi 🦖</h1>
+      <p class="subtitle">Aprendamos jugando a pensar como programadores</p>
+    </div>
+  </div>
+  <button id="themeBtn" class="theme-toggle" aria-label="Cambiar tema">🌙</button>
+</header>
+
+  <main class="shell">
+    <!-- Instrucciones (primero siempre) -->
+    <section class="intro">
+      <strong>👋 ¡Hola! Soy Rexi.</strong> Aquí aprenderás a pensar como programador con ejemplos fáciles.
+      Usa las flechas <b>⬅️ ➡️</b> para moverte entre tarjetas. ¡Toca los botones y escucha el <em>click</em>! 🔊
+    </section>
+
+    <!-- Carrusel -->
+    <div class="ribbon">
+      <button class="nav-btn" id="prevBtn" aria-label="Anterior">⬅️</button>
+
+      <div class="track-wrap">
+        <div class="track" id="track">
+          <!-- 1. Orden y Secuencia -->
+<article class="card">
+  <span class="tag">⚙️ Orden y Secuencia</span>
+  <h3>¡Sigamos los pasos con Rexi!</h3>
+  <p>Tu amigo <b>Rexi</b> te cuenta: “Cuando hacemos las cosas en <b>orden</b>, todo sale bien.”  
+  Si cambias los pasos, ¡puede salir un desastre! 😅</p>
+  <p>Ejemplo del desayuno:</p>
+  <ul>
+    <li>1️⃣ Lavar manos 🖐️</li>
+    <li>2️⃣ Poner el pan 🍞</li>
+    <li>3️⃣ Agregar mermelada 🍓</li>
+  </ul>
+  <pre><code>Algoritmo: “Mi Desayuno”
+1) Lavar manos
+2) Poner pan
+3) Agregar mermelada
+→ ¡Listo! 😋</code></pre>
+  <p>Así piensan los programas: <b>siguen pasos</b> para lograr una tarea.</p>
+</article>
+
+          <!-- 2. Pensamiento Lógico -->
+<article class="card">
+  <span class="tag">🧩 Pensamiento Lógico</span>
+  <h3>Reglas para decidir</h3>
+  <p>Rexi dice: “Usamos reglas sencillas para tomar decisiones”.  
+  ¡Los programas hacen lo mismo!</p>
+  <ul>
+    <li>Si 🌞 hay sol → salgo a jugar 🏃‍♀️</li>
+    <li>Si 🌧️ llueve → llevo paraguas ☔</li>
+    <li>Si 🌙 es de noche → voy a dormir 😴</li>
+  </ul>
+  <pre><code>Si hay sol: jugar
+Si llueve: paraguas
+Si es de noche: dormir</code></pre>
+  <p>¡Tu cabeza también puede pensar como una computadora! 🧠</p>
+</article>
+
+          <!-- 3. Algoritmos (estructura) -->
+<article class="card">
+  <span class="tag">💡 Algoritmos</span>
+  <h3>Inicio → Proceso → Fin</h3>
+  <p>Un <b>algoritmo</b> es una <b>lista de pasos</b> para resolver un problema.  
+  Rexi dice: “Es como una receta de cocina”. 👨‍🍳</p>
+  <ul>
+    <li>🟢 <b>Inicio:</b> Me despierto ⏰</li>
+    <li>⚙️ <b>Proceso:</b> Me visto 👕 y desayuno 🥣</li>
+    <li>🔴 <b>Fin:</b> Voy a la escuela 🏫</li>
+  </ul>
+  <pre><code>INICIO
+  Vestirme
+  Desayunar
+FIN</code></pre>
+  <p>Así las computadoras saben <b>qué hacer</b> y <b>en qué orden</b>.</p>
+</article>
+          <!-- 4. Variables y Constantes -->
+<article class="card">
+  <span class="tag">🤖 Variables y Constantes</span>
+  <h3>¡Cajitas de información!</h3>
+  <p>Rexi explica: “Imagina <b>cajitas</b> donde guardas datos”.  
+  Algunas cajitas <b>cambian</b> y otras <b>no cambian</b>.</p>
+  <ul>
+    <li><b>Variable:</b> puede cambiar → <code>Mi edad = 7</code> (y luego 8 🎂)</li>
+    <li><b>Constante:</b> no cambia → <code>Dias de la semana = 8</code> 📅</li>
+  </ul>
+  <pre><code>// Para peques
+Mi Edad = 7 años
+
+Mi Edad = Mi Edad + 1 año = 8 años 🎉</code></pre>
+  <p>Así los juegos guardan tu <b>nombre</b> o tus <b>puntos</b> 🎮.</p>
+</article>
+          <!-- 5. Condiciones (si... entonces...) -->
+<article class="card">
+  <span class="tag">🧠 Condiciones</span>
+  <h3>Si pasa A, hago B</h3>
+  <p>Las <b>condiciones</b> ayudan a elegir entre caminos. ¡Como un semáforo! 🚦</p>
+  <ul>
+    <li>Si tengo hambre 🍔 → como</li>
+    <li>Si no tengo hambre 🚫 → juego</li>
+    <li>Si hace frío 🧊 → me pongo abrigo 🧥</li>
+  </ul>
+  <pre><code>SI tengo_hambre
+  comer
+SINO
+  jugar</code></pre>
+  <p>Los programas preguntan: “¿pasa esto?” y según la respuesta… ¡actúan! 🤖</p>
+</article>
+          <!-- 6. Bucles (repetir) -->
+<article class="card">
+  <span class="tag">🔁 Bucles (Repetir)</span>
+  <h3>Hacer algo muchas veces</h3>
+  <p>Rexi dice: “Cuando repetimos, usamos un <b>bucle</b>”.  
+  ¡Así no escribimos lo mismo mil veces!</p>
+  <ul>
+    <li>Saltar la cuerda 10 veces 🤸</li>
+    <li>Mientras haya platos sucios 🍽️ → seguir lavando</li>
+  </ul>
+  <pre><code>REPETIR 10 veces:
+  saltar la cuerda
+
+MIENTRAS queden platos sucios:
+  seguir lavando platos</code></pre>
+  <p>Los bucles ayudan a los programas a trabajar <b>rápido</b> y <b>sin cansarse</b>. 💪</p>
+</article>
+        </div>
+      </div>
+
+      <button class="nav-btn" id="nextBtn" aria-label="Siguiente">➡️</button>
+    </div>
+
+    <div class="dots" id="dots" aria-label="Paginación"></div>
+  </main>
+
+  <script>
+    // ====== Estado del carrusel ======
+    const track = document.getElementById('track');
+    const cards = Array.from(track.children);
+    const dotsWrap = document.getElementById('dots');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const themeBtn = document.getElementById('themeBtn');
+    const clickSound = document.getElementById('clickSound');
+
+    let index = 0;
+
+    // Crear puntitos
+    cards.forEach((_, i)=>{
+      const d = document.createElement('div');
+      d.className = 'dot' + (i===0 ? ' active':'');
+      d.dataset.i = i;
+      dotsWrap.appendChild(d);
+    });
+
+    function playClick(){
+      if(!clickSound) return;
+      try{ clickSound.currentTime = 0; clickSound.play(); }catch(e){}
+    }
+
+    function update(){
+      const cardWidth = cards[0].getBoundingClientRect().width + 16; // gap
+      track.style.transform = `translateX(${-index * cardWidth}px)`;
+      dotsWrap.querySelectorAll('.dot').forEach((dot,i)=>{
+        dot.classList.toggle('active', i===index);
+      });
+      prevBtn.disabled = (index===0);
+      nextBtn.disabled = (index===cards.length-1);
+    }
+
+    prevBtn.addEventListener('click', ()=>{
+      playClick();
+      if(index>0){ index--; update(); }
+    });
+    nextBtn.addEventListener('click', ()=>{
+      playClick();
+      if(index<cards.length-1){ index++; update(); }
+    });
+
+    dotsWrap.addEventListener('click',(e)=>{
+      const dot = e.target.closest('.dot');
+      if(!dot) return;
+      playClick();
+      index = +dot.dataset.i;
+      update();
+    });
+
+    // Modo noche
+    themeBtn.addEventListener('click', ()=>{
+      playClick();
+      document.body.classList.toggle('dark');
+      const on = document.body.classList.contains('dark');
+      themeBtn.textContent = on ? '☀️ Modo Día' : '🌙 Modo Noche';
+    });
+
+    // Ajuste al redimensionar
+    window.addEventListener('resize', update);
+
+    // Init
+    update();
+  </script>
+</body>
+</html>
