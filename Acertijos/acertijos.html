@@ -10,22 +10,22 @@
     *{margin:0;padding:0;box-sizing:border-box;}
     body{
       font-family:'Fredoka',sans-serif;
-      background:linear-gradient(135deg,#87CEEB 0%,#1E90FF 100%);
+      background:linear-gradient(135deg,#8451eb 0%,#1E90FF 100%);
       color:#2E4053;
-      height:100vh;width:100vw;
+      height:98vh;width:100vw;
       overflow-x:hidden;
       transition:background 0.3s,color 0.3s;
     }
     body.night-mode{
-      background:linear-gradient(135deg,#4B0082 0%,#8A2BE2 100%);
+      background:linear-gradient(135deg,#4B0082 0%,#4920d0 100%);
       color:#E6E6FA;
     }
 
     .page-container{
       max-width:1000px;
       margin:0 auto;
-      padding:20px;
-      min-height:100vh;
+      padding:10px;
+      min-height:98vh;
       display:flex;
       flex-direction:column;
     }
@@ -105,8 +105,8 @@
 
     /* Encabezado */
     .header-section{text-align:center;margin-bottom:15px;}
-    .rex-container{margin:0 auto 10px;position:relative;}
-    .rex{width:100px;animation:bounce 2s infinite alternate;}
+    .rex-container{margin:0 auto 5px;position:relative;}
+    .rex{width:80px;animation:bounce 2s infinite alternate;}
     @keyframes bounce{from{transform:translateY(0);}to{transform:translateY(-10px);}}
 
     h1{font-size:1.8rem;margin-bottom:8px;color:#2E4053;text-shadow:2px 2px 0 rgba(255,255,255,0.5);}
@@ -119,13 +119,13 @@
       flex-direction:column;
       align-items:center;
       justify-content:center;
-      gap:15px;
+      gap:0px;
     }
 
     .question{
       background:rgba(255,255,255,0.75);
       border-radius:20px;
-      padding:20px;
+      padding:15px;
       font-size:1.2rem;
       box-shadow:0 10px 25px rgba(0,0,0,0.1);
       max-width:90%;
@@ -144,7 +144,7 @@
       cursor:pointer;
       transition:all .3s;
       box-shadow:0 6px 0 #FF9E00,0 8px 15px rgba(0,0,0,0.15);
-      min-width:220px;
+      min-width:320px;
     }
     .answer-btn:hover{transform:scale(1.05);}
     body.night-mode .answer-btn{
@@ -156,7 +156,7 @@
     .result{font-weight:700;font-size:1.2rem;min-height:2rem;}
     .next-btn{
       background:#4CAF50;color:white;
-      border:none;padding:12px 25px;
+      border:none;padding:13px 23px;
       border-radius:20px;font-weight:700;
       box-shadow:0 4px 0 #388E3C;
       transition:.3s;cursor:pointer;
@@ -165,7 +165,7 @@
 .instructions-box {
   background: #FF5252;
   border-radius: 20px;
-  padding: 18px 20px;
+  padding: 10px 15px;
   margin: 10px auto 20px;
   max-width: 600px;
   text-align: center;
@@ -233,12 +233,6 @@ body.night-mode .rex-bubble {
       box-shadow:0 10px 25px rgba(0,0,0,0.15);
     }
     body.night-mode .end-screen{background:rgba(75,0,130,0.3);color:#fff;}
-
-    /* Footer */
-    .footer-section{text-align:center;margin-top:15px;padding-top:10px;border-top:2px solid rgba(255,255,255,0.3);}
-    .footer-link{color:#2E4053;text-decoration:none;font-weight:600;font-size:.9rem;}
-    body.night-mode .footer-link{color:#E6E6FA;}
-    .footer-link:hover{color:#FF6B6B;}
   </style>
 </head>
 <body>

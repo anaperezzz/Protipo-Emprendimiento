@@ -76,11 +76,11 @@ function drawBaseAndRope() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   // Fondo claro del canvas
-  ctx.fillStyle = '#E3F2FD';
+  ctx.fillStyle = '#d1d1a7ff';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   // Base
-  ctx.strokeStyle = '#6C3483';
+  ctx.strokeStyle = '#483514ff';
   ctx.lineWidth = 6;
   ctx.beginPath();
   ctx.moveTo(10, 180); ctx.lineTo(150, 180);
@@ -93,7 +93,7 @@ function drawHangman() {
   const canvas = document.getElementById('hangmanCanvas');
   const ctx = canvas.getContext('2d');
   ctx.lineWidth = 4;
-  ctx.strokeStyle = '#FF6B6B'; // Rojo amigable
+  ctx.strokeStyle = '#000000ff'; // Rojo amigable
   ctx.fillStyle = '#FFCDD2';
 
   const stages = [
@@ -198,39 +198,38 @@ function showErrorMessage(term) {
   container.style.display = 'block';
   container.innerHTML = `
     <div style="
-      background: #FFEBEE;
-      border: 2px solid #EF5350;
-      border-radius: 20px;
-      padding: 25px;
-      color: #C62828;
-      font-weight: bold;
-      font-size: 1.2rem;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-      max-width: 500px;
-      margin: 20px auto;
+      width: 100%;                /* ocupa todo el ancho de la columna */
+      margin: 10px auto 0;
       text-align: center;
-    ">
-      <p style="margin-bottom: 20px;">
-        ¡Has perdido! 😢<br>La palabra era: <strong style="color:#B71C1C;">${term}</strong>
-      </p>
+      color: #C62828;             /* rojo texto */
+      font-weight: 800;
+      font-size: clamp(16px, 2.6vh, 22px);
+      line-height: 1.2;           /* bajito para no crecer en altura */
+      overflow: hidden;           /* evita scroll interno */
+    " role="alert" aria-live="assertive">
+      ¡Has perdido! 😢 La palabra era: <strong style="color:#B71C1C;">${term}</strong>
+    </div>
+    <div style="width:100%; display:flex; justify-content:center; margin-top:10px;">
       <button onclick="retryGuess()" style="
-        padding: 12px 25px;
+        padding: 10px 20px;
         background-color: #EF5350;
-        color: #ffffffff;
+        color: #ffffff;
         border: none;
-        border-radius: 25px;
-        font-size: 1rem;
-        font-weight: bold;
+        border-radius: 999px;
+        font-size: clamp(14px, 2vh, 16px);
+        font-weight: 700;
         cursor: pointer;
-        transition: transform 0.2s ease;
-      " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+        transition: transform 0.15s ease;
+      " onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'">
         🔁 Seguir jugando
       </button>
     </div>
   `;
-  // Opcional: scroll al mensaje
-  container.scrollIntoView({ behavior: 'smooth' });
+
+  /* Si no quieres que mueva la pantalla, déjala comentada */
+  // container.scrollIntoView({ behavior: 'smooth' });
 }
+
 function retryGuess() {
   document.getElementById('errorMessageContainer').style.display = 'none';
   initGame();

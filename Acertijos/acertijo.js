@@ -2,18 +2,18 @@
 
 // 🎉 Versión drop-in: compatible con tu juego actual
 const questions = [
-  { question: "🧮 ¿Cuánto es 3 + 2?", options: [" 4", " 5", " 6"], answer: "5" },
+  { question: "🧮 ¿Cuánto es 2 + 2?", options: ["4", " 5", " 6"], answer: "4" },
   { question: "🔢 ¿Qué número sigue después del 6?", options: [" 7", " 8", " 9"], answer: " 7" },
   { question: "🏁 ¿Cuál va primero en una secuencia?", options: ["🚪 Inicio", "⚖️ Medio", "🏁 Final"], answer: "🚪 Inicio" },
   { question: "🍎 Si tienes 2 manzanas y comes 1, ¿cuántas te quedan?", options: [" 1", "2", " 3"], answer: " 1" },
-  { question: "🐘 ¿Cuál es mayor?", options: [" 5", " 3", " 1"], answer: " 5" },
+  { question: "🐘 ¿Cuál número es mayor?", options: [" 5", " 3", " 1"], answer: " 5" },
   { question: "🧼 ¿Qué viene después de lavarse las manos?", options: ["🏃 Correr", "🍽️ Comer", "😴 Dormir"], answer: "🍽️ Comer" },
-  { question: "🧩 ¿Qué número falta? 1, 2, __, 4", options: ["3", " 5", "6"], answer: " 3" },
+  { question: "🧩 ¿Qué número falta? 1, 2, _, 4", options: ["3", " 5", "6"], answer: "3" },
   { question: "🟦 ¿Cuántos lados tiene un cuadrado?", options: [" 3", " 4", " 5"], answer: " 4" },
   { question: "🍬 Si tenías 5 dulces y te dan 2 más, ahora tienes…", options: [" 6", " 7", " 8"], answer: " 7" },
-  { question: "🔢 Completa: 2, 4, __, 8", options: [" 5", " 6", " 7"], answer: " 6" },
+  { question: "🔢 Completa: 2, 4, _, 8", options: [" 5", " 6", " 7"], answer: " 6" },
   { question: "🔺 ¿Cuántos lados tiene un triángulo?", options: [" 2", " 3", " 4"], answer: " 3" },
-  { question: "⚖️ ¿Cuál es menor?", options: [" 9", " 6", " 2"], answer: " 2" },
+  { question: "⚖️ Elige el número que es menor:", options: [" 9", " 6", " 2"], answer: " 2" },
   { question: "🧮 ¿Cuánto es 10 − 7?", options: [" 2", " 3", " 4"], answer: " 3" },
   { question: "🟣 ¿Qué forma tiene una pelota?", options: ["⬛ Cuadrada", "🟠 Redonda", "🔺 Triangular"], answer: "🟠 Redonda" }
 ];
@@ -70,7 +70,7 @@ function checkAnswer(selected, btn) {
 
   if (selected === correct) {
     resultText.textContent = "✅ ¡Correcto!";
-    resultText.style.color = "#4CAF50";
+    resultText.style.color = "#b5dab6ff";
     btn.style.background = "#4CAF50";
     btn.style.color = "#fff";
     playSound(correctSound);
@@ -78,7 +78,7 @@ function checkAnswer(selected, btn) {
     score++;
   } else {
     resultText.textContent = `❌ Incorrecto. La respuesta era "${correct}".`;
-    resultText.style.color = "#FF5252";
+    resultText.style.color = "#700b0bff";
     btn.style.background = "#FF5252";
     btn.style.color = "#fff";
     playSound(wrongSound);
