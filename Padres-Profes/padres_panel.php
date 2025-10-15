@@ -1,17 +1,23 @@
 <?php
 // =============== GESTIÓN DEL FORO ===============
 $file = 'foro.json';
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['mensaje'])) {
-  $nombre = htmlspecialchars(trim($_POST['nombre'] ?: 'Anónimo'));
-  $mensaje = htmlspecialchars(trim($_POST['mensaje']));
+  header('Content-Type: application/json; charset=utf-8');
+  $nombre  = htmlspecialchars(trim($_POST['nombre'] ?: 'Anónimo'), ENT_QUOTES, 'UTF-8');
+  $mensaje = htmlspecialchars(trim($_POST['mensaje']), ENT_QUOTES, 'UTF-8');
+
   if ($mensaje !== '') {
-    $nuevo = ['nombre'=>$nombre, 'mensaje'=>$mensaje, 'fecha'=>date('d/m/Y H:i')];
-    $foro = file_exists($file) ? json_decode(file_get_contents($file), true) : [];
+    $nuevo = ['nombre' => $nombre, 'mensaje' => $mensaje, 'fecha' => date('d/m/Y H:i')];
+    $foro  = file_exists($file) ? json_decode(file_get_contents($file), true) : [];
     $foro[] = $nuevo;
-    file_put_contents($file, json_encode($foro, JSON_PRETTY_PRINT));
+    file_put_contents($file, json_encode($foro, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
   }
-  exit(json_encode(['ok'=>true]));
+
+  echo json_encode(['ok' => true]);
+  exit;
 }
+
 $foro = file_exists($file) ? json_decode(file_get_contents($file), true) : [];
 ?>
 <!DOCTYPE html>
@@ -135,60 +141,77 @@ ul li::before {
 .pdf-card a:hover { background: #FF5252; }
 
 /* ====== FORO ====== */
-#foro {
-  background: #f9f9f9;
-  border-radius: 16px;
-  padding: 20px;
-  max-height: 500px;
-  overflow-y: auto;
-  box-shadow: inset 0 0 8px rgba(0,0,0,0.1);
+#foro{
+  background:#f9f9f9;
+  border-radius:16px;
+  padding:16px;
+  /* Altura fija para que NO crezca el contenedor */
+  height: 340px;               /* ajusta a tu gusto */
+  overflow-y:auto;             /* solo el listado scrollea */
+  box-shadow: inset 0 0 8px rgba(0,0,0,0.08);
+  scroll-behavior: smooth;
+  overscroll-behavior: contain;/* evita saltos del layout */
 }
-.mensaje {
-  background: #FFD166;
-  border-radius: 14px;
-  padding: 12px 16px;
-  margin: 10px 0;
-  max-width: 85%;
-  box-shadow: 0 3px 6px rgba(0,0,0,.1);
-  animation: pop .3s ease;
+
+.mensaje{
+  background:#FFD166;
+  border-radius:14px;
+  padding:12px 16px;
+  margin:10px 0;
+  max-width:100%;
+  box-shadow:0 3px 6px rgba(0,0,0,.1);
+  animation:pop .25s ease;
+  word-break: break-word;      /* corta palabras largas */
 }
-.mensaje span {
-  display: block;
-  font-size: .8rem;
-  color: #555;
-  text-align: right;
-  margin-top: 6px;
+
+.mensaje span{
+  display:block;
+  font-size:.8rem;
+  color:#555;
+  text-align:right;
+  margin-top:6px;
 }
-@keyframes pop {
-  from { transform: scale(.95); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
+
+@keyframes pop{
+  from{transform:scale(.98);opacity:0}
+  to{transform:scale(1);opacity:1}
 }
-.form-foro {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 15px;
+
+.form-foro{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-top:14px;             /* el formulario no se mueve */
 }
-.form-foro input, .form-foro textarea {
-  border: 2px solid #FF6B6B;
-  border-radius: 12px;
-  padding: 10px;
-  background: #FFF9C4;
-  font-size: 1rem;
-  resize: none;
+
+.form-foro input,
+.form-foro textarea{
+  border:2px solid #FF6B6B;
+  border-radius:12px;
+  padding:10px;
+  background:#FFF9C4;
+  font-size:1rem;
+  resize:none;
 }
-.form-foro button {
-  align-self: flex-end;
-  background: #FF6B6B;
-  color: #fff;
-  border: none;
-  border-radius: 10px;
-  padding: 10px 20px;
-  font-weight: 600;
-  cursor: pointer;
-  box-shadow: 0 3px 0 #E91E63;
+
+.form-foro textarea{
+  min-height:70px;
+  max-height:140px;            /* evita que el form se haga enorme */
 }
-.form-foro button:hover { background: #FF5252; }
+
+.form-foro button{
+  align-self:flex-end;
+  background:#FF6B6B;
+  color:#fff;
+  border:none;
+  border-radius:10px;
+  padding:10px 20px;
+  font-weight:600;
+  cursor:pointer;
+  box-shadow:0 3px 0 #E91E63;
+  transition:filter .15s ease;
+}
+.form-foro button:hover{ filter:brightness(1.05); }
 
 /* ====== CONTACTO ====== */
 form#contactForm {
@@ -258,44 +281,96 @@ footer {
   </div>
 </section>
 
-<!-- ===== 2. CONTENIDOS + PDF ===== -->
+<!-- ===== 2. TEMAS + PDF ===== -->
 <section>
-  <h2><i class="fa-solid fa-graduation-cap"></i> Contenidos Pedagógicos</h2>
-  <ul>
-    <li>Juegos de coordenadas: nociones espaciales básicas.</li>
-    <li>Rompecabezas lógicos: razonamiento secuencial.</li>
-    <li>Patrones y algoritmos simples adaptados a niños.</li>
-  </ul>
-
+<h2><i class="fa-solid fa-graduation-cap"></i> Temas Pedagógicos</h2>
+<p>
+  Encontrarás ocho cuadernos en PDF pensados para que padres y docentes acompañen el aprendizaje de 7 a 12 años. 
+  Inician con una <strong>introducción al pensamiento lógico</strong>, continúan con <strong>orden y secuencia</strong> y la construcción de <strong>algoritmos</strong> (pasos claros para lograr una meta); incorporan <strong>matemáticas aplicadas a la programación</strong> como herramienta de razonamiento; y avanzan por los componentes básicos: <strong>variables y constantes</strong>, <strong>condiciones</strong> (si… entonces…) y <strong>bucles</strong> (repetir). 
+  El recorrido cierra con <strong>cultura tecnológica y aplicación práctica</strong>
+  Cada PDF incluye una explicación breve, ejemplos cotidianos, actividades guiadas y recomendaciones para adaptarlas a casa o aula. 
+  Te sugerimos avanzar en ese orden y seleccionar las actividades según el tiempo disponible y el nivel del grupo.
+</p>
   <h2 style="margin-top:30px;"><i class="fa-solid fa-file-pdf"></i> Material de Apoyo en PDF</h2>
   <div class="pdf-area">
+    <!-- PDF 1 -->
     <div class="pdf-card">
-      <h3>Contenido 1</h3>
-      <p>Fundamentos de Lógica y Pensamiento Computacional</p>
-      <a href="guia_didactica_secuencias.pdf" download><i class="fa-solid fa-download"></i> Descargar</a>
+      <h3>Tema 1</h3>
+      <p>Introducción al pensamiento lógico</p>
+      <a href="CONTENIDO1-CLICL-Y-CREA.pdf" download title="Introducción al pensamiento lógico">
+        <i class="fa-solid fa-download"></i> Descargar
+      </a>
     </div>
+
+    <!-- PDF 2 -->
     <div class="pdf-card">
-      <h3>Contenido 2</h3>
-      <p>Matemáticas aplicadas a la Programación</p>
-      <a href="guia" download><i class="fa-solid fa-download"></i> Descargar</a>
+      <h3>Tema 2</h3>
+      <p>Orden y secuencia</p>
+      <a href="CONTENIDO2-CLICK-Y-CREA.pdf" download title="Orden y secuencia">
+        <i class="fa-solid fa-download"></i> Descargar
+      </a>
     </div>
+
+    <!-- PDF 3 -->
     <div class="pdf-card">
-      <h3>Contenido 3</h3>
-      <p>Cultura tecnológica y teoría adaptada a estudiantes</p>
-      <a href="pdfs/area3.pdf" download><i class="fa-solid fa-download"></i> Descargar</a>
+      <h3>Tema 3</h3>
+      <p>Algoritmos (pasos para lograr una meta)</p>
+      <a href="CONTENIDO3-CLICKYCREA.pdf" download title="Algoritmos">
+        <i class="fa-solid fa-download"></i> Descargar
+      </a>
     </div>
+
+    <!-- PDF 4 -->
     <div class="pdf-card">
-      <h3>Contenido 4</h3>
-      <p>Programación aplicada a la vida cotidiana</p>
-      <a href="pdfs/area4.pdf" download><i class="fa-solid fa-download"></i> Descargar</a>
+      <h3>Tema 4</h3>
+      <p>Matemáticas aplicadas a la programación</p>
+      <a href="CONTENIDO4-CLICKYCREA.pdf" download title="Matemáticas aplicadas a la programación">
+        <i class="fa-solid fa-download"></i> Descargar
+      </a>
+    </div>
+
+    <!-- PDF 5 -->
+    <div class="pdf-card">
+      <h3>Tema 5</h3>
+      <p>Variables y constantes</p>
+      <a href="CONTENIDO5-CLICKYCREA.pdf" download title="Variables y constantes">
+        <i class="fa-solid fa-download"></i> Descargar
+      </a>
+    </div>
+
+    <!-- PDF 6 -->
+    <div class="pdf-card">
+      <h3>Tema 6</h3>
+      <p>Condiciones (si… entonces…)</p>
+      <a href="CONTENIDO6-CLICKYCREA.pdf" download title="Condiciones">
+        <i class="fa-solid fa-download"></i> Descargar
+      </a>
+    </div>
+
+    <!-- PDF 7 -->
+    <div class="pdf-card">
+      <h3>Tema 7</h3>
+      <p>Bucles (repetir)</p>
+      <a href="CONTENIDO7-CLICKYCREA.pdf" download title="Bucles (repetir)">
+        <i class="fa-solid fa-download"></i> Descargar
+      </a>
+    </div>
+
+    <!-- PDF 8 -->
+    <div class="pdf-card">
+      <h3>Tema 8</h3>
+      <p>Cultura tecnológica y aplicación práctica</p>
+      <a href="CONTENIDO8-CLICKYCREA.pdf" download title="Cultura tecnológica y aplicación práctica">
+        <i class="fa-solid fa-download"></i> Descargar
+      </a>
     </div>
   </div>
 </section>
-
 <!-- ===== 3. FORO ===== -->
 <section>
   <h2><i class="fa-solid fa-comments"></i> Foro de Preguntas y Respuestas</h2>
-  <div id="foro">
+
+  <div id="foro" aria-live="polite" aria-label="Listado de mensajes del foro">
     <?php foreach ($foro as $f): ?>
       <div class="mensaje">
         <strong><i class="fa-solid fa-user"></i> <?php echo $f['nombre']; ?></strong><br>
@@ -305,17 +380,16 @@ footer {
     <?php endforeach; ?>
   </div>
 
-  <form class="form-foro" id="formForo">
+  <form class="form-foro" id="formForo" autocomplete="off">
     <input type="text" name="nombre" placeholder="Tu nombre (opcional)">
     <textarea name="mensaje" placeholder="Escribe un mensaje..." required></textarea>
     <button type="submit"><i class="fa-solid fa-paper-plane"></i> Enviar</button>
   </form>
 </section>
-
 <!-- ===== 4. CONTACTO ===== -->
 <section>
   <h2><i class="fa-solid fa-envelope"></i> Contáctanos</h2>
-  <p>Si tienes preguntas o sugerencias, envíanos un mensaje. Nuestro equipo docente y técnico responderá a la brevedad.</p>
+  <p>Si tienes preguntas o sugerencias, envíanos un mensaje. Nuestro equipo técnico responderá a la brevedad.</p>
   <form id="contactForm" method="post" action="contacto.php">
     <input type="text" name="nombre" placeholder="Tu nombre" required>
     <input type="email" name="correo" placeholder="Tu correo electrónico" required>
@@ -337,6 +411,45 @@ formForo.addEventListener('submit',e=>{
   .then(()=>location.reload());
 });
 </script>
+<script>
+  const foroBox = document.getElementById('foro');
+  const formForo = document.getElementById('formForo');
 
+  function autoScrollForo(){
+    foroBox.scrollTop = foroBox.scrollHeight;
+  }
+
+  async function loadForo(){
+    try{
+      const res = await fetch('foro.json?ts=' + Date.now());
+      if(!res.ok) return;
+      const data = await res.json();
+      foroBox.innerHTML = data.map(f => `
+        <div class="mensaje">
+          <strong><i class="fa-solid fa-user"></i> ${f.nombre}</strong><br>
+          ${String(f.mensaje).replace(/\n/g,'<br>')}
+          <span><i class="fa-regular fa-clock"></i> ${f.fecha}</span>
+        </div>
+      `).join('');
+      autoScrollForo();
+    }catch(e){ /* opcional: manejar error */ }
+  }
+
+  formForo.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const fd = new FormData(formForo);
+    try{
+      const r = await fetch('', { method:'POST', body: fd });
+      await r.json();               // esperamos ok del servidor
+      formForo.reset();             // limpiar campos
+      await loadForo();             // recargar listado
+    }catch(e){ /* opcional: feedback error */ }
+  });
+
+  // Cargar mensajes al entrar y dejar al final
+  document.addEventListener('DOMContentLoaded', () => {
+    loadForo();
+  });
+</script>
 </body>
 </html>
