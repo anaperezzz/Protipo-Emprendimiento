@@ -30,19 +30,15 @@ body{
   font-family:'Poppins',sans-serif;
   background:linear-gradient(135deg,var(--bg1),var(--bg2));
   color:var(--ink);
-  overflow-y:auto;          /* ahora se puede hacer scroll vertical */
-  overflow-x:hidden;        /* evita que se mueva a los lados */
-  scroll-behavior:smooth;
 }
 
     header{
-        text-align: center;
+      text-align: center;
       display:flex;align-items:center;justify-content:space-between;
-      padding:12px 18px;background:var(--accent-2);
+      padding:12px 12px;background:var(--accent-2);
       box-shadow:0 4px 12px rgba(0,0,0,.1);
     }
     .brand{display:flex;align-items:center;gap:10px}
-    .brand img{width:48px;height:48px;object-fit:contain}
     .brand h1{
       margin:0;font-family:'Fredoka One',cursive;font-size:1.6rem;color:#FF6B6B;
       text-shadow:1px 1px 0 #fff;
@@ -62,7 +58,7 @@ header {
 }
 @keyframes headerFloat {
   from { transform: translateY(0); }
-  to { transform: translateY(6px); }
+  to { transform: translateY(3px); }
 }
 header .brand {
   display: flex;
@@ -70,10 +66,7 @@ header .brand {
   align-items: center;
   gap: 10px;
 }
-.rexi-anim {
-  width: 50px;
-  animation: rexBounce 2s ease-in-out infinite;
-}
+
 @keyframes rexBounce {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-8px); }
@@ -105,8 +98,8 @@ header .brand {
 
     /* Contenedor horizontal */
     .shell{
-      max-width:1100px;height:calc(100% - 120px);
-      margin:16px auto; padding:0 12px 12px;
+      max-width:1100px;height:calc(100% - 200px);
+      margin:10px auto 12px; padding:8px 12px;
       display:flex;flex-direction:column;gap:12px;
       background:rgba(255,255,255,.25);
       backdrop-filter:blur(10px);
@@ -116,7 +109,7 @@ header .brand {
     body.dark .shell{background:rgba(75,0,130,.25)}
 
     .intro{
-      margin:12px auto 0;max-width:980px;
+      margin:12px auto 0;max-width:900px;
       background:rgba(255,255,255,.9);
       border:4px solid var(--border);
       border-radius:18px;padding:10px 14px;line-height:1.4;
@@ -127,7 +120,7 @@ header .brand {
 
     /* Carrusel */
     .ribbon{
-      position:relative;flex:1;display:flex;align-items:center;gap:12px;
+      position:relative;flex:1;display:flex;align-items:center;gap:60px;
       padding:6px 0 0 0;
     }
     .nav-btn{
@@ -143,14 +136,14 @@ header .brand {
     }
 
     .card{
-      flex:0 0 90%; /* visible de a una; en desktop grande se ve casi completa */
+      flex:0 0 80%; /* visible de a una; en desktop grande se ve casi completa */
       max-width:900px;
       background:var(--card);
       border:5px solid var(--border);
       border-radius:22px;padding:18px;
       box-shadow:0 10px 22px rgba(0,0,0,.15);
     }
-    @media (min-width:900px){ .card{flex-basis:860px} }
+    @media (min-width:200px){ .card{flex-basis:850px} }
 
     .card h3{
       margin:0 0 8px 0;font-size:1.4rem;color:var(--accent-3);display:flex;align-items:center;gap:8px
@@ -181,7 +174,7 @@ header .brand {
     .dot.active{background:var(--dot-active)}
 
     footer{
-      text-align:center;color:#fff;font-weight:600;padding:6px 0 10px
+      text-align:center;color:#fff;font-weight:400;padding:6px 0 10px
     }
 
     /* Scrollbar creativo del carrusel interior */
@@ -199,63 +192,6 @@ header .brand {
       background:linear-gradient(180deg, #B3E5FC, #80D8FF 55%, #4FC3F7);
       border:3px solid rgba(147,112,219,.35)
     }
-    /* ===========================
-   🎨 Scrollbar creativo con estilo infantil
-   =========================== */
-
-/* WebKit (Chrome, Edge, Opera, Safari) */
-body::-webkit-scrollbar {
-  width: 14px;
-}
-body::-webkit-scrollbar-track {
-  background:
-    radial-gradient(circle at 25% 20%, rgba(255,255,255,.55) 0 6px, transparent 7px),
-    radial-gradient(circle at 70% 60%, rgba(255,255,255,.45) 0 5px, transparent 6px),
-    linear-gradient(180deg, rgba(255,255,255,.25), rgba(255,255,255,.15));
-  border-radius: 999px;
-  box-shadow: inset 0 0 0 2px rgba(255,255,255,.25);
-}
-body.dark::-webkit-scrollbar-track {
-  background:
-    radial-gradient(circle at 25% 25%, rgba(147,112,219,.55) 0 6px, transparent 7px),
-    radial-gradient(circle at 70% 60%, rgba(138,43,226,.45) 0 5px, transparent 6px),
-    linear-gradient(180deg, rgba(147,112,219,.25), rgba(138,43,226,.15));
-  box-shadow: inset 0 0 0 2px rgba(147,112,219,.35);
-}
-
-/* Pulgar degradado */
-body::-webkit-scrollbar-thumb {
-  background:
-    radial-gradient(circle at 30% 30%, rgba(255,255,255,.75) 0 3px, transparent 4px),
-    radial-gradient(circle at 70% 70%, rgba(255,255,255,.55) 0 3px, transparent 4px),
-    linear-gradient(180deg, #FF8A80, #FF6B6B 55%, #FF5252);
-  border-radius: 999px;
-  border: 3px solid rgba(255,255,255,.35);
-  box-shadow: inset 0 -2px 6px rgba(0,0,0,.15), 0 1px 2px rgba(0,0,0,.15);
-}
-body::-webkit-scrollbar-thumb:hover {
-  filter: brightness(1.05);
-  box-shadow: inset 0 -2px 8px rgba(0,0,0,.18), 0 2px 4px rgba(0,0,0,.18);
-}
-
-/* Versión modo noche */
-body.dark::-webkit-scrollbar-thumb {
-  background:
-    radial-gradient(circle at 30% 30%, rgba(255,255,255,.85) 0 3px, transparent 4px),
-    radial-gradient(circle at 70% 70%, rgba(255,255,255,.55) 0 3px, transparent 4px),
-    linear-gradient(180deg, #B3E5FC, #80D8FF 55%, #4FC3F7);
-  border: 3px solid rgba(147,112,219,.35);
-}
-
-/* Botones de scroll */
-body::-webkit-scrollbar-button {
-  height: 12px;
-  background: linear-gradient(180deg, rgba(255,255,255,.35), rgba(255,255,255,.15));
-  border-radius: 10px;
-}
-body.dark::-webkit-scrollbar-button {
-  background: linear-gradient(180deg, rgba(147,112,219,.35), rgba(138,43,226,.15));
-}
   </style>
 </head>
 <body>
@@ -264,15 +200,12 @@ body.dark::-webkit-scrollbar-button {
 
 <header>
   <div class="brand">
-    <img src="Rex.png" alt="Rexi" class="rexi-anim">
     <div class="title-box">
       <h1>🌈 Mundo Lógico con Rexi 🦖</h1>
-      <p class="subtitle">Aprendamos jugando a pensar como programadores</p>
     </div>
   </div>
   <button id="themeBtn" class="theme-toggle" aria-label="Cambiar tema">🌙</button>
 </header>
-
   <main class="shell">
     <!-- Instrucciones (primero siempre) -->
     <section class="intro">
@@ -303,7 +236,6 @@ body.dark::-webkit-scrollbar-button {
 2) Poner pan
 3) Agregar mermelada
 → ¡Listo! 😋</code></pre>
-  <p>Así piensan los programas: <b>siguen pasos</b> para lograr una tarea.</p>
 </article>
 
           <!-- 2. Pensamiento Lógico -->
@@ -322,7 +254,6 @@ Si llueve: paraguas
 Si es de noche: dormir</code></pre>
   <p>¡Tu cabeza también puede pensar como una computadora! 🧠</p>
 </article>
-
           <!-- 3. Algoritmos (estructura) -->
 <article class="card">
   <span class="tag">💡 Algoritmos</span>
