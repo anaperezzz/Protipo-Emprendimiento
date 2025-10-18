@@ -2,150 +2,510 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Actividad: Ordena la Secuencia</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>¡Ordena la Secuencia con Rex!</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    :root {
-      --azul-cielo: #87CEEB;
-      --azul-brillante: #1E90FF;
-      --amarillo-palido: #FFF9C4;
-      --azul-oscuro: #2E4053;
-      --rosa-fuerte: #E91E63;
-      --blanco: #FFFFFF;
-    }
-
-    * { box-sizing: border-box; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: var(--azul-cielo);
-      margin: 0;
-      padding: 2rem;
-      color: var(--azul-oscuro);
+      font-family: 'Fredoka', sans-serif;
+      background: linear-gradient(135deg, #87CEEB 0%, #1E90FF 100%);
+      color: #2E4053;
+      height: 100vh;
+      overflow: hidden;
+      transition: background 0.3s, color 0.3s;
     }
-
-    .contenedor {
-      max-width: 950px;
-      margin: 0 auto;
-      background-color: var(--blanco);
-      border-radius: 20px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-      padding: 2rem 2.5rem;
+    body.night-mode {
+      background: linear-gradient(135deg, #4B0082 0%, #8A2BE2 100%);
+      color: #E6E6FA;
     }
-
-    h1 { text-align: center; margin-top: 0; }
-    h2 { margin-bottom: 0.5rem; }
-
-    .indicaciones {
-      background-color: var(--amarillo-palido);
-      border-left: 8px solid var(--rosa-fuerte);
-      padding: 1rem 1.5rem;
-      border-radius: 12px;
-      margin-bottom: 1.5rem;
-      font-weight: 500;
-    }
-
-    .pasos {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      margin-bottom: 2rem;
-      justify-content: center;
-    }
-
-    .paso {
-      background-color: var(--azul-brillante);
-      color: var(--blanco);
-      padding: 1rem 1.5rem;
-      border-radius: 12px;
-      cursor: grab;
-      user-select: none;
-      transition: transform 0.2s;
-    }
-    .paso:hover { transform: scale(1.05); }
-
-    .zona-respuesta {
-      background-color: var(--amarillo-palido);
-      border: 2px dashed var(--rosa-fuerte);
-      padding: 1rem;
-      min-height: 120px;
-      border-radius: 12px;
-      margin-bottom: 1rem;
+    
+    .game-container {
+      height: 100vh;
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
+      padding: 15px;
+      position: relative;
     }
-
-    .respuesta-item {
-      background: var(--rosa-fuerte);
-      color: var(--blanco);
-      padding: 0.5rem 1rem;
-      border-radius: 8px;
-      font-weight: bold;
-    }
-
-    .botones {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-top: 1rem;
-    }
-
-    button {
-      padding: 0.6rem 1.2rem;
+    
+    /* Enlace de regreso */
+    .back-link {
+      position: absolute;
+      top: 25px;
+      left: 25px;
+      background: #FF6B6B;
+      color: white;
       border: none;
-      border-radius: 10px;
+      padding: 10px 15px;
       font-size: 1rem;
-      font-weight: bold;
+      font-weight: 700;
+      border-radius: 50%;
       cursor: pointer;
-      transition: background 0.2s;
-      color: var(--blanco);
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 0 #FF5252, 0 6px 10px rgba(0, 0, 0, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 50px;
+      height: 50px;
+      z-index: 10;
+      text-decoration: none;
     }
-
-    .btn-comprobar { background: var(--azul-oscuro); }
-    .btn-comprobar:hover { filter: brightness(1.1); }
-
-    .btn-reintentar { background: var(--rosa-fuerte); }
-    .btn-reintentar:hover { filter: brightness(1.1); }
-
-    .btn-siguiente { background: var(--azul-brillante); }
-    .btn-siguiente:hover { filter: brightness(1.1); }
-
-    .mensaje {
+    
+    .back-link:active {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 #FF5252, 0 3px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    body.night-mode .back-link {
+      background: #8A2BE2;
+      box-shadow: 0 4px 0 #4B0082, 0 6px 10px rgba(0, 0, 0, 0.2);
+    }
+    
+    .content-box {
+      background: rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(10px);
+      border-radius: 25px;
+      padding: 20px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.18);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      transition: background 0.3s, box-shadow 0.3s;
+      overflow: hidden;
+    }
+    body.night-mode .content-box {
+      background: rgba(75, 0, 130, 0.3);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    }
+    
+    /* Header compacto */
+    .header-section {
       text-align: center;
-      font-size: 1.25rem;
-      font-weight: bold;
-      margin-top: 1rem;
-      min-height: 1.5em;
+      margin-bottom: 10px;
+      flex-shrink: 0;
+    }
+    
+    .rex-container { 
+      margin: 0 auto 5px; 
+    }
+    
+    .rex { 
+      width: 80px; 
+      height: auto; 
+      animation: bounce 2s infinite alternate; 
+      filter: drop-shadow(3px 3px 5px rgba(0, 0, 0, 0.2)); 
+    }
+    
+    @keyframes bounce {
+      from { transform: translateY(0); }
+      to { transform: translateY(-8px); }
+    }
+    
+    h1 { 
+      font-size: 1.5rem; 
+      margin-bottom: 5px; 
+      color: #2E4053; 
+      text-shadow: 2px 2px 0 rgba(255, 255, 255, 0.5); 
+      line-height: 1.1; 
+      transition: color 0.3s, text-shadow 0.3s; 
+    }
+    
+    body.night-mode h1 { 
+      color: #DDA0DD; 
+      text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5); 
+    }
+    
+    .indicaciones {
+      background: rgba(255, 255, 255, 0.75);
+      border-radius: 12px;
+      padding: 10px;
+      margin: 5px 0;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      position: relative;
+      transition: background 0.3s, box-shadow 0.3s;
+      font-size: 0.9rem;
+      line-height: 1.2;
+      color: #18435B;
+      flex-shrink: 0;
+    }
+    
+    body.night-mode .indicaciones {
+      background: rgba(221, 160, 221, 0.5);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      color: #F8F8FF;
+    }
+    
+    /* Contenido principal - Distribución en dos columnas */
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      overflow: hidden;
+    }
+    
+    .game-area {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      min-height: 0;
+    }
+    
+    .titulo-secuencia {
+      text-align: center;
+      margin: 5px 0;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      grid-column: 1 / -1;
+    }
+    
+    /* Columna izquierda - Pasos */
+    .pasos-container {
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+    
+    .pasos-title {
+      font-size: 1rem;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+    
+    .pasos {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-height: 0;
+      overflow-y: auto;
+      padding: 5px;
+    }
+    
+    .paso {
+      background: linear-gradient(145deg, #FF6B6B, #FF5252);
+      border-radius: 12px;
+      padding: 10px 12px;
+      text-align: left;
+      box-shadow: 0 6px 0 #E53E3E, 0 8px 12px rgba(0, 0, 0, 0.15);
+      cursor: grab;
+      border: 3px solid #FFD166;
+      transition: transform .15s, border-color .15s, box-shadow .15s, background 0.3s;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      user-select: none;
+      color: white;
+    }
+    
+    body.night-mode .paso { 
+      background: linear-gradient(145deg, #8A2BE2, #4B0082); 
+      border-color: #9370DB;
+      box-shadow: 0 6px 0 #4B0082, 0 8px 12px rgba(0, 0, 0, 0.2);
+    }
+    
+    .paso:hover { 
+      transform: translateY(-2px); 
+      box-shadow: 0 8px 0 #E53E3E, 0 10px 15px rgba(0, 0, 0, 0.2); 
+    }
+    
+    body.night-mode .paso:hover { 
+      box-shadow: 0 8px 0 #4B0082, 0 10px 15px rgba(0, 0, 0, 0.3); 
+    }
+    
+    .paso .icon { 
+      font-size: 1.2rem; 
+    }
+    
+    .paso .text { 
+      font-size: 0.9rem; 
+      font-weight: 600; 
+      line-height: 1.2;
+    }
+    
+    /* Columna derecha - Zona de respuesta */
+    .respuesta-container {
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+    
+    .respuesta-title {
+      font-size: 1rem;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+    
+    .zona-respuesta {
+      background: rgba(255, 255, 255, 0.6);
+      border: 3px dashed #FFD166;
+      border-radius: 15px;
+      padding: 12px;
+      flex: 1;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: background 0.3s, border-color 0.3s;
+      min-height: 0;
+      overflow-y: auto;
+    }
+    
+    body.night-mode .zona-respuesta { 
+      background: rgba(221, 160, 221, 0.3); 
+      border-color: #8A2BE2; 
+    }
+    
+    .respuesta-item {
+      background: linear-gradient(145deg, #FFD166, #FFB800);
+      border-radius: 12px;
+      padding: 8px 12px;
+      box-shadow: 0 4px 0 #FF9E00, 0 6px 10px rgba(0, 0, 0, 0.15);
+      border: 2px solid #FF6B6B;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      font-weight: 600;
+      transition: background 0.3s;
+      color: #2E4053;
+    }
+    
+    body.night-mode .respuesta-item { 
+      background: linear-gradient(145deg, #9370DB, #8A2BE2); 
+      border-color: #DDA0DD; 
+      color: #F8F8FF; 
+    }
+    
+    /* Controles */
+    .controls { 
+      display: flex; 
+      gap: 10px; 
+      justify-content: center; 
+      margin-top: 10px; 
+      flex-wrap: wrap; 
+      flex-shrink: 0;
+      grid-column: 1 / -1;
+    }
+    
+    .btn { 
+      background: #FF6B6B; 
+      color: white; 
+      border: none; 
+      padding: 8px 15px; 
+      font-size: 0.9rem; 
+      font-weight: 700; 
+      border-radius: 20px; 
+      cursor: pointer; 
+      transition: transform .18s, background 0.3s, color 0.3s; 
+      box-shadow: 0 4px 0 #FF5252, 0 6px 10px rgba(0, 0, 0, 0.15); 
+      display: inline-flex; 
+      align-items: center; 
+      gap: 6px; 
+    }
+    
+    .btn:hover { 
+      transform: scale(1.04); 
+    }
+    
+    .btn:active {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 #FF5252, 0 3px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    body.night-mode .btn { 
+      background: #8A2BE2;
+      box-shadow: 0 4px 0 #4B0082, 0 6px 10px rgba(0, 0, 0, 0.2);
+    }
+    
+    .audio-btn { 
+      background: #FFD166; 
+      color: #2E4053; 
+      box-shadow: 0 4px 0 #FFB800, 0 6px 10px rgba(0, 0, 0, 0.15); 
+    }
+    
+    body.night-mode .audio-btn { 
+      background: #9370DB; 
+      color: white;
+    }
+    
+    .btn-siguiente {
+      display: none; /* Oculto inicialmente */
+      background: #4CAF50;
+      box-shadow: 0 4px 0 #388E3C, 0 6px 10px rgba(0, 0, 0, 0.15);
+    }
+    
+    body.night-mode .btn-siguiente {
+      background: #4CAF50;
+      box-shadow: 0 4px 0 #388E3C, 0 6px 10px rgba(0, 0, 0, 0.2);
+    }
+    
+    .mensaje { 
+      text-align: center; 
+      font-size: 1rem; 
+      font-weight: bold; 
+      margin-top: 8px; 
+      min-height: 1.5em; 
+      transition: color 0.3s; 
+      flex-shrink: 0;
+      grid-column: 1 / -1;
+    }
+    
+    body.night-mode .mensaje { 
+      color: #F8F8FF; 
+    }
+    
+    /* Decoración de fondo */
+    .decoration { 
+      position: fixed; 
+      width: 100%; 
+      height: 100%; 
+      top: 0; 
+      left: 0; 
+      pointer-events: none; 
+      z-index: -1; 
+    }
+    
+    .bubble { 
+      position: absolute; 
+      border-radius: 50%; 
+      background: rgba(255, 255, 255, 0.4); 
+      animation: float 10s infinite ease-in-out; 
+      transition: background 0.3s; 
+    }
+    
+    body.night-mode .bubble { 
+      background: rgba(138, 43, 226, 0.4); 
+    }
+    
+    .star { 
+      position: absolute; 
+      font-size: 1.5rem; 
+      animation: float 8s infinite ease-in-out; 
+      color: #FFE66D; 
+      transition: color 0.3s; 
+    }
+    
+    body.night-mode .star { 
+      color: #DDA0DD; 
+    }
+    
+    .bubble:nth-child(1) { width: 80px; height: 80px; top: 10%; left: 10%; animation-delay: 0s; }
+    .bubble:nth-child(2) { width: 120px; height: 120px; top: 70%; left: 80%; animation-delay: -2s; }
+    .bubble:nth-child(3) { width: 60px; height: 60px; top: 40%; left: 85%; animation-delay: -4s; }
+    .star:nth-child(4) { top: 20%; left: 90%; animation-delay: -1s; }
+    .star:nth-child(5) { top: 80%; left: 15%; animation-delay: -3s; }
+    
+    @keyframes float {
+      0% { transform: translateY(0) translateX(0); }
+      50% { transform: translateY(-15px) translateX(8px); }
+      100% { transform: translateY(0) translateX(0); }
+    }
+    
+    /* Media queries para diferentes tamaños */
+    @media (max-height: 700px) {
+      .rex { width: 70px; }
+      h1 { font-size: 1.3rem; }
+      .indicaciones { font-size: 0.85rem; padding: 8px; }
+      .paso { padding: 8px 10px; }
+      .paso .text { font-size: 0.85rem; }
+      .btn { padding: 7px 12px; font-size: 0.85rem; }
+      .back-link { top: 20px; left: 20px; width: 45px; height: 45px; }
+    }
+    
+    @media (max-height: 600px) {
+      .game-container { padding: 10px; }
+      .content-box { padding: 15px; }
+      .header-section { margin-bottom: 5px; }
+      .indicaciones { margin: 5px 0; font-size: 0.8rem; }
+      .pasos { gap: 5px; margin: 5px 0; }
+      .zona-respuesta { margin: 5px 0; padding: 8px; }
+      .controls { margin-top: 5px; gap: 8px; }
+      .back-link { top: 15px; left: 15px; width: 40px; height: 40px; padding: 8px; }
+    }
+    
+    @media (max-width: 768px) {
+      .game-area {
+        grid-template-columns: 1fr;
+      }
+      .back-link { top: 15px; left: 15px; width: 45px; height: 45px; padding: 8px; }
+    }
+    
+    @media (max-width: 480px) {
+      .back-link { top: 10px; left: 10px; width: 40px; height: 40px; padding: 6px; }
     }
   </style>
 </head>
 <body>
+  <!-- Sonidos para interacciones -->
+  <audio id="clickSound" src="click.wav" preload="auto"></audio>
+  <audio id="dropSound" src="drop.wav" preload="auto"></audio>
+  <audio id="correctSound" src="correct.wav" preload="auto"></audio>
+  <audio id="wrongSound" src="wrong.wav" preload="auto"></audio>
 
-  <div class="contenedor">
-    <h1>🔧 Ordena la Secuencia</h1>
-    <div class="indicaciones">
-      Arrastra los pasos desde los bloques <strong>azules</strong> y colócalos en la zona <strong>amarilla</strong> en el orden correcto. 
-      Cuando termines, presiona <em>Comprobar</em>. Usa <em>Volver a intentar</em> para reiniciar o <em>Siguiente</em> para una nueva secuencia. ¡Son 5 en total!
+  <div class="decoration">
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="star">⭐</div>
+    <div class="star">🌟</div>
+  </div>
+
+  <!-- Enlace de regreso a la página principal -->
+  <a href="../presentacion2.html" class="back-link" title="Volver al inicio">
+    <i class="fas fa-home"></i>
+  </a>
+
+  <div class="game-container">
+    <div class="content-box">
+      <!-- Header -->
+      <div class="header-section">
+        <div class="rex-container">
+          <img src="Imagen_de_WhatsApp_2025-10-06_a_las_11.01.41_4f03bb5f-removebg-preview (1).png" alt="Rex el dinosaurio" class="rex">
+        </div>
+
+        <h1>¡Ordena la Secuencia con Rex!</h1>
+
+        <div class="indicaciones">
+          Arrastra los pasos rojos al área amarilla en el orden correcto. Cuando termines, presiona Comprobar.
+        </div>
+      </div>
+
+      <!-- Contenido principal -->
+      <div class="main-content">
+        <div class="game-area">
+          <h2 class="titulo-secuencia" id="titulo-secuencia"></h2>
+          
+          <!-- Columna izquierda - Pasos -->
+          <div class="pasos-container">
+            <h3 class="pasos-title">Pasos disponibles:</h3>
+            <div class="pasos" id="area-pasos"></div>
+          </div>
+
+          <!-- Columna derecha - Zona de respuesta -->
+          <div class="respuesta-container">
+            <h3 class="respuesta-title">Tu orden:</h3>
+            <div class="zona-respuesta" id="respuesta" aria-label="Zona de respuesta" tabindex="0"></div>
+          </div>
+        </div>
+
+        <!-- Controles -->
+        <div class="controls botones">
+          <button class="btn btn-comprobar" id="btn-comprobar">Comprobar</button>
+          <button class="btn btn-reintentar" id="btn-reintentar">Volver a intentar</button>
+          <button class="btn btn-siguiente" id="btn-siguiente">Siguiente ➡️</button>
+          <button id="nightModeBtn" class="btn"><i class="fas fa-moon"></i> Modo Noche</button>
+        </div>
+
+        <div class="mensaje" id="mensaje"></div>
+      </div>
     </div>
-
-    <h2 id="titulo-secuencia"></h2>
-
-    <div class="pasos" id="area-pasos"></div>
-
-    <h3>Tu orden:</h3>
-    <div class="zona-respuesta" id="respuesta" aria-label="Zona de respuesta" tabindex="0"></div>
-
-    <div class="botones">
-      <button class="btn-comprobar" id="btn-comprobar">Comprobar</button>
-      <button class="btn-reintentar" id="btn-reintentar">Volver a intentar</button>
-      <button class="btn-siguiente" id="btn-siguiente">Siguiente ➡️</button>
-    </div>
-
-    <div class="mensaje" id="mensaje"></div>
   </div>
 
   <script>
-    // Secuencias (5 en total)
+    // Secuencias (4 en total, eliminamos "Cepillarse los dientes")
     const secuencias = [
       {
         titulo: "Preparar un sándwich (3 pasos)",
@@ -153,15 +513,6 @@
           "Poner pan en la mesa",
           "Untar mermelada",
           "Poner las rebanadas juntas",
-        ],
-      },
-      {
-        titulo: "Cepillarse los dientes (4 pasos)",
-        pasos: [
-          "Mojar el cepillo",
-          "Poner pasta dental",
-          "Cepillar dientes",
-          "Enjuagar la boca",
         ],
       },
       {
@@ -196,6 +547,10 @@
 
     let indiceActual = 0;
 
+    const clickSound = document.getElementById('clickSound');
+    const dropSound = document.getElementById('dropSound');
+    const correctSound = document.getElementById('correctSound');
+    const wrongSound = document.getElementById('wrongSound');
     const titulo = document.getElementById("titulo-secuencia");
     const areaPasos = document.getElementById("area-pasos");
     const respuesta = document.getElementById("respuesta");
@@ -203,6 +558,12 @@
     const btnComprobar = document.getElementById("btn-comprobar");
     const btnReintentar = document.getElementById("btn-reintentar");
     const btnSiguiente = document.getElementById("btn-siguiente");
+    const nightModeBtn = document.getElementById('nightModeBtn');
+
+    function playSound(sound) {
+      sound.currentTime = 0;
+      sound.play().catch(() => {});
+    }
 
     function shuffle(array) {
       return array
@@ -215,10 +576,11 @@
       // Reset UI
       respuesta.innerHTML = "";
       mensaje.textContent = "";
+      btnSiguiente.style.display = "none"; // Ocultar botón siguiente
 
       // Datos de la secuencia actual
       const sec = secuencias[indiceActual];
-      titulo.textContent = `Secuencia ${indiceActual + 1}/5: ${sec.titulo}`;
+      titulo.textContent = `Secuencia ${indiceActual + 1}/4: ${sec.titulo}`;
 
       // Mostrar pasos random
       areaPasos.innerHTML = "";
@@ -226,7 +588,7 @@
       pasosAleatorios.forEach(texto => {
         const div = document.createElement("div");
         div.className = "paso";
-        div.textContent = texto;
+        div.innerHTML = `<div class="icon">🧩</div><div class="text">${texto}</div>`;
         div.setAttribute("draggable", "true");
         div.addEventListener("dragstart", e => {
           e.dataTransfer.setData("text/plain", texto);
@@ -246,35 +608,49 @@
       if (yaExiste) return;
       const div = document.createElement("div");
       div.className = "respuesta-item";
-      div.textContent = texto;
+      div.innerHTML = `<div class="icon">✅</div><div class="text">${texto}</div>`;
       respuesta.appendChild(div);
+      playSound(dropSound);
     });
 
     btnComprobar.addEventListener("click", () => {
+      playSound(clickSound);
       const sec = secuencias[indiceActual];
-      const respuestasUser = Array.from(respuesta.children).map(el => el.textContent);
+      const respuestasUser = Array.from(respuesta.children).map(el => el.querySelector('.text').textContent);
       if (respuestasUser.length !== sec.pasos.length) {
-        mensaje.style.color = "var(--rosa-fuerte)";
+        mensaje.style.color = "#FF5252";
         mensaje.textContent = "Aún faltan pasos. ¡Revisa e intenta de nuevo!";
+        playSound(wrongSound);
         return;
       }
       const correcto = respuestasUser.every((txt, idx) => txt === sec.pasos[idx]);
       if (correcto) {
         mensaje.style.color = "green";
         mensaje.textContent = "✅ ¡Correcto! Bien hecho.";
+        btnSiguiente.style.display = "inline-flex"; // Mostrar botón siguiente
+        playSound(correctSound);
       } else {
-        mensaje.style.color = "var(--rosa-fuerte)";
+        mensaje.style.color = "#FF5252";
         mensaje.textContent = "❌ Orden incorrecto. Intenta nuevamente.";
+        playSound(wrongSound);
       }
     });
 
     btnReintentar.addEventListener("click", () => {
+      playSound(clickSound);
       cargarSecuencia();
     });
 
     btnSiguiente.addEventListener("click", () => {
+      playSound(clickSound);
       indiceActual = (indiceActual + 1) % secuencias.length;
       cargarSecuencia();
+    });
+
+    nightModeBtn.addEventListener('click', () => {
+      playSound(clickSound);
+      document.body.classList.toggle('night-mode');
+      nightModeBtn.innerHTML = document.body.classList.contains('night-mode') ? '<i class="fas fa-sun"></i> Modo Día' : '<i class="fas fa-moon"></i> Modo Noche';
     });
 
     // Inicializar

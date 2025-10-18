@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+  <title>Saberes Previos – Mundo Lógico con Rex</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: 'Fredoka', sans-serif;
+      background: linear-gradient(135deg, #87CEEB 0%, #1E90FF 100%);
+      color: #2E4053;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+      transition: background 0.3s, color 0.3s;
+    }
+    
+    body.night-mode {
+      background: linear-gradient(135deg, #4B0082 0%, #8A2BE2 100%);
+      color: #E6E6FA;
+    }
+    
+    .decoration { 
+      position: fixed; 
+      width: 100%; 
+      height: 100%; 
+      top: 0; 
+      left: 0; 
+      pointer-events: none; 
+      z-index: -1; 
+    }
+    
+    .bubble { 
+      position: absolute; 
+      border-radius: 50%; 
+      background: rgba(255, 255, 255, 0.4); 
+      animation: float 10s infinite ease-in-out; 
+      transition: background 0.3s; 
+    }
+    
+    body.night-mode .bubble { 
+      background: rgba(138, 43, 226, 0.4); 
+    }
+    
+    .star { 
+      position: absolute; 
+      font-size: 1.5rem; 
+      animation: float 8s infinite ease-in-out; 
+      color: #FFE66D; 
+      transition: color 0.3s; 
+    }
+    
+    body.night-mode .star { 
+      color: #DDA0DD; 
+    }
+    
+    .bubble:nth-child(1) { width: 80px; height: 80px; top: 10%; left: 10%; animation-delay: 0s; }
+    .bubble:nth-child(2) { width: 120px; height: 120px; top: 70%; left: 80%; animation-delay: -2s; }
+    .bubble:nth-child(3) { width: 60px; height: 60px; top: 40%; left: 85%; animation-delay: -4s; }
+    .star:nth-child(4) { top: 20%; left: 90%; animation-delay: -1s; }
+    .star:nth-child(5) { top: 80%; left: 15%; animation-delay: -3s; }
+    
+    @keyframes float {
+      0% { transform: translateY(0) translateX(0); }
+      50% { transform: translateY(-15px) translateX(8px); }
+      100% { transform: translateY(0) translateX(0); }
+    }
+    
+    .page-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 10px;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .content-box {
+      background: rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(10px);
+      border-radius: 25px;
+      padding: 12px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.18);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      transition: background 0.3s, box-shadow 0.3s;
+      overflow: hidden;
+    }
+    
+    body.night-mode .content-box {
+      background: rgba(75, 0, 130, 0.3);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    }
+    
+    /* Header */
+    .header-section {
+      text-align: center;
+      margin-bottom: 8px;
+      flex-shrink: 0;
+    }
+    
+    .rex-container { 
+      position: relative; 
+      margin: 0 auto 3px; 
+    }
+    
+    .rex { 
+      width: 65px; 
+      height: auto; 
+      animation: bounce 2s infinite alternate; 
+      filter: drop-shadow(3px 3px 5px rgba(0, 0, 0, 0.2)); 
+    }
+    
+    @keyframes bounce {
+      from { transform: translateY(0); }
+      to { transform: translateY(-6px); }
+    }
+    
+    h1 { 
+      font-size: 1.3rem; 
+      margin-bottom: 3px; 
+      color: #2E4053; 
+      text-shadow: 2px 2px 0 rgba(255, 255, 255, 0.5); 
+      line-height: 1.1; 
+      transition: color 0.3s, text-shadow 0.3s; 
+    }
+    
+    body.night-mode h1 { 
+      color: #DDA0DD; 
+      text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5); 
+    }
+    
+    .message-box {
+      background: rgba(255, 255, 255, 0.75);
+      border-radius: 15px;
+      padding: 8px;
+      margin: 3px auto;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      position: relative;
+      transition: transform .2s, background 0.3s, box-shadow 0.3s;
+      max-width: 90%;
+    }
+    
+    body.night-mode .message-box {
+      background: rgba(221, 160, 221, 0.5);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+    
+    .message-text { 
+      font-size: 0.85rem; 
+      line-height: 1.2; 
+      color: #18435B; 
+      transition: color 0.3s; 
+    }
+    
+    body.night-mode .message-text { 
+      color: #F8F8FF; 
+    }
+    
+    /* Controles superiores */
+    .top-controls {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    
+    .btn { 
+      background: #FF6B6B; 
+      color: white; 
+      border: none; 
+      padding: 6px 12px; 
+      font-size: 0.85rem; 
+      font-weight: 700; 
+      border-radius: 20px; 
+      cursor: pointer; 
+      transition: all 0.3s ease; 
+      box-shadow: 0 3px 0 #FF5252, 0 4px 8px rgba(0, 0, 0, 0.15); 
+      display: inline-flex; 
+      align-items: center; 
+      gap: 6px; 
+    }
+    
+    .btn:active {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 #FF5252, 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    body.night-mode .btn {
+      background: #8A2BE2;
+      box-shadow: 0 3px 0 #4B0082, 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    .audio-btn { 
+      background: #FFD166; 
+      color: #2E4053; 
+      box-shadow: 0 3px 0 #FFB800, 0 4px 8px rgba(0, 0, 0, 0.15); 
+    }
+    
+    body.night-mode .audio-btn { 
+      background: #9370DB; 
+      color: white;
+    }
+    
+    /* ===========================
+       CARRUSEL DE CONCEPTOS
+    =========================== */
+    .concepts-carousel {
+      position: relative;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 6px 0 0 0;
+    }
+    
+    .nav-btn {
+      flex: 0 0 auto;
+      width: 46px;
+      height: 46px;
+      border: none;
+      border-radius: 50%;
+      background: #FF6B6B;
+      color: #fff;
+      font-size: 1.2rem;
+      font-weight: 700;
+      box-shadow: 0 4px 0 rgba(0,0,0,.15);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    body.night-mode .nav-btn {
+      background: #8A2BE2;
+      box-shadow: 0 4px 0 rgba(0,0,0,.25);
+    }
+    
+    .nav-btn:active {
+      transform: translateY(1px);
+      box-shadow: 0 2px 0 rgba(0,0,0,.15);
+    }
+    
+    .nav-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    .track-wrap {
+      flex: 1;
+      overflow: hidden;
+    }
+    
+    .track {
+      display: flex;
+      gap: 16px;
+      transition: transform .45s ease;
+      will-change: transform;
+    }
+    
+    .concept-card {
+      flex: 0 0 90%;
+      max-width: 900px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 5px solid #FFD166;
+      border-radius: 22px;
+      padding: 18px;
+      box-shadow: 0 10px 22px rgba(0,0,0,.15);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    
+    body.night-mode .concept-card {
+      background: rgba(147,112,219,.2);
+      border-color: #B388FF;
+    }
+    
+    .concept-tag {
+      display: inline-block;
+      background: #FFD166;
+      color: #3a2f00;
+      border-radius: 14px;
+      padding: 4px 10px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      align-self: flex-start;
+    }
+    
+    body.night-mode .concept-tag {
+      background: #B388FF;
+      color: #F5ECFF;
+    }
+    
+    .concept-card h3 {
+      margin: 0;
+      font-size: 1.4rem;
+      color: #42A5F5;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    body.night-mode .concept-card h3 {
+      color: #80D8FF;
+    }
+    
+    .concept-card p {
+      margin: 8px 0;
+      line-height: 1.4;
+    }
+    
+    .concept-card ul {
+      margin: 8px 0 0 0;
+      padding: 0 0 0 18px;
+    }
+    
+    .concept-card li {
+      margin: 6px 0;
+    }
+    
+    .code-block {
+      background: #FFF9C4;
+      border-radius: 12px;
+      padding: 10px 12px;
+      overflow: auto;
+      box-shadow: inset 0 0 0 2px rgba(0,0,0,.06);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+      color: #333;
+      margin: 10px 0;
+    }
+    
+    body.night-mode .code-block {
+      background: #24124a;
+      color: #E6E6FA;
+    }
+    
+    /* Paginación */
+    .dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      padding: 6px 0 2px;
+    }
+    
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #C5E9FF;
+      box-shadow: 0 1px 0 rgba(0,0,0,.15);
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    
+    body.night-mode .dot {
+      background: #7e6bb7;
+    }
+    
+    .dot.active {
+      background: #1E90FF;
+    }
+    
+    body.night-mode .dot.active {
+      background: #80D8FF;
+    }
+    
+    /* Footer */
+    .footer-section {
+      text-align: center;
+      margin-top: 8px;
+      padding-top: 6px;
+      border-top: 2px solid rgba(255, 255, 255, 0.3);
+      flex-shrink: 0;
+    }
+    
+    .footer-text {
+      margin-top: 5px;
+      font-size: 0.75rem;
+      opacity: 0.8;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .page-container { padding: 8px; }
+      .content-box { padding: 10px; }
+      .rex { width: 60px; }
+      h1 { font-size: 1.2rem; }
+      .message-text { font-size: 0.8rem; }
+      .concept-card { flex: 0 0 85%; padding: 14px; }
+      .top-controls { justify-content: center; }
+      .nav-btn { width: 40px; height: 40px; }
+    }
+    
+    @media (max-width: 480px) {
+      .page-container { padding: 6px; }
+      .content-box { padding: 8px; }
+      h1 { font-size: 1.1rem; }
+      .message-text { font-size: 0.75rem; }
+      .btn { padding: 5px 10px; font-size: 0.8rem; }
+      .concept-card { flex: 0 0 80%; padding: 12px; }
+      .concept-card h3 { font-size: 1.2rem; }
+      .nav-btn { width: 36px; height: 36px; font-size: 1rem; }
+    }
+
+    .home-btn {
+      background: #4CD964 !important;
+      color: #fff !important;
+      box-shadow: 0 3px 0 #2ECC40, 0 4px 8px rgba(0,0,0,0.15) !important;
+      border: none;
+    }
+    .home-btn:active {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 #2ECC40, 0 2px 4px rgba(0,0,0,0.1);
+    }
+    body.night-mode .home-btn {
+      background: #43e97b !important;
+      box-shadow: 0 3px 0 #2ECC40, 0 4px 8px rgba(0,0,0,0.2) !important;
+      color: #fff !important;
+    }
+  </style>
+</head>
+<body>
+  <!-- Sonido para clics -->
+  <audio id="clickSound" src="click.wav" preload="auto"></audio>
+
+  <div class="decoration">
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="star">⭐</div>
+    <div class="star">🌟</div>
+  </div>
+
+  <div class="page-container">
+    <div class="content-box">
+      <!-- Controles superiores -->
+      <div class="top-controls">
+        <a href="../presentacion2.html" class="btn home-btn" style="background:#4CD964; color:white; box-shadow:0 3px 0 #2ECC40, 0 4px 8px rgba(0,0,0,0.15);">
+          <i class="fas fa-home"></i> Inicio
+        </a>
+        <!-- Reemplaza el botón "Escúchame" por un enlace <a> que apunte a un archivo de audio -->
+        <a href="#" class="btn audio-btn" id="speakBtn">
+          <i class="fas fa-volume-up"></i> Escúchame
+        </a>
+        <audio id="rexAudio" src="_Hola Soy Rexi Aquí .mp3" preload="auto"></audio>
+        <button id="nightModeBtn" class="btn">
+          <i class="fas fa-moon"></i> Modo Noche
+        </button>
+      </div>
+
+      <!-- Header -->
+      <div class="header-section">
+        <div class="rex-container">
+          <img src="Imagen_de_WhatsApp_2025-10-06_a_las_11.01.41_4f03bb5f-removebg-preview (1).png" alt="Rex el dinosaurio" class="rex">
+        </div>
+
+        <h1>🌈 Mundo Lógico con Rexi 🦖</h1>
+
+        <div id="messageBox" class="message-box">
+          <div id="messageText" class="message-text">
+            ¡Hola! Soy Rexi. Aquí aprenderás a pensar como programador con ejemplos fáciles. 
+            Usa las flechas <b>⬅️ ➡️</b> para moverte entre conceptos. ¡Toca los botones y escucha el <em>click</em>! 🔊
+          </div>
+        </div>
+      </div>
+
+      <!-- Carrusel de Conceptos -->
+      <div class="concepts-carousel">
+        <button class="nav-btn" id="prevBtn" aria-label="Anterior">⬅️</button>
+
+        <div class="track-wrap">
+          <div class="track" id="track">
+            <!-- 1. Orden y Secuencia -->
+            <article class="concept-card">
+              <span class="concept-tag">⚙️ Orden y Secuencia</span>
+              <h3>¡Sigamos los pasos con Rexi!</h3>
+              <p>Tu amigo <b>Rexi</b> te cuenta: "Cuando hacemos las cosas en <b>orden</b>, todo sale bien."  
+              Si cambias los pasos, ¡puede salir un desastre! 😅</p>
+              <p>Ejemplo del desayuno:</p>
+              <ul>
+                <li>1️⃣ Lavar manos 🖐️</li>
+                <li>2️⃣ Poner el pan 🍞</li>
+                <li>3️⃣ Agregar mermelada 🍓</li>
+              </ul>
+              <div class="code-block">Algoritmo: "Mi Desayuno"
+1) Lavar manos
+2) Poner pan
+3) Agregar mermelada
+→ ¡Listo! 😋</div>
+              <p>Así piensan los programas: <b>siguen pasos</b> para lograr una tarea.</p>
+            </article>
+
+            <!-- 2. Pensamiento Lógico -->
+            <article class="concept-card">
+              <span class="concept-tag">🧩 Pensamiento Lógico</span>
+              <h3>Reglas para decidir</h3>
+              <p>Rexi dice: "Usamos reglas sencillas para tomar decisiones".  
+              ¡Los programas hacen lo mismo!</p>
+              <ul>
+                <li>Si 🌞 hay sol → salgo a jugar 🏃‍♀️</li>
+                <li>Si 🌧️ llueve → llevo paraguas ☔</li>
+                <li>Si 🌙 es de noche → voy a dormir 😴</li>
+              </ul>
+              <div class="code-block">Si hay sol: jugar
+Si llueve: paraguas
+Si es de noche: dormir</div>
+              <p>¡Tu cabeza también puede pensar como una computadora! 🧠</p>
+            </article>
+
+            <!-- 3. Algoritmos (estructura) -->
+            <article class="concept-card">
+              <span class="concept-tag">💡 Algoritmos</span>
+              <h3>Inicio → Proceso → Fin</h3>
+              <p>Un <b>algoritmo</b> es una <b>lista de pasos</b> para resolver un problema.  
+              Rexi dice: "Es como una receta de cocina". 👨‍🍳</p>
+              <ul>
+                <li>🟢 <b>Inicio:</b> Me despierto ⏰</li>
+                <li>⚙️ <b>Proceso:</b> Me visto 👕 y desayuno 🥣</li>
+                <li>🔴 <b>Fin:</b> Voy a la escuela 🏫</li>
+              </ul>
+              <div class="code-block">INICIO
+  Vestirme
+  Desayunar
+FIN</div>
+              <p>Así las computadoras saben <b>qué hacer</b> y <b>en qué orden</b>.</p>
+            </article>
+
+            <!-- 4. Variables y Constantes -->
+            <article class="concept-card">
+              <span class="concept-tag">🤖 Variables y Constantes</span>
+              <h3>¡Cajitas de información!</h3>
+              <p>Rexi explica: "Imagina <b>cajitas</b> donde guardas datos".  
+              Algunas cajitas <b>cambian</b> y otras <b>no cambian</b>.</p>
+              <ul>
+                <li><b>Variable:</b> puede cambiar → <code>Mi edad = 7</code> (y luego 8 🎂)</li>
+                <li><b>Constante:</b> no cambia → <code>Dias de la semana = 8</code> 📅</li>
+              </ul>
+              <div class="code-block">// Para peques
+Mi Edad = 7 años
+
+Mi Edad = Mi Edad + 1 año = 8 años 🎉</div>
+              <p>Así los juegos guardan tu <b>nombre</b> o tus <b>puntos</b> 🎮.</p>
+            </article>
+
+            <!-- 5. Condiciones (si... entonces...) -->
+            <article class="concept-card">
+              <span class="concept-tag">🧠 Condiciones</span>
+              <h3>Si pasa A, hago B</h3>
+              <p>Las <b>condiciones</b> ayudan a elegir entre caminos. ¡Como un semáforo! 🚦</p>
+              <ul>
+                <li>Si tengo hambre 🍔 → como</li>
+                <li>Si no tengo hambre 🚫 → juego</li>
+                <li>Si hace frío 🧊 → me pongo abrigo 🧥</li>
+              </ul>
+              <div class="code-block">SI tengo_hambre
+  comer
+SINO
+  jugar</div>
+              <p>Los programas preguntan: "¿pasa esto?" y según la respuesta… ¡actúan! 🤖</p>
+            </article>
+
+            <!-- 6. Bucles (repetir) -->
+            <article class="concept-card">
+              <span class="concept-tag">🔁 Bucles (Repetir)</span>
+              <h3>Hacer algo muchas veces</h3>
+              <p>Rexi dice: "Cuando repetimos, usamos un <b>bucle</b>".  
+              ¡Así no escribimos lo mismo mil veces!</p>
+              <ul>
+                <li>Saltar la cuerda 10 veces 🤸</li>
+                <li>Mientras haya platos sucios 🍽️ → seguir lavando</li>
+              </ul>
+              <div class="code-block">REPETIR 10 veces:
+  saltar la cuerda
+
+MIENTRAS queden platos sucios:
+  seguir lavando platos</div>
+              <p>Los bucles ayudan a los programas a trabajar <b>rápido</b> y <b>sin cansarse</b>. 💪</p>
+            </article>
+          </div>
+        </div>
+
+        <button class="nav-btn" id="nextBtn" aria-label="Siguiente">➡️</button>
+      </div>
+
+      <!-- Indicadores de paginación -->
+      <div class="dots" id="dots" aria-label="Paginación"></div>
+
+      <!-- Footer -->
+      <div class="footer-section">
+        <p class="footer-text">
+          &copy; 2025 Click y Crea | Todos los derechos reservados
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const clickSound = document.getElementById('clickSound');
+    const speakBtn = document.getElementById('speakBtn');
+    const rexAudio = document.getElementById('rexAudio');
+    const nightModeBtn = document.getElementById('nightModeBtn');
+    
+    // ====== Estado del carrusel ======
+    const track = document.getElementById('track');
+    const cards = Array.from(track.children);
+    const dotsWrap = document.getElementById('dots');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    
+    let index = 0;
+
+    // Crear indicadores de paginación
+    cards.forEach((_, i)=>{
+      const d = document.createElement('div');
+      d.className = 'dot' + (i===0 ? ' active':'');
+      d.dataset.i = i;
+      dotsWrap.appendChild(d);
+    });
+
+    function playClick() {
+      if(!clickSound) return;
+      try{ 
+        clickSound.currentTime = 0; 
+        clickSound.play(); 
+      } catch(e){}
+    }
+
+    function updateCarousel(){
+      const cardWidth = cards[0].getBoundingClientRect().width + 16; // gap
+      track.style.transform = `translateX(${-index * cardWidth}px)`;
+      
+      // Actualizar indicadores
+      dotsWrap.querySelectorAll('.dot').forEach((dot,i)=>{
+        dot.classList.toggle('active', i===index);
+      });
+      
+      // Actualizar estado de botones
+      prevBtn.disabled = (index===0);
+      nextBtn.disabled = (index===cards.length-1);
+    }
+
+    // Navegación con botones
+    prevBtn.addEventListener('click', ()=>{
+      playClick();
+      if(index>0){ 
+        index--; 
+        updateCarousel(); 
+      }
+    });
+    
+    nextBtn.addEventListener('click', ()=>{
+      playClick();
+      if(index<cards.length-1){ 
+        index++; 
+        updateCarousel(); 
+      }
+    });
+
+    // Navegación con indicadores
+    dotsWrap.addEventListener('click',(e)=>{
+      const dot = e.target.closest('.dot');
+      if(!dot) return;
+      playClick();
+      index = +dot.dataset.i;
+      updateCarousel();
+    });
+
+    // Botón para modo noche
+    nightModeBtn.addEventListener('click', () => {
+      playClick();
+      document.body.classList.toggle('night-mode');
+      nightModeBtn.innerHTML = document.body.classList.contains('night-mode') ? 
+        '<i class="fas fa-sun"></i> Modo Día' : '<i class="fas fa-moon"></i> Modo Noche';
+    });
+
+    // Ajuste al redimensionar
+    window.addEventListener('resize', updateCarousel);
+
+    // Inicializar carrusel
+    updateCarousel();
+
+    speakBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      playClick();
+      rexAudio.currentTime = 0;
+      rexAudio.play();
+    });
+  </script>
+</body>
+</html>

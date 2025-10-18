@@ -3,217 +3,400 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>¡Juego de Comparación de Pupusas!</title>
+  <title>¡La Pupusería de Rex!</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap');
 
-    body {
-      font-family: 'Fredoka One', cursive;
+    * {
       margin: 0;
       padding: 0;
-      display: flex;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Fredoka', sans-serif;
+      background: linear-gradient(135deg, #87CEEB 0%, #1E90FF 100%);
+      color: #2E4053;
       min-height: 100vh;
       overflow-x: hidden;
-      background: linear-gradient(135deg, #87CEEB, #1E90FF);
+      padding: 15px;
+      transition: background 0.3s, color 0.3s;
     }
 
-    #rex-panel {
-      width: 260px;
-      background-color: #fbe3b1;
-      padding: 20px;
+    .page-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      height: 100%;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      border-right: 5px solid #f7c363;
-      position: fixed;
-      height: 100vh;
-      overflow-y: auto;
-    }
-
-    #rex-burbuja {
-      background: white;
-      padding: 15px;
-      border-radius: 20px;
-      border: 3px solid #333;
-      margin-bottom: 20px;
-      font-size: 0.95rem;
-      color: #333;
-      text-align: center;
+      gap: 20px;
       position: relative;
-      max-width: 220px;
-      order: 1;
     }
 
-    #rex-burbuja::after {
-      content: "";
+    /* Botón de regreso */
+    .back-button {
       position: absolute;
-      bottom: -20px;
-      left: 40px;
-      width: 0;
-      height: 0;
-      border-left: 15px solid transparent;
-      border-right: 15px solid transparent;
-      border-top: 20px solid white;
-    }
-
-    #rex-img {
-      width: 180px;
-      transition: all 0.3s ease;
-      animation: rebote 1.5s infinite alternate ease-in-out;
-      order: 2;
-    }
-
-    @keyframes rebote {
-      0% { transform: translateY(0); }
-      100% { transform: translateY(-5px); }
-    }
-
-    #contenido {
-      flex: 1;
-      margin-left: 260px;
-      padding: 30px;
-      min-height: 100vh;
-      overflow-y: auto;
-    }
-
-    .game-container {
-      background-color: white;
-      border-radius: 20px;
-      padding: 25px;
-      max-width: 600px;
-      width: 100%;
-      margin: 0 auto;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-      border: 5px solid #FFE66D;
-      text-align: center;
-    }
-
-    h1 {
-      color: #FF6B6B;
-      text-shadow: 3px 3px 0 #FFE66D;
-      font-size: 2.5rem;
-      margin-bottom: 20px;
-    }
-
-    .instructions {
-      background-color: #FFF9C4;
-      padding: 15px;
-      border-radius: 15px;
-      margin-bottom: 20px;
-      border: 3px dashed #FF6B6B;
-      font-size: 1.1rem;
-    }
-
-    input {
-      padding: 10px;
-      font-size: 1.2rem;
-      border: 3px solid #4CAF50;
-      border-radius: 10px;
-      width: 60px;
-      text-align: center;
-      margin: 10px;
-      font-family: 'Fredoka One', cursive;
-      background-color: #FFF9C4;
-    }
-
-    button {
-      background-color: #FF6B6B;
-      color: white;
-      border: none;
-      padding: 12px 25px;
-      font-size: 1.2rem;
-      border-radius: 50px;
+      top: 10px;
+      left: 10px;
+      width: 50px;
+      height: 50px;
+      background: #4CAF50;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       cursor: pointer;
-      margin-top: 10px;
-      font-family: 'Fredoka One', cursive;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      box-shadow: 0 4px 0 #E91E63;
-      transition: all 0.2s;
+      box-shadow: 0 4px 0 #388E3C, 0 6px 10px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+      z-index: 10;
+      text-decoration: none;
     }
 
-    button:hover {
-      background-color: #FF5252;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 0 #E91E63;
+    .back-button:active {
+      transform: translateY(4px);
+      box-shadow: 0 1px 0 #388E3C, 0 2px 5px rgba(0, 0, 0, 0.2);
     }
 
-    .feedback {
-      font-size: 1.3rem;
-      color: #E91E63;
-      background-color: #FFF9C4;
-      padding: 15px;
-      border-radius: 15px;
-      border: 3px solid #FFD166;
-      margin-top: 15px;
-      min-height: 60px;
+    .back-button i {
+      color: white;
+      font-size: 1.5rem;
     }
 
-    img.resultado {
-      margin-top: 20px;
-      max-width: 200px;
-      display: none;
-      transition: all 0.3s;
-    }
-
-    .floating {
+    /* Decoraciones */
+    .decoration {
       position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
       pointer-events: none;
       z-index: -1;
-      animation: float 6s infinite ease-in-out;
     }
 
     .pupusa-float {
+      position: absolute;
       font-size: 2rem;
       animation: float 8s infinite ease-in-out;
     }
 
+    .pupusa-float:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
+    .pupusa-float:nth-child(2) { top: 70%; left: 80%; animation-delay: -2s; }
+    .pupusa-float:nth-child(3) { top: 40%; left: 85%; animation-delay: -4s; }
+    .pupusa-float:nth-child(4) { top: 20%; left: 90%; animation-delay: -1s; }
+    .pupusa-float:nth-child(5) { top: 80%; left: 15%; animation-delay: -3s; }
+
     @keyframes float {
-      0% { transform: translateY(0) translateX(0); }
-      25% { transform: translateY(-20px) translateX(10px); }
-      50% { transform: translateY(0) translateX(20px); }
-      75% { transform: translateY(20px) translateX(10px); }
-      100% { transform: translateY(0) translateX(0); }
+      0% { transform: translateY(0) translateX(0) rotate(0); }
+      50% { transform: translateY(-15px) translateX(8px) rotate(5deg); }
+      100% { transform: translateY(0) translateX(0) rotate(0); }
     }
 
-    @media (max-width: 768px) {
-      body { flex-direction: column; }
-      #rex-panel {
-        width: 100%;
-        position: static;
-        height: auto;
-        padding: 15px;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-      }
-      #rex-burbuja {
-        order: 2;
-        margin-bottom: 0;
-        margin-left: 15px;
-      }
-      #rex-burbuja::after {
-        left: -20px;
-        top: 50%;
-        border-top: 15px solid transparent;
-        border-bottom: 15px solid transparent;
-        border-right: 20px solid white;
-        border-left: none;
-        bottom: auto;
-      }
-      #rex-img {
-        order: 1;
-        width: 120px;
-      }
-      #contenido {
-        margin-left: 0;
-        padding: 20px;
-      }
+    /* Encabezado */
+    .header {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 20px;
+      padding: 15px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      border: 4px solid #FF6B6B;
+      margin-top: 20px;
+    }
+
+    h1 {
+      color: #FF6B6B;
+      text-shadow: 2px 2px 0 rgba(255, 255, 255, 0.7);
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      font-size: 1.2rem;
+      color: #2E4053;
+      margin-bottom: 10px;
+    }
+
+    /* Contenedor principal */
+    .game-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    @media (min-width: 768px) {
       .game-container {
+        flex-direction: row;
+      }
+    }
+
+    /* Paneles */
+    .customer-panel, .choice-panel {
+      background: rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      border: 4px dashed #1E90FF;
+    }
+
+    /* Cliente */
+    .customer {
+      margin-bottom: 20px;
+    }
+
+    .customer-img {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 5px solid #FF6B6B;
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+      margin-bottom: 15px;
+    }
+
+    .customer-speech {
+      background: rgba(255, 255, 255, 0.75);
+      border-radius: 15px;
+      padding: 15px;
+      font-size: 1.3rem;
+      color: #18435B;
+      position: relative;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+      max-width: 90%;
+    }
+
+    .customer-speech:after {
+      content: '';
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 10px solid transparent;
+      border-bottom-color: rgba(255, 255, 255, 0.75);
+    }
+
+    /* Opciones */
+    .options-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .option {
+      background: linear-gradient(145deg, #FFD166, #FFB800);
+      border-radius: 15px;
+      padding: 20px;
+      width: 160px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 3px solid #FF6B6B;
+      box-shadow: 0 5px 0 #FF9E00, 0 8px 15px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .option:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 0 #FF9E00, 0 12px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .option:active {
+      transform: translateY(3px);
+      box-shadow: 0 2px 0 #FF9E00, 0 5px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .option-icon {
+      font-size: 3rem;
+      filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.2));
+    }
+
+    .option-text {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #2E4053;
+      text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
+    }
+
+    /* Resultado */
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 15px;
+      font-size: 1.3rem;
+      font-weight: 700;
+      text-align: center;
+      min-height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      transition: all 0.5s ease;
+    }
+
+    .correct {
+      background: rgba(200, 230, 201, 0.8);
+      color: #2e7d32;
+      border: 3px solid #4caf50;
+    }
+
+    .incorrect {
+      background: rgba(255, 205, 210, 0.8);
+      color: #c62828;
+      border: 3px solid #f44336;
+    }
+
+    /* Imagen de resultado */
+    .result-image {
+      width: 120px;
+      height: 120px;
+      object-fit: contain;
+      margin-top: 15px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      display: none;
+    }
+
+    /* Botones */
+    .btn {
+      background: #FF6B6B;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      border-radius: 25px;
+      cursor: pointer;
+      margin-top: 15px;
+      font-family: 'Fredoka', sans-serif;
+      box-shadow: 0 4px 0 #E91E63, 0 6px 10px rgba(0, 0, 0, 0.15);
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 0 #E91E63, 0 8px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn:active {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 #E91E63, 0 3px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Contador */
+    .counter {
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 15px;
+      padding: 10px 20px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #2E4053;
+      margin-top: 15px;
+      border: 3px solid #1E90FF;
+    }
+
+    /* Mensaje de Rex */
+    .rex-message {
+      background: rgba(255, 255, 255, 0.75);
+      border-radius: 15px;
+      padding: 12px;
+      margin-top: 10px;
+      font-size: 1.1rem;
+      color: #18435B;
+      text-align: center;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+      max-width: 90%;
+    }
+
+    /* Responsive */
+    @media (max-width: 767px) {
+      .game-container {
+        gap: 15px;
+      }
+      
+      .customer-panel, .choice-panel {
         padding: 15px;
       }
+      
       h1 {
+        font-size: 1.8rem;
+      }
+      
+      .subtitle {
+        font-size: 1rem;
+      }
+      
+      .customer-img {
+        width: 120px;
+        height: 120px;
+      }
+      
+      .customer-speech, .rex-message {
+        font-size: 1.1rem;
+        padding: 12px;
+      }
+      
+      .option {
+        width: 140px;
+        padding: 15px;
+      }
+      
+      .option-icon {
+        font-size: 2.5rem;
+      }
+      
+      .btn {
+        padding: 10px 20px;
+        font-size: 1.1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .customer-panel, .choice-panel {
+        padding: 12px;
+      }
+      
+      h1 {
+        font-size: 1.6rem;
+      }
+      
+      .customer-img {
+        width: 100px;
+        height: 100px;
+      }
+      
+      .customer-speech, .rex-message {
+        font-size: 1rem;
+        padding: 10px;
+      }
+      
+      .options-container {
+        gap: 10px;
+      }
+      
+      .option {
+        width: 120px;
+        padding: 12px;
+      }
+      
+      .option-icon {
         font-size: 2rem;
+      }
+      
+      .btn {
+        padding: 8px 16px;
+        font-size: 1rem;
       }
     }
   </style>
@@ -221,144 +404,206 @@
 <body>
 
   <!-- Decoraciones flotantes -->
-  <div class="floating" style="top: 10%; left: 10%; animation-delay: 0s;">🥟</div>
-  <div class="floating" style="top: 30%; left: 85%; animation-delay: -2s;">🥤</div>
-  <div class="floating" style="top: 70%; left: 15%; animation-delay: -4s;">🍹</div>
-  <div class="floating pupusa-float" style="top: 80%; left: 80%; animation-delay: -1s;">🥟</div>
-  <div class="floating pupusa-float" style="top: 20%; left: 20%; animation-delay: -3s;">🥟</div>
-
-  <!-- PANEL DE REX -->
-  <div id="rex-panel">
-    <div id="rex-burbuja">¡Hola soy REX! Vamos a jugar con pupusas y símbolos.</div>
-    <img id="rex-img" src="Copilot_20250625_204412-removebg-preview.png" alt="REX">
+  <div class="decoration">
+    <div class="pupusa-float">🥟</div>
+    <div class="pupusa-float">🥟</div>
+    <div class="pupusa-float">🥟</div>
+    <div class="pupusa-float">🍹</div>
+    <div class="pupusa-float">🍹</div>
   </div>
 
-  <!-- CONTENIDO DEL JUEGO -->
-  <div id="contenido">
+  <!-- CONTENEDOR PRINCIPAL -->
+  <div class="page-container">
+    
+    <!-- Botón de regreso como etiqueta <a> -->
+    <a href="C:\Users\rober\Desktop\Prototipo 1\Prototipo 1\presentacion2.html" class="back-button">
+      <i class="fas fa-home"></i>
+    </a>
+
+    <!-- ENCABEZADO -->
+    <div class="header">
+      <h1>🍽️ La Pupusería de Rex 🍽️</h1>
+      <p class="subtitle">¡Ayuda a Rex a atender a sus clientes!</p>
+    </div>
+
+    <!-- CONTENEDOR DEL JUEGO -->
     <div class="game-container">
-      <h1>🍝 Juego de Pupusas y Simbolitos</h1>
-      <div class="instructions">
-        <p>Si el cliente pide <strong>más de 4 pupusas</strong> (> 4), se le da un fresco 🍹</p>
-        <p>Si pide 4 o menos (<strong><= 4</strong>), solo pupusas 🥟</p>
-        <p>¡Usa <code>&lt;</code>, <code>&gt;</code> o <code>=</code> para comparar!</p>
+      
+      <!-- PANEL DEL CLIENTE -->
+      <div class="customer-panel">
+        <div class="customer">
+          <img id="customer-img" class="customer-img" src="https://cdn.pixabay.com/photo/2016/03/31/19/58/avatar-1295429_1280.png" alt="Cliente">
+          <div id="customer-speech" class="customer-speech">
+            ¡Hola! Quiero pedir algunas pupusas...
+          </div>
+        </div>
+        
+        <button id="new-customer-btn" class="btn">
+          <i class="fas fa-user-plus"></i> Nuevo Cliente
+        </button>
       </div>
-
-      <button onclick="nuevoCliente()">🡩‍🍳 LLEGA UN CLIENTE</button>
-      <p id="cliente">Esperando al cliente...</p>
-
-      <div id="pedidoContainer" style="display:none;">
-        <p>¿Qué símbolo va entre <span id="cantidadTexto"></span> y 4?</p>
-        <input type="text" id="simbolo" maxlength="1" placeholder="<">
-        <br>
-        <button onclick="verificarSimbolo()">✅ Verificar</button>
+      
+      <!-- PANEL DE ELECCIÓN -->
+      <div class="choice-panel">
+        <h2>¿Le damos fresco?</h2>
+        <p>Si pide <strong>más de 4 pupusas</strong>, le damos fresco 🍹</p>
+        <p>Si pide <strong>4 o menos</strong>, solo pupusas 🥟</p>
+        
+        <div class="options-container">
+          <div id="option-yes" class="option">
+            <div class="option-icon">🍹</div>
+            <div class="option-text">¡Sí, con fresco!</div>
+          </div>
+          
+          <div id="option-no" class="option">
+            <div class="option-icon">🥟</div>
+            <div class="option-text">No, solo pupusas</div>
+          </div>
+        </div>
+        
+        <div id="result" class="result">
+          Esperando tu respuesta...
+        </div>
+        
+        <!-- IMAGEN DE RESULTADO (Rex feliz o triste) -->
+        <img id="result-image" class="result-image" src="" alt="Resultado">
+        
+        <!-- MENSAJE DE REX -->
+        <div id="rex-message" class="rex-message">
+          ¡Hola! Soy Rex, el dueño de la pupusería. ¡Vamos a atender clientes!
+        </div>
+        
+        <div class="counter">
+          Aciertos: <span id="score">0</span> / <span id="total">0</span>
+        </div>
       </div>
-
-      <div class="feedback" id="respuesta">&nbsp;</div>
-      <img id="imagen" class="resultado" src="">
     </div>
   </div>
 
-  <!-- AUDIOS -->
-  <audio id="audioPresentacion" src="Cuando un número es .mp3"></audio>
-  <audio id="audioCorrecto" src="_Muy bien Lo hiciste (1).mp3"></audio>
-  <audio id="audioIncorrecto" src="Uy no es ese No es c.mp3"></audio>
-  <audio id="audioCliente" src="_Llegó un cliente Pi (1).mp3"></audio>
+  <!-- Font Awesome para iconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <script>
-    let cantidadCliente = 0;
-    let primerClick = true;
-
-    function reproducirAudio(idAudio) {
-      const audio = document.getElementById(idAudio);
-      if (audio) {
-        audio.currentTime = 0;
-        audio.play().catch(e => {
-          console.error("Error al reproducir audio:", e);
-        });
-      }
+    // Variables del juego
+    let currentOrder = 0;
+    let score = 0;
+    let totalQuestions = 0;
+    let customerImages = [
+      "https://cdn.pixabay.com/photo/2016/03/31/19/58/avatar-1295429_1280.png",
+      "https://cdn.pixabay.com/photo/2016/03/31/20/27/avatar-1295773_1280.png",
+      "https://cdn.pixabay.com/photo/2016/03/31/19/58/avatar-1295429_1280.png",
+      "https://cdn.pixabay.com/photo/2016/03/31/20/27/avatar-1295773_1280.png"
+    ];
+    
+    // Elementos del DOM
+    const customerImg = document.getElementById('customer-img');
+    const customerSpeech = document.getElementById('customer-speech');
+    const newCustomerBtn = document.getElementById('new-customer-btn');
+    const optionYes = document.getElementById('option-yes');
+    const optionNo = document.getElementById('option-no');
+    const resultDiv = document.getElementById('result');
+    const resultImage = document.getElementById('result-image');
+    const rexMessage = document.getElementById('rex-message');
+    const scoreSpan = document.getElementById('score');
+    const totalSpan = document.getElementById('total');
+    
+    // Función para generar un nuevo cliente
+    function newCustomer() {
+      // Generar un pedido aleatorio (1-6 pupusas)
+      currentOrder = Math.floor(Math.random() * 6) + 1;
+      
+      // Cambiar imagen del cliente
+      const randomCustomer = customerImages[Math.floor(Math.random() * customerImages.length)];
+      customerImg.src = randomCustomer;
+      
+      // Actualizar el mensaje del cliente
+      customerSpeech.textContent = `¡Hola! Quiero ${currentOrder} pupusas, por favor.`;
+      
+      // Reiniciar el resultado
+      resultDiv.textContent = "¿Le damos fresco con el pedido?";
+      resultDiv.className = "result";
+      
+      // Ocultar imagen de resultado
+      resultImage.style.display = "none";
+      
+      // Actualizar el mensaje de Rex
+      rexMessage.textContent = `Este cliente pidió ${currentOrder} pupusas. ¿Le damos fresco?`;
+      
+      // Habilitar las opciones
+      optionYes.style.pointerEvents = 'auto';
+      optionYes.style.opacity = '1';
+      optionNo.style.pointerEvents = 'auto';
+      optionNo.style.opacity = '1';
+      
+      // Animación del cliente
+      customerImg.style.transform = 'scale(1.1)';
+      setTimeout(() => {
+        customerImg.style.transform = 'scale(1)';
+      }, 300);
     }
-
-    function cambiarRex(estado) {
-      const rexImg = document.getElementById("rex-img");
-      if (estado === "pensando") {
-        rexImg.style.transform = "rotate(5deg)";
-      } else if (estado === "feliz") {
-        rexImg.style.transform = "scale(1.1)";
-        setTimeout(() => rexImg.style.transform = "", 1000);
-      } else if (estado === "triste") {
-        rexImg.style.transform = "rotate(-5deg) scale(0.9)";
-        setTimeout(() => rexImg.style.transform = "", 1000);
+    
+    // Función para verificar la respuesta
+    function checkAnswer(giveFresco) {
+      // Deshabilitar las opciones para evitar múltiples clics
+      optionYes.style.pointerEvents = 'none';
+      optionYes.style.opacity = '0.7';
+      optionNo.style.pointerEvents = 'none';
+      optionNo.style.opacity = '0.7';
+      
+      // Determinar la respuesta correcta
+      const correctAnswer = currentOrder > 4;
+      
+      // Verificar si la respuesta es correcta
+      if (giveFresco === correctAnswer) {
+        // Respuesta correcta
+        score++;
+        resultDiv.textContent = correctAnswer ? 
+          `¡Correcto! Como pidió ${currentOrder} pupusas (más de 4), le damos fresco 🍹` : 
+          `¡Correcto! Como pidió ${currentOrder} pupusas (4 o menos), solo pupusas 🥟`;
+        resultDiv.className = "result correct";
+        
+        // Mostrar imagen de Rex feliz
+        resultImage.src = "Copilot_20250625_204412-removebg-preview.png"; // Cambia por el nombre de tu imagen de Rex feliz
+        resultImage.style.display = "block";
+        resultImage.alt = "Rex feliz";
+        
+        // Mensaje de Rex
+        rexMessage.textContent = '¡Excelente! Sabía que podías hacerlo.';
       } else {
-        rexImg.style.transform = "";
+        // Respuesta incorrecta
+        resultDiv.textContent = correctAnswer ? 
+          `¡Ups! Como pidió ${currentOrder} pupusas (más de 4), deberíamos darle fresco 🍹` : 
+          `¡Ups! Como pidió ${currentOrder} pupusas (4 o menos), solo debería llevar pupusas 🥟`;
+        resultDiv.className = "result incorrect";
+        
+        // Mostrar imagen de Rex triste
+        resultImage.src = "titer.png"; // Cambia por el nombre de tu imagen de Rex triste
+        resultImage.style.display = "block";
+        resultImage.alt = "Rex triste";
+        
+        // Mensaje de Rex
+        rexMessage.textContent = 'No te preocupes, la próxima lo harás mejor.';
       }
+      
+      // Actualizar contador
+      totalQuestions++;
+      scoreSpan.textContent = score;
+      totalSpan.textContent = totalQuestions;
+      
+      // Animación de la imagen de resultado
+      resultImage.style.transform = 'scale(1.1)';
+      setTimeout(() => {
+        resultImage.style.transform = 'scale(1)';
+      }, 300);
     }
-
-    setInterval(() => {
-      const rexImg = document.getElementById("rex-img");
-      const originalSrc = rexImg.src;
-      rexImg.src = "";
-      setTimeout(() => rexImg.src = originalSrc, 150);
-    }, 7000);
-
-    function nuevoCliente() {
-      cantidadCliente = Math.floor(Math.random() * 6) + 1;
-      const texto = `Ha llegado un cliente y pidió ${cantidadCliente} pupusas. ¿Qué símbolo va entre ${cantidadCliente} y 4?`;
-      document.getElementById("cliente").textContent = `🡩‍🍳 ${texto}`;
-      document.getElementById("cantidadTexto").textContent = cantidadCliente;
-      document.getElementById("pedidoContainer").style.display = "block";
-      document.getElementById("respuesta").textContent = "";
-      document.getElementById("imagen").style.display = "none";
-      document.getElementById("simbolo").value = "";
-
-      document.getElementById("rex-burbuja").textContent = texto;
-      cambiarRex("pensando");
-
-      if (primerClick) {
-        reproducirAudio("audioPresentacion");
-        primerClick = false;
-      } else {
-        reproducirAudio("audioCliente");
-      }
-    }
-
-    function verificarSimbolo() {
-      const simbolo = document.getElementById("simbolo").value.trim();
-      const respuesta = document.getElementById("respuesta");
-      const imagen = document.getElementById("imagen");
-
-      let correcto = "";
-      if (cantidadCliente > 4) correcto = ">";
-      else if (cantidadCliente < 4) correcto = "<";
-      else correcto = "=";
-
-      if (simbolo === correcto) {
-        const mensaje = `¡Muy bien! ${cantidadCliente} ${simbolo} 4 es correcto. ` + 
-                       (simbolo === ">" ? "¡Se lleva fresco! 🍹" : "¡Solo pupusas! 🥟");
-        respuesta.innerHTML = `✔ ${mensaje}`;
-        document.getElementById("rex-burbuja").textContent = mensaje;
-        cambiarRex("feliz");
-        reproducirAudio("audioCorrecto");
-        imagen.src = simbolo === ">" ? "fresco.png" : "pupusas.png";
-      } else {
-        const mensaje = `Ups... ${cantidadCliente} ${simbolo} 4 no es correcto. Inténtalo de nuevo.`;
-        respuesta.innerHTML = `❌ ${mensaje}`;
-        document.getElementById("rex-burbuja").textContent = mensaje;
-        cambiarRex("triste");
-        reproducirAudio("audioIncorrecto");
-        imagen.src = "titer.png";
-      }
-
-      imagen.style.display = "block";
-      imagen.style.transform = "scale(1.1)";
-      setTimeout(() => imagen.style.transform = "scale(1)", 500);
-      setTimeout(() => cambiarRex("normal"), 3000);
-    }
-
-    document.addEventListener("DOMContentLoaded", () => {
-      document.getElementById("simbolo").addEventListener("input", () => {
-        cambiarRex("pensando");
-      });
-    });
+    
+    // Event Listeners
+    newCustomerBtn.addEventListener('click', newCustomer);
+    optionYes.addEventListener('click', () => checkAnswer(true));
+    optionNo.addEventListener('click', () => checkAnswer(false));
+    
+    // Inicializar el juego
+    newCustomer();
   </script>
 </body>
 </html>
