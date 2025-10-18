@@ -27,7 +27,11 @@
     .page-container {
       max-width: 1200px;
       margin: 0 auto;
+<<<<<<< HEAD
       padding: 10px;
+=======
+      padding: 15px;
+>>>>>>> f726c6279f1ba82d008c45344cbc7a9039ff7fe3
       height: 100vh;
       display: flex;
       flex-direction: column;
@@ -83,7 +87,11 @@
       background: rgba(255, 255, 255, 0.3);
       backdrop-filter: blur(10px);
       border-radius: 25px;
+<<<<<<< HEAD
       padding: 12px;
+=======
+      padding: 15px;
+>>>>>>> f726c6279f1ba82d008c45344cbc7a9039ff7fe3
       box-shadow: 0 15px 35px rgba(0, 0, 0, 0.18);
       flex: 1;
       display: flex;
@@ -97,20 +105,35 @@
       box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
     }
     
+<<<<<<< HEAD
     /* Header - Reducido para dar más espacio a los juegos */
     .header-section {
       text-align: center;
       margin-bottom: 8px;
+=======
+    /* Header */
+    .header-section {
+      text-align: center;
+      margin-bottom: 10px;
+>>>>>>> f726c6279f1ba82d008c45344cbc7a9039ff7fe3
       flex-shrink: 0;
     }
     
     .rex-container { 
       position: relative; 
+<<<<<<< HEAD
       margin: 0 auto 3px; 
     }
     
     .rex { 
       width: 65px; 
+=======
+      margin: 0 auto 5px; 
+    }
+    
+    .rex { 
+      width: 80px; 
+>>>>>>> f726c6279f1ba82d008c45344cbc7a9039ff7fe3
       height: auto; 
       animation: bounce 2s infinite alternate; 
       filter: drop-shadow(3px 3px 5px rgba(0, 0, 0, 0.2)); 
@@ -118,12 +141,21 @@
     
     @keyframes bounce {
       from { transform: translateY(0); }
+<<<<<<< HEAD
       to { transform: translateY(-6px); }
     }
     
     h1 { 
       font-size: 1.3rem; 
       margin-bottom: 3px; 
+=======
+      to { transform: translateY(-8px); }
+    }
+    
+    h1 { 
+      font-size: 1.5rem; 
+      margin-bottom: 5px; 
+>>>>>>> f726c6279f1ba82d008c45344cbc7a9039ff7fe3
       color: #2E4053; 
       text-shadow: 2px 2px 0 rgba(255, 255, 255, 0.5); 
       line-height: 1.1; 
@@ -138,8 +170,13 @@
     .message-box {
       background: rgba(255, 255, 255, 0.75);
       border-radius: 15px;
+<<<<<<< HEAD
       padding: 8px;
       margin: 3px auto;
+=======
+      padding: 10px;
+      margin: 5px auto;
+>>>>>>> f726c6279f1ba82d008c45344cbc7a9039ff7fe3
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
       position: relative;
       transition: transform .2s, background 0.3s, box-shadow 0.3s;
@@ -167,7 +204,11 @@
     }
     
     .message-text { 
+<<<<<<< HEAD
       font-size: 0.85rem; 
+=======
+      font-size: 0.95rem; 
+>>>>>>> f726c6279f1ba82d008c45344cbc7a9039ff7fe3
       line-height: 1.2; 
       color: #18435B; 
       transition: color 0.3s; 
@@ -182,7 +223,11 @@
       display: flex;
       justify-content: space-between;
       width: 100%;
+<<<<<<< HEAD
       margin-bottom: 8px;
+=======
+      margin-bottom: 10px;
+>>>>>>> f726c6279f1ba82d008c45344cbc7a9039ff7fe3
       flex-wrap: wrap;
       gap: 8px;
       flex-shrink: 0;
@@ -225,6 +270,7 @@
       color: white;
     }
     
+<<<<<<< HEAD
     /* ===========================
        CARRUSEL DE JUEGOS
     =========================== */
@@ -291,12 +337,26 @@
       padding: 2px;
       overflow-y: auto;
       flex: 0 0 100%;
+=======
+    /* Opciones de juegos - Grid compacto */
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 10px;
+      flex: 1;
+      padding: 2px;
+>>>>>>> f726c6279f1ba82d008c45344cbc7a9039ff7fe3
     }
     
     .game-option {
       background: linear-gradient(145deg, #FFD166, #FFB800);
       border-radius: 12px;
+<<<<<<< HEAD
       padding: 10px 8px;
+=======
+      padding: 8px;
+>>>>>>> f726c6279f1ba82d008c45344cbc7a9039ff7fe3
       text-align: center;
       box-shadow: 0 4px 0 #FF9E00, 0 6px 8px rgba(0, 0, 0, 0.15);
       cursor: pointer;
@@ -310,9 +370,17 @@
       color: inherit;
       min-height: 0;
       overflow: hidden;
+<<<<<<< HEAD
       animation: gentle-lift 3s infinite ease-in-out;
     }
     
+=======
+      /* Nueva animación sutil */
+      animation: gentle-lift 3s infinite ease-in-out;
+    }
+    
+    /* Nueva animación sutil para los cuadros de nivel */
+>>>>>>> f726c6279f1ba82d008c45344cbc7a9039ff7fe3
     @keyframes gentle-lift {
       0% { 
         transform: translateY(0);
@@ -328,10 +396,15 @@
       }
     }
     
+<<<<<<< HEAD
     body.night-mode .game-option {
       background: linear-gradient(145deg, #8A2BE2, #4B0082); 
       border-color: #9370DB;
       box-shadow: 0 4px 0 #4B0082, 0 6px 8px rgba(0, 0, 0, 0.2);
+=======
+    /* Animación para modo noche */
+    body.night-mode .game-option {
+>>>>>>> f726c6279f1ba82d008c45344cbc7a9039ff7fe3
       animation: gentle-lift-night 3s infinite ease-in-out;
     }
     
@@ -355,6 +428,15 @@
       box-shadow: 0 2px 0 #FF9E00, 0 3px 4px rgba(0, 0, 0, 0.1);
     }
     
+<<<<<<< HEAD
+=======
+    body.night-mode .game-option { 
+      background: linear-gradient(145deg, #8A2BE2, #4B0082); 
+      border-color: #9370DB;
+      box-shadow: 0 4px 0 #4B0082, 0 6px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+>>>>>>> f726c6279f1ba82d008c45344cbc7a9039ff7fe3
     body.night-mode .game-option:active {
       box-shadow: 0 2px 0 #4B0082, 0 3px 4px rgba(0, 0, 0, 0.15);
     }
@@ -393,6 +475,7 @@
       color: #E6E6FA; 
     }
     
+<<<<<<< HEAD
     /* Paginación */
     .dots {
       display: flex;
@@ -428,6 +511,13 @@
       text-align: center;
       margin-top: 8px;
       padding-top: 6px;
+=======
+    /* Footer */
+    .footer-section {
+      text-align: center;
+      margin-top: 10px;
+      padding-top: 8px;
+>>>>>>> f726c6279f1ba82d008c45344cbc7a9039ff7fe3
       border-top: 2px solid rgba(255, 255, 255, 0.3);
       flex-shrink: 0;
     }
@@ -458,6 +548,7 @@
     
     /* Responsive */
     @media (max-width: 768px) {
+<<<<<<< HEAD
       .page-container { padding: 8px; }
       .content-box { padding: 10px; }
       .rex { width: 60px; }
@@ -474,11 +565,31 @@
       .content-box { padding: 8px; }
       h1 { font-size: 1.1rem; }
       .message-text { font-size: 0.75rem; }
+=======
+      .page-container { padding: 10px; }
+      .content-box { padding: 12px; }
+      .rex { width: 70px; }
+      h1 { font-size: 1.3rem; }
+      .message-text { font-size: 0.9rem; }
+      .games-grid { grid-template-columns: 1fr; gap: 8px; }
+      .game-option { padding: 7px; }
+      .top-controls { justify-content: center; }
+    }
+    
+    @media (max-width: 480px) {
+      .page-container { padding: 8px; }
+      .content-box { padding: 10px; }
+      h1 { font-size: 1.2rem; }
+      .message-text { font-size: 0.85rem; }
+>>>>>>> f726c6279f1ba82d008c45344cbc7a9039ff7fe3
       .btn { padding: 5px 10px; font-size: 0.8rem; }
       .game-icon { font-size: 1.1rem; }
       .game-title { font-size: 0.8rem; }
       .game-desc { font-size: 0.6rem; }
+<<<<<<< HEAD
       .nav-btn { width: 36px; height: 36px; font-size: 1rem; }
+=======
+>>>>>>> f726c6279f1ba82d008c45344cbc7a9039ff7fe3
     }
   </style>
 </head>
@@ -508,7 +619,11 @@
         </button>
       </div>
 
+<<<<<<< HEAD
       <!-- Header más compacto -->
+=======
+      <!-- Header -->
+>>>>>>> f726c6279f1ba82d008c45344cbc7a9039ff7fe3
       <div class="header-section">
         <div class="rex-container">
           <img src="Rex.png" alt="Rex el dinosaurio" class="rex">
@@ -523,6 +638,7 @@
         </div>
       </div>
 
+<<<<<<< HEAD
       <!-- Carrusel de Juegos -->
       <div class="games-carousel">
         <button class="nav-btn" id="prevBtn" aria-label="Anterior">⬅️</button>
@@ -614,6 +730,55 @@
 
       <!-- Indicadores de paginación -->
       <div class="dots" id="dots" aria-label="Paginación"></div>
+=======
+      <!-- Grid de Juegos -->
+      <div class="games-grid" id="gamesGrid">
+        <!-- Juego 1: Ordenar Secuencias -->
+        <a href="Area1-logica de secuencias/Explicacion.html" class="game-option" role="button" tabindex="0">
+          <div class="game-icon">🧩</div>
+          <div>
+            <div class="game-title">Nivel 1: Ordenar Secuencias</div>
+            <div class="game-desc">Ayuda a Rex a ordenar historias y misiones paso a paso</div>
+          </div>
+        </a>
+
+        <!-- Juego 2: Orden de Operadores -->
+        <a href="Área 3-Matemáticas Aplicadas a la Programación/prototipo.html" class="game-option" role="button" tabindex="0">
+          <div class="game-icon">🔢</div>
+          <div>
+            <div class="game-title">Nivel 2: Orden de Operadores</div>
+            <div class="game-desc">Descubre el orden correcto para operaciones matemáticas</div>
+          </div>
+        </a>
+
+        <!-- Juego 3: Memoria Tech -->
+        <a href="Teoría/prototipo.html" class="game-option" role="button" tabindex="0">
+          <div class="game-icon">🧠</div>
+          <div>
+            <div class="game-title">Nivel 3: Memoria Tech</div>
+            <div class="game-desc">Encuentra parejas de emojis e imágenes tecnológicas</div>
+          </div>
+        </a>
+
+        <!-- Juego 4: Comparaciones -->
+        <a href="Poniendo en practica/pupuseria.html" class="game-option" role="button" tabindex="0">
+          <div class="game-icon">⚖️</div>
+          <div>
+            <div class="game-title">Nivel 4: Comparaciones</div>
+            <div class="game-desc">Aprende mayor, menor o igual en situaciones reales</div>
+          </div>
+        </a>
+      </div>
+              <!-- Juego 5: Ahorcado -->
+        <a href="Poniendo en practica/pupuseria.html" class="game-option" role="button" tabindex="0">
+          <div class="game-icon">⚖️</div>
+          <div>
+            <div class="game-title">Nivel 4: Comparaciones</div>
+            <div class="game-desc">Aprende mayor, menor o igual en situaciones reales</div>
+          </div>
+        </a>
+      </div>
+>>>>>>> f726c6279f1ba82d008c45344cbc7a9039ff7fe3
 
       <!-- Footer -->
       <div class="footer-section">
@@ -629,6 +794,7 @@
     const rexAudio = document.getElementById('rexAudio');
     const speakBtn = document.getElementById('speakBtn');
     const nightModeBtn = document.getElementById('nightModeBtn');
+<<<<<<< HEAD
     
     // ====== Estado del carrusel ======
     const track = document.getElementById('track');
@@ -695,6 +861,15 @@
       updateCarousel();
     });
 
+=======
+    const gamesGrid = document.getElementById('gamesGrid');
+
+    function playClick() {
+      clickSound.currentTime = 0;
+      clickSound.play().catch(() => {});
+    }
+
+>>>>>>> f726c6279f1ba82d008c45344cbc7a9039ff7fe3
     // Botón para hablar Rex
     speakBtn.addEventListener('click', () => {
       playClick();
@@ -711,7 +886,11 @@
     });
 
     // Efectos en los juegos al hacer clic
+<<<<<<< HEAD
     document.addEventListener('click', (e) => {
+=======
+    gamesGrid.addEventListener('click', (e) => {
+>>>>>>> f726c6279f1ba82d008c45344cbc7a9039ff7fe3
       const gameOption = e.target.closest('.game-option');
       if (!gameOption) return;
       
@@ -730,7 +909,11 @@
     });
 
     // Permitir selección con teclado (Enter)
+<<<<<<< HEAD
     document.addEventListener('keydown', (e) => {
+=======
+    gamesGrid.addEventListener('keydown', (e) => {
+>>>>>>> f726c6279f1ba82d008c45344cbc7a9039ff7fe3
       if (e.key === 'Enter') {
         const gameOption = e.target.closest('.game-option');
         if (!gameOption) return;
@@ -738,12 +921,15 @@
         // La navegación se hará automáticamente por ser un enlace <a>
       }
     });
+<<<<<<< HEAD
 
     // Ajuste al redimensionar
     window.addEventListener('resize', updateCarousel);
 
     // Inicializar carrusel
     updateCarousel();
+=======
+>>>>>>> f726c6279f1ba82d008c45344cbc7a9039ff7fe3
   </script>
 </body>
 </html>
