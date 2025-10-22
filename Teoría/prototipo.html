@@ -213,14 +213,6 @@
     
     /* Botón de regreso a la página principal */
     .home-btn {
-<<<<<<< HEAD
-      position: static;
-      background: #4CAF50;
-      color: white;
-      border: none;
-      width: 40px;
-      height: 40px;
-=======
       position: fixed;
       bottom: 20px;
       right: 20px;
@@ -229,7 +221,6 @@
       border: none;
       width: 50px;
       height: 50px;
->>>>>>> f726c6279f1ba82d008c45344cbc7a9039ff7fe3
       border-radius: 50%;
       cursor: pointer;
       transition: all 0.3s ease;
@@ -237,16 +228,9 @@
       display: flex;
       align-items: center;
       justify-content: center;
-<<<<<<< HEAD
-      font-size: 1.1rem;
-      z-index: 10;
-      text-decoration: none;
-      margin-right: 8px;
-=======
       font-size: 1.2rem;
       z-index: 100;
       text-decoration: none;
->>>>>>> f726c6279f1ba82d008c45344cbc7a9039ff7fe3
     }
     
     .home-btn:active {
@@ -514,11 +498,7 @@
   <audio id="flipSound" src="flip.wav" preload="auto"></audio>
   <audio id="matchSound" src="correct.wav" preload="auto"></audio>
   <audio id="winSound" src="win.wav" preload="auto"></audio>
-<<<<<<< HEAD
   <audio id="rexAudio" src="Encuentra las pareja.mp3" preload="auto"></audio>
-=======
-  <audio id="rexAudio" src="_Hola amigos Soy Rex.mp3" preload="auto"></audio>
->>>>>>> f726c6279f1ba82d008c45344cbc7a9039ff7fe3
 
   <div class="decoration">
     <div class="bubble"></div>
@@ -532,12 +512,6 @@
     <div class="content-box">
       <!-- Controles superiores -->
       <div class="top-controls">
-<<<<<<< HEAD
-        <a href="../presentacion2.html" class="home-btn">
-          <i class="fas fa-home"></i>
-        </a>
-=======
->>>>>>> f726c6279f1ba82d008c45344cbc7a9039ff7fe3
         <button id="speakBtn" class="btn audio-btn">
           <i class="fas fa-volume-up"></i> Escúchame
         </button>
@@ -552,11 +526,7 @@
       <!-- Header -->
       <div class="header-section">
         <div class="rex-container">
-<<<<<<< HEAD
-          <img src="Imagen_de_WhatsApp_2025-10-06_a_las_11.01.41_4f03bb5f-removebg-preview (1).png" alt="Rex el dinosaurio" class="rex">
-=======
           <img src="Copilot_20250625_204412-removebg-preview.png" alt="Rex el dinosaurio" class="rex">
->>>>>>> f726c6279f1ba82d008c45344cbc7a9039ff7fe3
         </div>
 
         <h1>¡Memoria Tech con Rex! 🦖</h1>
@@ -602,14 +572,11 @@
     </div>
   </div>
 
-<<<<<<< HEAD
-=======
   <!-- Botón de regreso a la página principal -->
-  <a href="C:\Users\rober\Desktop\Prototipo 1\Prototipo 1\presentacion2.html" class="home-btn">
+  <a href="C:\Users\rober\Desktop\Prototipo 1\Prototipo 1\presentacion.html" class="home-btn">
     <i class="fas fa-home"></i>
   </a>
 
->>>>>>> f726c6279f1ba82d008c45344cbc7a9039ff7fe3
   <script>
     // Pares de cartas (emoji + imagen)
     const pares = [
@@ -748,12 +715,12 @@
       timerElement.textContent = `${minutos}:${segundos}`;
     }
 
-    // Botón para hablar Rex
-    speakBtn.addEventListener('click', () => {
-      playSound(clickSound);
-      rexAudio.currentTime = 0;
-      rexAudio.play().catch(() => {});
-    });
+  // 🎧 Botón "Escúchame"
+  speakBtn.addEventListener('click', () => {
+    playSound(clickSound);
+    rexAudio.currentTime = 0; // Reinicia el audio
+    rexAudio.play().catch(() => {}); // Reproduce tu archivo mp3
+  });
 
     // Botón para modo noche
     nightModeBtn.addEventListener('click', () => {
