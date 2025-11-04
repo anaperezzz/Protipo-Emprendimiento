@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Login | Click y Crea</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:'Fredoka',sans-serif;
+      background:linear-gradient(135deg,#87CEEB 0%,#1E90FF 100%);
+      color:#2E4053;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+    }
+    .decoration{position:fixed;inset:0;z-index:-1;pointer-events:none}
+    .bubble{position:absolute;border-radius:50%;background:rgba(255,255,255,0.35);animation:float 10s infinite ease-in-out}
+    .bubble:nth-child(1){width:90px;height:90px;top:12%;left:8%}
+    .bubble:nth-child(2){width:120px;height:120px;top:65%;left:82%}
+    .bubble:nth-child(3){width:70px;height:70px;top:40%;left:52%}
+    @keyframes float{0%{transform:translateY(0)}50%{transform:translateY(-18px)}100%{transform:translateY(0)}}
+
+    .card{
+      width:100%;
+      max-width:420px;
+      background:rgba(255, 228, 138, 0.85);
+      backdrop-filter:blur(6px);
+      border-radius:18px;
+      padding:24px;
+      box-shadow:0 14px 30px rgba(0,0,0,0.18);
+      text-align:center;
+      animation:pop .4s ease;
+    }
+    @keyframes pop{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+    .rex{width:72px;height:auto;margin:0 auto 8px;animation:bounce 1.8s infinite alternate;display:block}
+    @keyframes bounce{from{transform:translateY(0)}to{transform:translateY(-6px)}}
+
+    h1{font-size:1.4rem;margin-bottom:6px}
+    p.lead{font-size:0.95rem;margin-bottom:16px;color:#18435B}
+
+    form{display:flex;flex-direction:column;gap:10px;align-items:center}
+    input[type="text"],input[type="password"],select{
+      width:100%;
+      padding:10px 12px;
+      border-radius:12px;
+      border:2px solid rgba(0,0,0,0.06);
+      font-size:1rem;
+      background:#fff;
+      outline:none;
+      transition:box-shadow .18s, border-color .18s;
+      text-align:center;
+    }
+    input:focus,select:focus{box-shadow:0 6px 18px rgba(30,144,255,0.12);border-color:#1E90FF}
+
+    .row{display:flex;gap:10px;width:100%}
+    .btn{
+      background:#FF6B6B;color:#fff;border:none;padding:10px 18px;border-radius:20px;font-weight:700;cursor:pointer;
+      box-shadow:0 5px 0 #FF5252,0 8px 18px rgba(0,0,0,0.12);transition:transform .12s,filter .12s;
+    }
+    .btn:hover{transform:translateY(-2px)}
+    .small{font-size:0.85rem;color:#475569}
+
+    .alert{display:none;margin-top:8px;padding:8px 12px;border-radius:10px;background:#FFECEC;color:#9B1C1C;font-weight:700;font-size:0.95rem}
+
+    footer{margin-top:12px;font-size:0.8rem;color:rgba(0,0,0,0.6)}
+
+    @media (max-width:420px){
+      .card{padding:18px}
+      input,select{font-size:0.95rem}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Decoración fondo -->
+  <div class="decoration" aria-hidden="true">
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+  </div>
+
+  <div class="card" role="main" aria-labelledby="title">
+    <!-- Mascota -->
+    <img src="Rex.png" alt="Rex mascota Click y Crea" class="rex">
+
+    <h1 id="title">Iniciar sesión — Click y Crea</h1>
+    <p class="lead">Accede a tu espacio. Si sos padre/madre entrarás al panel de familias; si sos niño/a irás a tus juegos.</p>
+
+    <!-- Formulario -->
+    <form id="loginForm" novalidate>
+      <input id="username" type="text" placeholder="Nombre de usuario" autocomplete="username" required>
+      <input id="password" type="password" placeholder="Contraseña" autocomplete="current-password" required>
+
+      <!-- Selección de rol (nuevo) -->
+      <select id="roleSelect" required aria-label="Seleccione su rol">
+        <option value="" disabled selected>Selecciona tu rol</option>
+        <option value="padre">Padre / Madre</option>
+        <option value="niño">Niño / Niña</option>
+      </select>
+
+      <button type="submit" class="btn" id="loginBtn"><i style="margin-right:8px">🔐</i> Iniciar sesión</button>
+
+      <div id="error" class="alert" role="alert">Usuario o contraseña incorrectos, o el rol no coincide.</div>
+    </form>
+
+    <footer>&copy; 2025 Click y Crea</footer>
+  </div>
+
+  <script>
+    /****************************************
+     * Base de datos simulada (JSON local)
+     * Contiene 4 usuarios (2 padres, 2 niños)
+     ****************************************/
+    const usuarios = [
+      { username: "maria_garcia", password: "12345", rol: "padre" },
+      { username: "juan_ortiz", password: "abcde", rol: "padre" },
+      { username: "sofiaperez", password: "sofia1", rol: "niño" },
+      { username: "carlosperez", password: "carlitos", rol: "niño" }
+    ];
+
+    // Elementos DOM
+    const form = document.getElementById('loginForm');
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    const roleSelect = document.getElementById('roleSelect');
+    const errorBox = document.getElementById('error');
+
+    // Evitar comportamiento por defecto y validar manualmente
+    form.addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      errorBox.style.display = 'none';
+
+      const username = usernameInput.value.trim();
+      const password = passwordInput.value.trim();
+      const selectedRole = roleSelect.value; // 'padre' o 'niño'
+
+      // Validaciones básicas de cliente
+      if (!username || !password || !selectedRole) {
+        showError("Por favor completa todos los campos y selecciona tu rol.");
+        return;
+      }
+
+      // Buscar usuario en el "JSON"
+      const user = usuarios.find(u => u.username === username && u.password === password);
+
+      if (!user) {
+        // Credenciales incorrectas
+        showError("Usuario o contraseña incorrectos.");
+        return;
+      }
+
+      // Verificar que el rol elegido coincida con el rol del usuario en la DB simulada
+      if (user.rol !== selectedRole) {
+        // Si rol no coincide, informar al usuario
+        showError("El rol seleccionado no coincide con el usuario. Elige el rol correcto.");
+        return;
+      }
+
+      // Si llegamos aquí las credenciales y rol coinciden: redirigir según rol
+      // Usamos .html para evitar que el navegador intente descargar archivos .php en entorno local
+      if (user.rol === 'padre') {
+        // Redirigir al panel de padres (archivo HTML de ejemplo)
+        // Si en tu servidor usás PHP, cambiá a 'padres_panel.php' cuando lo subas al servidor.
+        window.location.href = "Padres-Profes/padres_panel.php";
+      } else if (user.rol === 'niño') {
+        // Redirigir a la zona de presentación/juegos
+        window.location.href = "presentacion.html";
+      }
+    });
+
+    // Función para mostrar errores en caja (no alert)
+    function showError(message) {
+      errorBox.textContent = message;
+      errorBox.style.display = 'block';
+      // pequeño enfoque visual
+      errorBox.animate([{opacity:0},{opacity:1}],{duration:250});
+    }
+
+    // Accesibilidad: limpiar error al escribir
+    [usernameInput,passwordInput,roleSelect].forEach(el=>{
+      el.addEventListener('input', ()=> { errorBox.style.display='none'; });
+    });
+  </script>
+
+</body>
+</html>
