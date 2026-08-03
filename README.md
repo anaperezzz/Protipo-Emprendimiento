@@ -1,43 +1,148 @@
-# Click_y_Crea
+# Click y Crea
 ![El Salvador](https://img.shields.io/badge/Country-El%20Salvador-0047AB?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![PHP](https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white)
-![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?style=for-the-badge&logo=postgresql&logoColor=white)
 
-Plataforma web educativa e interactiva diseñada para enseñar lógica de programación a niños de 7 a 12 años en un ambiente seguro, lúdico y familiar.
+Plataforma web educativa orientada a niños de **8 a 12 años**, diseñada para fortalecer el pensamiento lógico y desarrollar las bases de la programación mediante juegos interactivos, actividades por niveles y recursos de apoyo para padres y docentes.
 
-La plataforma permite:
+La plataforma incluye:
 
-- Enseñar fundamentos de programación mediante juegos interactivos por niveles.
-- Ofrecer experiencias multimedia envolventes con animaciones, música de fondo y efectos de sonido.
-- Proporcionar un panel para padres y educadores con guías pedagógicas descargables en PDF.
-- Fomentar la interacción colaborativa a través de un foro comunitario de refuerzo.
-- Procesar consultas y registros de manera segura mediante formularios conectados a base de datos.
-
-Plataforma desarrollada como prototipo funcional de emprendimiento para ejecutarse localmente mediante un servidor web.
+- Juegos educativos enfocados en lógica computacional.
+- Actividades organizadas por niveles de aprendizaje.
+- Contenidos teóricos adaptados para niños.
+- Panel para padres y maestros.
+- Guías pedagógicas descargables en formato PDF.
+- Formulario de contacto conectado a PostgreSQL mediante PHP.
+- Inicio de sesión con validación de roles (Padre/Niño).
 
 ---
 
 # Características
 
-- **Aprender jugando:** Dinámicas interactivas desarrolladas en JavaScript para enseñar algoritmos y lógica.
-- **Multisensorial:** Animaciones en CSS3 junto a audios descriptivos y efectos de sonido dinámicos.
-- **Enfoque familiar:** Sección dedicada a padres/docentes con recursos e indicaciones de apoyo.
-- **Comunidad interactiva:** Foro de discusión integrado para reforzar temas vistos en los juegos.
-- **Backend dinámico:** Procesamiento de datos y formularios en PHP integrados con base de datos MySQL.
-- **Guías descargables:** Material complementario en formato PDF para realizar actividades fuera de la pantalla.
+- Desarrollo Front-End utilizando HTML5, CSS3 y JavaScript.
+- Diseño responsive e interfaz amigable para niños.
+- Animaciones CSS e interacción dinámica mediante JavaScript.
+- Validación de formularios.
+- Sistema de autenticación con roles de usuario.
+- Integración con PostgreSQL utilizando PHP.
+- Organización modular por áreas educativas.
+- Recursos descargables para reforzar el aprendizaje.
+
+---
+
+# Tecnologías utilizadas
+
+### Front-End
+
+- HTML5
+- CSS3
+- JavaScript
+- Google Fonts (Fredoka)
+- Font Awesome
+
+### Back-End
+
+- PHP
+
+### Base de Datos
+
+- PostgreSQL
+- pgAdmin
 
 ---
 
 # Diseño
 
-La interfaz web fue desarrollada con una arquitectura adaptable y atractiva, priorizando el uso intuitivo para niños y adultos.
+La interfaz fue diseñada pensando en una experiencia atractiva e intuitiva para niños, utilizando una paleta de colores llamativa y elementos visuales que fomentan el aprendizaje.
 
-Entre sus características destacan:
+Entre sus principales características destacan:
 
-- Navegación segmentada para niños (área de juegos) y para adultos (guías y foro).
-- Estilo visual colorido e interactivo con animaciones fluidas y retroalimentación auditiva.
-- Formularios estilizados para captura de datos y sección de contacto.
-- Módulos desplegables para consultar el catálogo de actividades según el nivel de dificultad.
+- Diseño responsive.
+- Animaciones CSS.
+- Mascota interactiva "Rex".
+- Componentes visuales infantiles.
+- Navegación intuitiva entre áreas.
+- Formularios personalizados.
+- Panel exclusivo para padres y maestros.
+
+---
+
+# Funcionalidades disponibles
+
+### Plataforma Infantil
+
+- Inicio de sesión.
+- Navegación por niveles.
+- Juegos interactivos.
+- Contenido educativo.
+- Retos de lógica.
+- Actividades prácticas.
+
+### Panel para Padres
+
+- Descarga de guías en PDF.
+- Recursos pedagógicos.
+- Foro de sugerencias.
+- Formulario de contacto.
+
+### Administración
+
+- Registro de mensajes.
+- Almacenamiento de formularios en PostgreSQL.
+- Gestión de usuarios según rol.
+
+---
+
+# Base de Datos
+
+El sistema utiliza PostgreSQL para almacenar la información enviada desde el formulario de contacto.
+
+Incluye:
+
+- Nombre
+- Correo electrónico
+- Mensaje
+- Fecha de envío
+
+La comunicación entre la plataforma y la base de datos se realiza mediante PHP.
+
+---
+
+# Ejecutar el proyecto
+
+Requisitos previos:
+
+- Visual Studio Code (o cualquier editor).
+- XAMPP o Apache con PHP.
+- PostgreSQL.
+- pgAdmin.
+
+Pasos:
+
+1. Clonar el repositorio.
+2. Crear la base de datos en PostgreSQL.
+3. Ejecutar el script SQL.
+4. Configurar la conexión en PHP.
+5. Colocar el proyecto dentro de la carpeta `htdocs`.
+6. Iniciar Apache y PostgreSQL.
+7. Abrir en el navegador:
+
+```
+http://localhost/Click-y-Crea/
+```
+
+---
+
+# Equipo de desarrollo
+
+Click y Crea fue desarrollado por un equipo comprometido con la innovación educativa y el fortalecimiento de las competencias digitales en la niñez.
+
+
+---
+
+# Aviso
+
+Este proyecto fue desarrollado con fines académicos como parte de un emprendimiento tecnológico enfocado en promover el aprendizaje de la lógica y la programación en niños mediante experiencias educativas interactivas.
