@@ -138,8 +138,10 @@ http://localhost/Click-y-Crea/
 
 # Equipo de desarrollo
 
-Click y Crea fue desarrollado por un equipo de jovenes comprometidos con la innovación educativa y el fortalecimiento de las competencias digitales en la niñez.
+Click y Crea fue creado como parte del proyecto final de la materia de Emprendimiento, con el apoyo de nuestra teacher
+desarrollado por un equipo de jovenes comprometidos con la innovación educativa y el fortalecimiento de las competencias digitales en la niñez.
 
+-Ana, Roberto, Ruth, Saraí y Anderson.
 
 ---
 
